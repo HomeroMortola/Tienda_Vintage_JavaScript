@@ -16,7 +16,6 @@
     <div class="color-stripe"></div>
 
     <div class="shell">
-
       <div class="masthead">
         <div class="mast-over">
           ✦ &nbsp; Tienda de artículos de época &nbsp; ✦
@@ -57,7 +56,26 @@
         <div class="ornament">· · · ✦ · · ·</div>
         <div style="height: 20px"></div>
         <div class="prod-grid" id="prod-grid"></div>
+        <div class="prod-grid" id="prod-grid">
+
+     
       </section>
     </div>
   </body>
+
+  <!-- modelossss script-->
+  <script>
+    /* ── Vinyls (producto) ── */
+    class Vinyls {
+      constructor(builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.stock = builder.stock;
+        this.category = builder.category;
+        this.desc = builder.desc;
+        Object.freeze(this);
+      }
+    }
+  </script>
 </html>
