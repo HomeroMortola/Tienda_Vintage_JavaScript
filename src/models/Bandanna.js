@@ -2,7 +2,6 @@ class Bandanna {
    /**
    * @param {BandannaBuilder} builder 
    */
-
     constructor(builder) {
         this.id = builder.id;
         this.size = builder.size;

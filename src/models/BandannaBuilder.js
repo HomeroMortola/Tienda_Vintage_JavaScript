@@ -51,7 +51,7 @@ class BandannaBuilder {
 
 
     /**
-     * @returns {Bandanna}
+     * @returns {Client}
      */
     build() {
         return new Client(this);
