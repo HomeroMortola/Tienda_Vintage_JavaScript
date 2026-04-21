@@ -8,6 +8,16 @@ class VinylsBuilder extends ProductBuilder {
         this.artist = "";
     }   
 
+    reset() {
+        super.reset();
+        this.name_vinyls = "";
+        this.year = 0;
+        this.genre = "";
+        this.artist = "";
+        return this;
+    }
+
+
 
     /**
      * @param {string} VinylsName
@@ -66,7 +76,9 @@ class VinylsBuilder extends ProductBuilder {
      * @returns {Vinyls}
      */
     build() {
-        return new Vinyls(this);
+        const vinyls = new Vinyls(this);
+        this.reset();
+        return vinyls;
     }
 }
 

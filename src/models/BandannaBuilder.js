@@ -5,6 +5,12 @@ class BandannaBuilder extends ProductBuilder {
         this.color = "";
     }
 
+    reset() {
+        super.reset();
+        this.size = "";
+        this.color = "";
+        return this;
+    }
 
     /**
      * @param {string} size
@@ -27,7 +33,9 @@ class BandannaBuilder extends ProductBuilder {
      * @returns {Bandanna}
      */
     build() {
-        return new Bandanna(this);
+        const bandanna = new Bandanna(this);
+        this.reset();
+        return bandanna;
     }
 }
 

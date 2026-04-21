@@ -2,20 +2,14 @@ class GlasesBuilder extends ProductBuilder {
 
     constructor() {
         super();
-        this.name = "";
         this.color = "";
     }
 
-
-
-    /**
-     * @param {string} productName
-     */
-    setName(productName) {
-        this.productName = productName;
+    reset() {
+        super.reset();
+        this.color = "";
         return this;
     }
-
 
     /**
      * @param {string} color
@@ -30,7 +24,9 @@ class GlasesBuilder extends ProductBuilder {
      * @returns {Glases}
      */
     build() {
-        return new Glases(this);
+        const glases = new Glases(this);
+        this.reset();
+        return glases;
     }
 }
 
