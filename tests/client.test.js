@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ClientBuilder } from '../src/ClientBuilder.js';
-import { Client } from '../src/Client.js';
+import { ClientBuilder } from '../src/models/ClientBuilder.js';
+import { Client } from '../src/models/Client.js';
 
 describe('ClientBuilder', () => {
 
