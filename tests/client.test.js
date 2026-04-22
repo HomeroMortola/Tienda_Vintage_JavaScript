@@ -28,25 +28,25 @@ describe('ClientBuilder', () => {
         expect(client.location).toBe('Corrientes');
     });
 
-    it('falla si el nombre está vacío', () => {
+    it('falla si el nombre esta vacio', () => {
         expect(() => {
             builder.setName('').build();
-        }).toThrow('El nombre no puede estar vacío');
+        }).toThrow('el nombre no puede estar vacio');
     });
 
     it('falla si el nombre es solo espacios', () => {
         expect(() => {
             builder.setName('   ').build();
-        }).toThrow('El nombre no puede estar vacío');
+        }).toThrow('el nombre no puede estar vacio');
     });
 
     it('falla si el DNI contiene letras', () => {
         expect(() => {
             builder.setDni('ABC123').build();
-        }).toThrow('El DNI solo puede contener números');
+        }).toThrow('el DNI solo puede contener numeros');
     });
 
-    it('acepta un DNI numérico válido', () => {
+    it('acepta un DNI numerico válido', () => {
         const client = builder.setDni(12345678).build();
         expect(client.dni).toBe(12345678);
     });
