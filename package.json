@@ -2,11 +2,7 @@
   "name": "fifa",
   "version": "1.0.0",
   "main": "app.js",
-  "type": "commonjs",
-  "scripts": {
-    "dev": "node main.js",
-    "start": "node main.js"
-  },
+  "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^2.104.0",
     "cors": "^2.8.6",
