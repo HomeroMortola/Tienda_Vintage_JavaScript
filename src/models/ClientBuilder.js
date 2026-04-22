@@ -1,4 +1,4 @@
-class ClientBuilder {
+export class ClientBuilder {
 
     constructor() {
         this.id = null;
