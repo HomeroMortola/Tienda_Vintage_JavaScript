@@ -61,8 +61,20 @@ describe('Client', () => {
             .setName('Juan')
             .build();
 
-        client.name = 'Otro nombre';
-        expect(client.name).toBe('Juan');
+        expect(() => {
+            client.name = 'Otro nombre';
+        }).toThrow();
     });
 
 });
+
+/*it('no permite modificar sus propiedades una vez creado', () => {
+    const client = new ClientBuilder()
+        .setId(1)
+        .setName('Juan')
+        .build();
+
+    expect(() => {
+        client.name = 'Otro nombre';
+    }).toThrow();
+});*/
