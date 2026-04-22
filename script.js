@@ -20,10 +20,12 @@ async function fetchInventory() {
         // Renderizamos usando directamente los datos de la base de datos
         productos.forEach(p => {
             const imageurl = p.imageurl ? p.imageurl : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
-            
+
             grid.innerHTML += `
                 <div class="prod-card">
-                    <img src="${imageurl}" alt="${p.nombre}" class="prod-img">
+                    <div class="prod-img-container">
+                        <img src="${imageurl}" alt="${p.nombre}" class="prod-img">
+                    </div>
                     <div class="prod-info">
                         <div class="prod-cat">Colección Especial</div>
                         <h3 class="prod-name">${p.nombre}</h3>
