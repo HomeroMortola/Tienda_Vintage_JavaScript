@@ -7,7 +7,7 @@ async function fetchInventory() {
         if (!response.ok) throw new Error("No se pudo conectar con el servidor");
 
         const productos = await response.json();
-        
+
         // Limpiamos el contenedor antes de renderizar
         grid.innerHTML = "";
         
@@ -17,19 +17,19 @@ async function fetchInventory() {
         }
         // Renderizamos usando directamente los datos de la base de datos
         productos.forEach(p => {
-            const imageurl = p.imageurl ? p.imageurl : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
+            const imageurl = p.image_url ? p.image_url : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
 
             grid.innerHTML += `
                 <div class="prod-card">
                     <div class="prod-img-container">
-                        <img src="${imageurl}" alt="${p.nombre}" class="prod-img">
+                        <img src="${imageurl}" alt="${p.name}" class="prod-img">
                     </div>
                     <div class="prod-info">
                         <div class="prod-cat">Colección Especial</div>
-                        <h3 class="prod-name">${p.nombre}</h3>
-                        <div class="prod-price">$${p.precio}</div>
-                        <p class="prod-desc">${p.descripcion || "Pieza única de colección."}</p>
-                        <button class="buy-btn" onclick="comprar('${p.nombre}')">comprar</button>
+                        <h3 class="prod-name">${p.name}</h3>
+                        <div class="prod-price">$${p.price}</div>
+                        <p class="prod-desc">${p.description || "Pieza única de colección."}</p>
+                        <button class="buy-btn" onclick="comprar('${p.name}')">comprar</button>
                     </div>
                 </div>
             `;

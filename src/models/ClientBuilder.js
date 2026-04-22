@@ -1,4 +1,6 @@
-class ClientBuilder {
+import { Client } from './Client.js';
+
+export class ClientBuilder {
 
     constructor() {
         this.id = null;
