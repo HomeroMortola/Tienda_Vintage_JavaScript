@@ -25,15 +25,18 @@ export class ClientBuilder {
      * @param {string} name
      */
     setName(name) {
-        this.name = name;
-        return this;
+    if (!name || name.trim() === "") {
+        throw new Error("El nombre no puede estar vacío");
+    }
+    this.name = name;
+    return this;
     }
 
     /**
      * @param {string} surName
      */
-    setSurName(surName) {
-        this.surName = surName;
+    setSurname(surName) {
+        this.surname = surName;
         return this;
     }
 
@@ -52,9 +55,12 @@ export class ClientBuilder {
      */
 
     setDni(dni) {
-        this.dni = dni;
-        return this;
+    if (typeof dni === "string" && !/^\d+$/.test(dni)) {  //  /^\d+$/ siginifica solo numero del 0 al 9
+        throw new Error("El DNI solo puede contener números");
     }
+    this.dni = dni;
+    return this;
+}
 
     /**
      * @param {string} location
