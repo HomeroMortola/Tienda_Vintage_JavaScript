@@ -25,7 +25,7 @@ async function fetchInventory() {
                         <h3 class="prod-name">${p.nombre}</h3>
                         <div class="prod-price">$${p.precio}</div>
                         <p class="prod-desc">${p.descripcion || "Pieza única de colección."}</p>
-                        <button class="buy-btn" onclick="comprar('${p.nombre}')">Adquirir</button>
+                        <button class="buy-btn" onclick="comprar('${p.nombre}')">comprar</button>
                     </div>
                 </div>
             `;
