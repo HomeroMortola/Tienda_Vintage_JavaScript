@@ -1,0 +1,49 @@
+class ShoppingCart {
+    /**
+     * @param {number[]} products_id 
+     * @param {Product[]} products 
+     * @param {number} total_price 
+     * @param {number} created_date 
+     */
+    constructor(products_id = [], products = [], total_price = 0.0, created_date = Date.now()) {
+        this.products_id = products_id;
+        this.products = products;
+        this.total_price = total_price;
+        this.created_date = created_date;
+    }
+
+    /**
+     * @param {Product} product 
+     * @param {number} id 
+     */
+    addProduct(product, id) {
+        this.products.push(product);
+        this.products_id.push(id);
+        
+    }
+
+    /**
+     * @param {number} id 
+     */
+    removeProduct(id) {
+        const index = this.products_id.indexOf(id);
+        if (index > -1) {
+            this.products.splice(index, 1);
+            this.products_id.splice(index, 1);
+        }
+    }
+
+    
+    makePurchase() {
+       
+        
+        
+    }
+
+    /**
+     * @param {Product[]} products - Lista de productos para calcular
+     */
+    calculate_final_price(products) {
+        this.total_price = products.reduce((sum, product) => sum + (product.price || 0), 0);
+    }
+}
