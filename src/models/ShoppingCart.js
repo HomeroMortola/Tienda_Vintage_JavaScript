@@ -1,4 +1,4 @@
-class ShoppingCart {
+export class ShoppingCart {
     /**
      * @param {number[]} products_id 
      * @param {Product[]} products 
