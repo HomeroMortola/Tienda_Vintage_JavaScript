@@ -42,6 +42,9 @@
         <span>Pañuelos</span>
         <span>Envíos</span>
         <span>Contacto</span>
+        <span style="margin-left: auto; cursor: pointer;" onclick="toggleCart(cart)" title="Abrir carrito">
+           <span class="cart-icon">0</span>
+        </span>
       </div>
 
       <section class="section active" id="sec-1">
@@ -60,6 +63,22 @@
 
      
       </section>
+    </div>
+
+    <!-- Panel del Carrito -->
+    <div id="cart-panel" class="cart-panel">
+      <div class="cart-header">
+        <h2>Tu Carrito</h2>
+        <button onclick="toggleCart()" class="close-btn">✕</button>
+      </div>
+      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span>Total:</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <button class="checkout-btn" onclick="finalizarCompra()">Finalizar Compra</button>
+      </div>
     </div>
 
     <script src="script.js"></script>

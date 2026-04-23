@@ -1,4 +1,4 @@
-class ShoppingCart {
+export class ShoppingCart {
     /**
      * @param {number[]} products_id 
      * @param {Product[]} products 
@@ -19,7 +19,7 @@ class ShoppingCart {
     addProduct(product, id) {
         this.products.push(product);
         this.products_id.push(id);
-        
+        this.calculate_final_price(this.products);
     }
 
     /**
@@ -31,6 +31,7 @@ class ShoppingCart {
             this.products.splice(index, 1);
             this.products_id.splice(index, 1);
         }
+        this.calculate_final_price(this.products);
     }
 
     
