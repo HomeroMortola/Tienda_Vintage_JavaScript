@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vinilos - Retro Vibes Co.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      /* Altura del masthead para que la imagen de fondo se vea bien */
+      .vinilo-page .masthead {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <!-- Clase vinilo-page en el body activa la imagen del masthead definida en styles.css -->
+  <body class="vinilo-page">
+    <div class="shell">
+      <!-- HEADER -->
+      <header class="masthead">
+        <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+        <div class="brand-tagline">Sección Vinilos</div>
+      </header>
+
+      <!-- GRID DE PRODUCTOS -->
+      <section class="section active">
+        <div class="section-head">
+          <h1 class="section-title">Vinilos</h1>
+          <p class="section-sub">Clásicos que nunca pasan de moda</p>
+        </div>
+
+        <div class="products-grid">
+          <!-- Producto 1 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img
+                src="https://i.imgur.com/8Km9tLL.jpg"
+                alt="Led Zeppelin IV"
+              />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Vinilo</div>
+              <div class="prod-name">Led Zeppelin IV</div>
+              <div class="prod-desc">1971 · Rock clásico</div>
+              <div class="prod-footer">
+                <div class="prod-price">$8500</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Producto 2 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img src="https://i.imgur.com/5tj6S7Ol.jpg" alt="Thriller" />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Vinilo</div>
+              <div class="prod-name">Thriller</div>
+              <div class="prod-desc">Michael Jackson · 1982</div>
+              <div class="prod-footer">
+                <div class="prod-price">$11200</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Producto 3 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img src="https://i.imgur.com/f9XnG5L.jpg" alt="Rumours" />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Vinilo</div>
+              <div class="prod-name">Rumours</div>
+              <div class="prod-desc">Fleetwood Mac · 1977</div>
+              <div class="prod-footer">
+                <div class="prod-price">$14000</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
