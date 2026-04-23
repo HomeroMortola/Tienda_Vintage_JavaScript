@@ -1,5 +1,5 @@
 async function fetchInventory() {
-    const grid = document.getElementById('prod-grid');
+    const grid = document.querySelector('.grid-product');
     try {
         // Pedimos los datos directamente a tu servidor
         const response = await fetch('http://localhost:3000/productos');
