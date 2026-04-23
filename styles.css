@@ -38,7 +38,7 @@
     body {
       background: var(--paper);
       color: var(--ink);
-      font-family: 'Bestlovers';
+      font-family: var(--f-display);
       font-size: 15px;
       min-height: 100vh;
       background-image:
@@ -120,7 +120,7 @@
     /* ─── Banda de categorías ─── */
 
 .section-title {
-  font-family: 'Bestlovers', cursive;
+  font-family: var(--f-gothic);
 }
     .nav-band {
       font-family: var(--f-gothic);
@@ -204,7 +204,7 @@
 
     .section-head { text-align: center; margin-bottom: 8px; }
     .section-kicker {
-      font-family: var(--f-gothic);
+      font-family: var(--f-display);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 4px;
@@ -248,8 +248,7 @@
       border-bottom: 1px solid var(--ink);
       background: var(--cream);
       cursor: pointer;
-      transition: background .15s;
-      position: relative;
+      position: center;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -270,16 +269,19 @@
     .product-card.selected .prod-price { color: var(--gold-light); }
     .product-card.selected .prod-btn  { background: var(--gold); color: var(--ink); border-color: var(--gold); }
 
-    .prod-visual {
-      width: 100%;
-      aspect-ratio: 4/3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--paper-deep);
-    }
+   .prod-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+  display: block;
+}
+.prod-visual {
+  overflow: hidden;      
+}
+.product-card:hover img {
+  transform: scale(1.05);
+}
     .bg-vinilo   { background: var(--ink); }
     .bg-panuelo  { background: #2a1540; }
     .bg-anteojos { background: #0f2820; }
@@ -631,11 +633,11 @@
 .anteojos-page .masthead {
   background-image: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url("img/anteojos.jpg");
+    url("defi.jpg");
 }
 
 .section-title {
-  font-family: 'Bestlovers', cursive !important;
+  font-family: var(--f-display);
   font-weight: normal !important;
   font-style: normal !important;
 }
@@ -654,7 +656,18 @@
   border-radius: 10px;
   transition: transform 0.3s ease;
 }
+.prod-visual {
+  overflow: hidden;
+  height: 200px; /* ← altura fija igual para todos */
+}
 
+.prod-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .3s;
+}
 /* EFECTO AL PASAR EL MOUSE */
 .producto:hover {
   transform: scale(1.1);
@@ -675,4 +688,18 @@
 
 .grid-productos::-webkit-scrollbar {
   display: none; 
+}
+.vinilo-page .masthead {
+  margin-bottom: 40px;
+}
+.anteojos-page .masthead {
+  background: 
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url("defi2.jpg");
+  background-size: cover;
+  background-position: center 65%; /* ← bajá o subí este % hasta que quede bien */
+}
+
+.anteojos-page .masthead {
+  margin-bottom: 40px;
 }
