@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vinilos - Retro Vibes Co.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      /* Altura del masthead para que la imagen de fondo se vea bien */
+      .bandanna-page .masthead {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <!-- Clase bandanna-page en el body activa la imagen del masthead definida en styles.css -->
+  <body class="bandanna-page">
+    <div class="shell">
+      <!-- HEADER -->
+      <header class="masthead">
+        <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+        <div class="brand-tagline">Sección Bandanas</div>
+      </header>
+
+      <!-- GRID DE PRODUCTOS -->
+      <section class="section active">
+        <div class="section-head">
+          <h1 class="section-title">Bandanas</h1>
+          <p class="section-sub">Vintage y estilo retro</p>
+        </div>
+
+        <div class="products-grid">
+          <!-- Producto 1 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img
+                src="bandana bohemio.png"
+                alt="Bandana estampada con estilo bohemio"
+              />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Bandanas</div>
+              <div class="prod-name">Bandana estampada con estilo bohemio</div>
+              <div class="prod-desc">Diadema clásica</div>
+              <div class="prod-footer">
+                <div class="prod-price">$8500</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Producto 2 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img src="bandanabirdinbag.png" alt="Bandana Bird in Bag" />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Bandana</div>
+              <div class="prod-name">Bandana Bird in Bag</div>
+              <div class="prod-desc">De invierno</div>
+              <div class="prod-footer">
+                <div class="prod-price">$11200</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Producto 3 -->
+          <div class="product-card">
+            <div class="prod-visual">
+              <img src="https://i.imgur.com/f9XnG5L.jpg" alt="Rumours" />
+            </div>
+            <div class="prod-body">
+              <div class="prod-cat">Vinilo</div>
+              <div class="prod-name">Rumours</div>
+              <div class="prod-desc">Fleetwood Mac · 1977</div>
+              <div class="prod-footer">
+                <div class="prod-price">$14000</div>
+                <button class="prod-btn">Elegir</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

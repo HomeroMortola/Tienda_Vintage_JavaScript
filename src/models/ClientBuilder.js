@@ -1,4 +1,6 @@
-class ClientBuilder {
+import { Client } from './Client.js';
+
+export class ClientBuilder {
 
     constructor() {
         this.id = null;
@@ -23,16 +25,22 @@ class ClientBuilder {
      * @param {string} name
      */
     setName(name) {
-        this.name = name;
-        return this;
+    if (!name || name.trim() === "") {
+        throw new Error("el nombre no puede estar vacio");
+    }
+    this.name = name;
+    return this;
     }
 
     /**
      * @param {string} surName
      */
-    setSurName(surName) {
-        this.surName = surName;
-        return this;
+    setSurname(surname) {
+    if (!surname || surname.trim() === "") {
+        throw new Error("el apellido no puede estar vacio");
+    }
+    this.surname = surname;
+    return this;
     }
 
     /**
@@ -50,9 +58,18 @@ class ClientBuilder {
      */
 
     setDni(dni) {
-        this.dni = dni;
-        return this;
+    if (typeof dni === "string" && !/^\d+$/.test(dni)) {  //  /^\d+$/ siginifica solo numero del 0 al 9
+        throw new Error("el DNI solo puede contener numeros");
     }
+    
+    const dniString = String(dni);
+    if (dniString.length !== 8) {
+        throw new Error("el DNI debe tener exactamente 8 digitos");
+    }
+    
+    this.dni = dni;
+    return this;
+}
 
     /**
      * @param {string} location

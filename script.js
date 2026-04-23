@@ -14,12 +14,12 @@ const API_URL = 'http://localhost:3000';
 async function fetchInventory() {
     const grid = document.getElementById('prod-grid');
     try {
-        const response = await fetch(`${API_URL}/productos`);
+        const response = await fetch('http://localhost:3000/productos');
         
         if (!response.ok) throw new Error("No se pudo conectar con el servidor");
 
         const productos = await response.json();
-        
+
         // Limpiamos el contenedor antes de renderizar
         grid.innerHTML = "";
         
@@ -29,7 +29,7 @@ async function fetchInventory() {
         }
         // Renderizamos usando directamente los datos de la base de datos
         productos.forEach(p => {
-            const imageurl = p.imageurl ? p.imageurl : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
+            const imageurl = p.image_url ? p.image_url : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
 
             grid.innerHTML += `
                 <div class="prod-card">
@@ -109,7 +109,7 @@ async function agregarAlCarrito(producto, id) {
         
     } catch (error) {
         console.error("Error:", error);
-        mostrarNotificacion("❌ Error al agregar producto", true);
+        mostrarNotificacion(" Error al agregar producto", true);
     }
 }
 

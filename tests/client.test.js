@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ClientBuilder } from '../src/ClientBuilder.js';
-import { Client } from '../src/Client.js';
+import { ClientBuilder } from '../src/models/ClientBuilder.js';
+import { Client } from '../src/models/Client.js';
 
 describe('ClientBuilder', () => {
 
@@ -28,27 +28,43 @@ describe('ClientBuilder', () => {
         expect(client.location).toBe('Corrientes');
     });
 
-    it('falla si el nombre está vacío', () => {
+
+    it('falla si el nombre esta vacio', () => {
         expect(() => {
             builder.setName('').build();
-        }).toThrow('El nombre no puede estar vacío');
+        }).toThrow('el nombre no puede estar vacio');
     });
+
 
     it('falla si el nombre es solo espacios', () => {
         expect(() => {
             builder.setName('   ').build();
-        }).toThrow('El nombre no puede estar vacío');
+        }).toThrow('el nombre no puede estar vacio');
     });
+
+
+    it('falla si el apellido esta vacio', () => {
+        expect(() => {
+            builder.setSurname('').build();
+        }).toThrow('el apellido no puede estar vacio');
+    });
+
 
     it('falla si el DNI contiene letras', () => {
         expect(() => {
             builder.setDni('ABC123').build();
-        }).toThrow('El DNI solo puede contener números');
+        }).toThrow('el DNI solo puede contener numeros');
     });
 
-    it('acepta un DNI numérico válido', () => {
+    it('acepta un DNI numerico valido', () => {
         const client = builder.setDni(12345678).build();
         expect(client.dni).toBe(12345678);
+    });
+
+    it('falla si el DNI no tiene 8 digitos', () => {
+    expect(() => {
+        builder.setDni(123).build();
+    }).toThrow('el DNI debe tener exactamente 8 digitos');
     });
 
 });
@@ -61,8 +77,20 @@ describe('Client', () => {
             .setName('Juan')
             .build();
 
-        client.name = 'Otro nombre';
-        expect(client.name).toBe('Juan');
+        expect(() => {
+            client.name = 'Otro nombre';
+        }).toThrow();
     });
 
 });
+
+/*it('no permite modificar sus propiedades una vez creado', () => {
+    const client = new ClientBuilder()
+        .setId(1)
+        .setName('Juan')
+        .build();
+
+    expect(() => {
+        client.name = 'Otro nombre';
+    }).toThrow();
+});*/
