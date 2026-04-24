@@ -1,4 +1,7 @@
-class GlasesBuilder extends ProductBuilder {
+import { ProductBuilder } from './ProductBuilder.js';
+import { Glases } from './Glases.js';
+
+export class GlasesBuilder extends ProductBuilder {
 
     constructor() {
         super();
@@ -16,6 +19,9 @@ class GlasesBuilder extends ProductBuilder {
      */
 
     setColor(color) {
+        if (!color || color.trim() === "") {
+            throw new Error("el color no puede estar vacio");
+        }
         this.color = color;
         return this;
     }

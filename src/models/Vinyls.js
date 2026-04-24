@@ -1,4 +1,6 @@
-class Vinyls extends Product {        
+import { Product } from './Product.js';
+
+export class Vinyls extends Product {        
    /**
    * @param {VinylsBuilder} builder 
    */

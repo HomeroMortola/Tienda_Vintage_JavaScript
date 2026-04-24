@@ -1,4 +1,6 @@
-class Glases extends Product {
+import { Product } from './Product.js';
+
+export class Glases extends Product {
         
    /**
    * @param {GlasesBuilder} builder 
