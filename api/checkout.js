@@ -4,28 +4,90 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 export default async function handler(req, res) {
-  const { items, userId } = req.body;
+  const { items, userId } = req.body; // Enviamos el carrito y el ID del usuario desde el frontend al crear la preferencia a la API de supabase
 
-  // 1. Validar stock en Supabase aquí...
+  try {
+    //1. Obtener los IDs para consultar a Supabase de una sola vez
+    const productsIds = items.map(item => item.id);
 
-  const preference = new Preference(client);
-  
+    //2. Consultar precios y stock reales en Supabase usando el Service Role Key (salta RLS)
+    const { data: dbProducts, error } = await supabase
+      .from('products')
+      .select('id, price, stock')
+      .in('id', productsIds);
+      
+      if (error || !dbProducts) throw new Error('Error al consultar productos en Supabase');
+
+    //3. Validar que los productos existan, tengan stock y precios válidos
+    let serverSideTotal = 0;
+    const validatedItemsForMP = [];
+
+    for (const Item of Items){
+      const dbProduct = dbProducts.find(p => p.id === Items.id);
+      
+      //A. Valido si el producto existe
+      if (!dbProduct) {
+        return res.status(400).json({ error: `Producto con ID ${Item.id} no encontrado` });
+      }
+
+      //B. Valido si el producto tiene el stock suficiente para la cantidad solicitada
+      if (dbProduct.stock < Item.quantity) {
+        return res.status(400).json({ error: `Producto ${dbProduct.id} tiene stock insuficiente` });
+      }
+
+      //C. Valido si el precio del producto es mayor a 0
+      if (dbProduct.price <= 0) {
+        return res.status(400).json({ error: `Producto ${dbProduct.id} tiene un precio inválido` });
+      }
+
+      //Calculamos el totoal con el precio de la base de datos (Ignoramos lo que el front nos manda para evitar manipulaciones)
+      serverSideTotal += dbProduct.price * Item.quantity;
+
+      //Si todo es correcto, lo agrego a la lista de items validados para MercadoPago
+      validatedItemsForMP.push({
+        id: dbProduct.id,
+        title: dbProduct.name,
+        unit_price: dbProduct.price, // Precio real desde la base de datos
+        quantity: Item.quantity,
+        currency_id: 'ARS' // Moneda Local
+      });
+    }
+
+    //4. Persistencia de los datos: Validamos que el total calculado sea el mismo que nosotros calculamos
+    const {data: order } = await supabase
+      .from('orders')
+      .insert({
+        total: serverSideTotal,
+        status: 'pending',
+        user_id: userId,
+        items: Items
+    });
+    .select()
+    .single();
+
+    if(!order) throw new Error('Error al crear la orden en Supabase');
+
+    //5. Crear la preferencia de pago en MercadoPago con los datos validados
+
+    const preference = new Preference(client);
+
   const result = await preference.create({
     body: {
-      items: items.map(item => ({
-        title: item.name,
-        unit_price: Number(item.price),
-        quantity: Number(item.quantity),
-        currency_id: 'ARS' // O tu moneda local
-      })),
+      items: validatedItemsForMP, //Usamos los datos de productos validados y enriquecidos desde la base de datos
       back_urls: {
-        success: 'https://tu-tienda.vercel.app/success',
-        failure: 'https://tu-tienda.vercel.app/failure',
+        success: 'https://tienda-vintage-java-script.vercel.app/success',
+        failure: 'https://tienda-vintage-java-script.vercel.app/failure',
       },
-      notification_url: 'https://tu-tienda.vercel.app/api/webhooks/mercadopago', // ¡Vital!
-      external_reference: userId, // Para vincular el pago al usuario en tu DB
+      notification_url: 'https://tienda-vintage-java-script.vercel.app/api/webhooks/mercadopago',
+      external_reference: order.id, // Para vincular el pago al usuario en tu DB
     }
   });
 
-  res.status(200).json({ id: result.id });
+  // Enviamos el ID de la preferencia al frontend para redirigir al usuario a MercadoPago
+  res.status(200).json({ preferenceid: result.id, orderId: order.id });
+
+  } catch (error) {
+    console.error('Error en checkout:', error);
+    res.status(500).json({ error: error.message });
+  }
 }

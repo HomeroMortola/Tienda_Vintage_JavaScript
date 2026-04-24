@@ -1,0 +1,17 @@
+// En /failure.js
+function handleFailure() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const status = urlParams.get('status'); // Puede ser 'rejected' o 'null'
+
+  document.body.innerHTML = `
+    <main class="error-card">
+      <h1>El pago no pudo procesarse</h1>
+      <p>Parece que hubo un problema con tu tarjeta o el medio de pago seleccionado.</p>
+      
+      <div class="actions">
+        <button onclick="window.history.back()" class="btn-retry">Intentar de nuevo con otra tarjeta</button>
+        <a href="/checkout" class="link">Volver al carrito</a>
+      </div>
+    </main>
+  `;
+}

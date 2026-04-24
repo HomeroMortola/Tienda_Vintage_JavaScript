@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pago Exitoso - Tienda Vintage</title>
+  <link rel="stylesheet" href="/styles/success.css">
+  <script src="/scripts/supabaseClient.js"></script>
+  <script defer src="/scripts/success.js"></script>
+</head>
+<body>
+  <div id="status-message" class="status-message">Verificando tu pago...</div>
+
+<script>
+async function handleSuccess() {
+  // 1. Extraer los datos de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get('external_reference');
+  const paymentId = urlParams.get('payment_id');
+
+  if (!orderId) {
+    window.location.href = '/'; // Si no hay ID, algo salió mal, volvemos al inicio
+    return;
+  }
+
+  // 2. Consultar a Supabase para verificar que el Webhook ya hizo su trabajo
+  // Hacemos un pequeño "polling" o simplemente mostramos la info si ya está
+  const { data: order, error } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('id', orderId)
+    .single();
+
+  if (order && order.status === 'approved') {
+    renderSuccessUI(order, paymentId);
+    vaciarCarrito(); //
+  } else {
+    // Si el webhook aún no llega, mostramos un mensaje de "Procesando..."
+    document.getElementById('status-message').innerText = "Estamos confirmando tu pago...";
+    setTimeout(handleSuccess, 3000); // Reintentar en 3 segundos
+  }
+}
+
+function renderSuccessUI(order, paymentId) {
+  document.body.innerHTML = `
+    <main class="success-card">
+      <h1>¡Gracias por tu compra! 🎉</h1>
+      <p>Tu pago fue procesado con éxito.</p>
+      <div class="details">
+        <p><strong>Nro. de Orden:</strong> ${order.id}</p>
+        <p><strong>ID de Pago:</strong> ${paymentId}</p>
+        <p><strong>Total:</strong> $${order.total_price}</p>
+      </div>
+      <a href="/" class="btn">Seguir comprando</a>
+    </main>
+  `;
+}
+</script>
+</body>
+</html>

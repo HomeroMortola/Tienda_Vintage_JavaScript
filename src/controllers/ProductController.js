@@ -1,3 +1,5 @@
+// src/controllers/ProductController.js
+
 import { ProductRepository } from "../repositories/ProductRepository.js";
 
 const productRepository = new ProductRepository();
