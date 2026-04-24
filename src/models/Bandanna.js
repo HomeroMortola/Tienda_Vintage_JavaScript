@@ -1,4 +1,6 @@
-class Bandanna extends Product {        
+import { Product } from './Product.js';
+
+export class Bandanna extends Product {        
    /**
    * @param {BandannaBuilder} builder 
    */

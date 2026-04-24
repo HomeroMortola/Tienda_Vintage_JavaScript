@@ -1,4 +1,4 @@
-class ProductBuilder {
+export class ProductBuilder {
 
     constructor() {
         this.reset();
@@ -17,6 +17,9 @@ class ProductBuilder {
      */
 
     setId(id) {
+        if (typeof id !== "number" || id <= 0) {
+            throw new Error("l id debe ser un numero mayor a cero");
+        }
         this.id = id;
         return this;
     }
@@ -25,6 +28,9 @@ class ProductBuilder {
      * @param {string} productName
      */
     setName(productName) {
+        if (!productName || productName.trim() === "") {
+            throw new Error("el nombre del producto no puede estar vacio");
+        }
         this.productName = productName;
         return this;
     }
@@ -33,6 +39,9 @@ class ProductBuilder {
      * @param {number} price
      */
     setPrice(price) {
+        if (typeof price !== "number" || price <= 0) {
+            throw new Error("el precio debe ser un numero mayor a cero");
+        }
         this.price = price;
         return this;
     }
@@ -42,6 +51,9 @@ class ProductBuilder {
      */
 
     setStock(stock) {
+        if (typeof stock !== "number" || stock < 0) {
+            throw new Error("el stock no puede ser negativo");
+        }
         this.stock = stock;
         return this;
     }

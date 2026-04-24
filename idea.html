@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Retro Vibes Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ══ GRID DE VINILOS ══ */
+    .vinilos-section {
+      padding: 48px 0 60px;
+    }
+
+    .vinilos-section .section-head {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* Grid tipo fila horizontal con scroll si hace falta */
+    .vinilos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 24px;
+    }
+
+    /* Cada tarjeta de vinilo */
+    .vinilo-card {
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .vinilo-card:hover {
+      transform: translateY(-6px);
+    }
+
+    /* Contenedor de imagen cuadrado */
+    .vinilo-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--ink);
+      box-shadow: 6px 6px 0 var(--ink);
+      background: var(--ink);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .vinilo-card:hover .vinilo-img-wrap {
+      box-shadow: 10px 10px 0 var(--red);
+    }
+
+    .vinilo-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    /* Agujero del vinilo */
+    .vinilo-img-wrap::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18%;
+      height: 18%;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid #444;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Animación de giro al hover */
+    .vinilo-card:hover .vinilo-img-wrap img {
+      transform: rotate(15deg) scale(1.05);
+    }
+
+    .vinilo-titulo {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+      margin-top: 12px;
+      line-height: 1.2;
+    }
+
+    .vinilo-artista {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-top: 3px;
+    }
+
+    /* ══ OVERLAY MODAL ══ */
+    .vinilo-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 16, 8, 0.85);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .vinilo-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .vinilo-modal {
+      background: #fdf8ef;
+      border: 2px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--ink);
+      max-width: 600px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      overflow: hidden;
+      transform: scale(0.88) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .vinilo-overlay.active .vinilo-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Lado izquierdo: imagen */
+    .modal-img-side {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .modal-disco {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #444;
+      position: relative;
+      animation: spinSlow 8s linear infinite;
+    }
+
+    @keyframes spinSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    .modal-disco img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-disco::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18%;
+      height: 18%;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid #666;
+    }
+
+    /* Lado derecho: info */
+    .modal-info-side {
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .modal-kicker {
+      font-family: var(--f-gothic);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+
+    .modal-titulo {
+      font-family: var(--f-display);
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .modal-artista {
+      font-family: var(--f-body);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+
+    .modal-rule {
+      height: 2px;
+      background: var(--red);
+      width: 40px;
+      margin-bottom: 16px;
+    }
+
+    .modal-desc {
+      font-family: var(--f-body);
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-precio {
+      font-family: var(--f-display);
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--red);
+      line-height: 1;
+    }
+
+    .modal-btn {
+      font-family: var(--f-gothic);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .modal-btn:hover {
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* Botón cerrar */
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-family: var(--f-gothic);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .vinilo-overlay { position: fixed; }
+
+    /* Tags de info */
+    .modal-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .modal-tag {
+      font-family: var(--f-gothic);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--paper-dark);
+      color: var(--ink-soft);
+      padding: 3px 10px;
+    }
+
+    @media (max-width: 560px) {
+      .vinilo-modal {
+        grid-template-columns: 1fr;
+      }
+      .modal-img-side {
+        padding: 20px;
+      }
+      .modal-disco {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+
+<body class="home-page">
+<div class="shell">
+
+  <!-- ══ MASTHEAD ══ -->
+  <header class="masthead">
+    <div class="ornament-line">✦ &nbsp; Tienda de artículos vintage &nbsp; ✦</div>
+    <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+    <div class="brand-tagline">Vinilos · Pañuelos · Anteojos · Est. 1974</div>
+    <div class="masthead-rule"></div>
+  </header>
+
+  <!-- ── Banda navegación ── -->
+  <div class="nav-band">
+    <div class="nav-item active">Catálogo</div>
+    <a href="vinilos.html" class="nav-item">Vinilos</a>
+    <a href="panuelos.html" class="nav-item">Pañuelos</a>
+    <a href="anteojos.html" class="nav-item">Anteojos</a>
+    <a href="carrito.html" class="nav-item">Carrito</a>
+  </div>
+
+  <!-- ══ SECCIÓN VINILOS ══ -->
+  <section class="vinilos-section">
+    <div class="section-head">
+      <span class="section-kicker">Colección</span>
+      <h2 class="section-title">Vinilos</h2>
+      <div class="section-rule"></div>
+      <p class="section-sub">Hacé click en cualquier disco para ver más detalles</p>
+    </div>
+
+    <div class="vinilos-grid">
+
+      <div class="vinilo-card" onclick="abrirModal(0)">
+        <div class="vinilo-img-wrap">
+          <img src="pinkfloyd-removebg-preview.png" alt="Pink Floyd">
+        </div>
+        <div class="vinilo-titulo">The Dark Side of the Moon</div>
+        <div class="vinilo-artista">Pink Floyd</div>
+      </div>
+
+      <div class="vinilo-card" onclick="abrirModal(1)">
+        <div class="vinilo-img-wrap">
+          <img src="img/vinilo2.jpg" alt="Led Zeppelin">
+        </div>
+        <div class="vinilo-titulo">Led Zeppelin IV</div>
+        <div class="vinilo-artista">Led Zeppelin</div>
+      </div>
+
+      <div class="vinilo-card" onclick="abrirModal(2)">
+        <div class="vinilo-img-wrap">
+          <img src="img/vinilo3.jpg" alt="Thriller">
+        </div>
+        <div class="vinilo-titulo">Thriller</div>
+        <div class="vinilo-artista">Michael Jackson</div>
+      </div>
+
+      <div class="vinilo-card" onclick="abrirModal(3)">
+        <div class="vinilo-img-wrap">
+          <img src="img/vinilo4.jpg" alt="Rumours">
+        </div>
+        <div class="vinilo-titulo">Rumours</div>
+        <div class="vinilo-artista">Fleetwood Mac</div>
+      </div>
+
+      <div class="vinilo-card" onclick="abrirModal(4)">
+        <div class="vinilo-img-wrap">
+          <img src="img/vinilo5.jpg" alt="Abbey Road">
+        </div>
+        <div class="vinilo-titulo">Abbey Road</div>
+        <div class="vinilo-artista">The Beatles</div>
+      </div>
+
+      <div class="vinilo-card" onclick="abrirModal(5)">
+        <div class="vinilo-img-wrap">
+          <img src="img/vinilo6.jpg" alt="Nevermind">
+        </div>
+        <div class="vinilo-titulo">Nevermind</div>
+        <div class="vinilo-artista">Nirvana</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- ══ MODAL OVERLAY ══ -->
+<div class="vinilo-overlay" id="overlay" onclick="cerrarModal(event)">
+  <div class="vinilo-modal" id="modal">
+    <button class="modal-close" onclick="cerrarModalDirecto()">✕ cerrar</button>
+
+    <div class="modal-img-side">
+      <div class="modal-disco">
+        <img id="modal-img" src="" alt="">
+      </div>
+    </div>
+
+    <div class="modal-info-side">
+      <div>
+        <div class="modal-kicker" id="modal-kicker">Vinilo · 33 RPM</div>
+        <div class="modal-titulo" id="modal-titulo"></div>
+        <div class="modal-artista" id="modal-artista"></div>
+        <div class="modal-rule"></div>
+        <div class="modal-tags" id="modal-tags"></div>
+        <div class="modal-desc" id="modal-desc"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-precio" id="modal-precio"></div>
+        <button class="modal-btn">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const vinilos = [
+    {
+      img: "pinkfloyd-removebg-preview.png",
+      titulo: "The Dark Side of the Moon",
+      artista: "Pink Floyd",
+      anio: "1973",
+      genero: "Rock Progresivo",
+      estado: "Excelente",
+      desc: "Una obra maestra del rock progresivo. Este disco exploró temas como el tiempo, la codicia y la salud mental con una producción sonora revolucionaria para su época. Imprescindible en toda colección.",
+      precio: "$12.500"
+    },
+    {
+      img: "img/vinilo2.jpg",
+      titulo: "Led Zeppelin IV",
+      artista: "Led Zeppelin",
+      anio: "1971",
+      genero: "Hard Rock",
+      estado: "Muy bueno",
+      desc: "El cuarto álbum sin título de Led Zeppelin contiene algunas de las canciones más icónicas del rock. Incluye Stairway to Heaven, una de las mejores canciones de la historia.",
+      precio: "$8.500"
+    },
+    {
+      img: "img/vinilo3.jpg",
+      titulo: "Thriller",
+      artista: "Michael Jackson",
+      anio: "1982",
+      genero: "Pop / R&B",
+      estado: "Excelente",
+      desc: "El álbum más vendido de la historia. Thriller redefinió el pop moderno con una producción impecable de Quincy Jones y una serie de hits ininterrumpidos.",
+      precio: "$11.200"
+    },
+    {
+      img: "img/vinilo4.jpg",
+      titulo: "Rumours",
+      artista: "Fleetwood Mac",
+      anio: "1977",
+      genero: "Soft Rock",
+      estado: "Bueno",
+      desc: "Grabado en medio de relaciones tormentosas dentro de la banda, Rumours captura una tensión emocional única. Ganó el Grammy al Álbum del Año en 1978.",
+      precio: "$14.000"
+    },
+    {
+      img: "img/vinilo5.jpg",
+      titulo: "Abbey Road",
+      artista: "The Beatles",
+      anio: "1969",
+      genero: "Rock / Pop",
+      estado: "Muy bueno",
+      desc: "El último álbum grabado por los Beatles. La suite del lado B es considerada uno de los logros más ambiciosos de la historia del rock. Portada icónica e irrepetible.",
+      precio: "$16.000"
+    },
+    {
+      img: "img/vinilo6.jpg",
+      titulo: "Nevermind",
+      artista: "Nirvana",
+      anio: "1991",
+      genero: "Grunge",
+      estado: "Excelente",
+      desc: "El álbum que llevó el grunge al mainstream y cambió el rumbo de la música de los 90. Smells Like Teen Spirit se convirtió en himno de una generación entera.",
+      precio: "$9.800"
+    }
+  ];
+
+  function abrirModal(i) {
+    const v = vinilos[i];
+    document.getElementById('modal-img').src = v.img;
+    document.getElementById('modal-img').alt = v.titulo;
+    document.getElementById('modal-titulo').textContent = v.titulo;
+    document.getElementById('modal-artista').textContent = v.artista;
+    document.getElementById('modal-desc').textContent = v.desc;
+    document.getElementById('modal-precio').textContent = v.precio;
+    document.getElementById('modal-kicker').textContent = `Vinilo · ${v.anio}`;
+
+    const tags = document.getElementById('modal-tags');
+    tags.innerHTML = `
+      <span class="modal-tag">${v.genero}</span>
+      <span class="modal-tag">33 RPM</span>
+      <span class="modal-tag">${v.estado}</span>
+    `;
+
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarModal(e) {
+    if (e.target === document.getElementById('overlay')) {
+      cerrarModalDirecto();
+    }
+  }
+
+  function cerrarModalDirecto() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarModalDirecto();
+  });
+</script>
+
+</body>
+</html>

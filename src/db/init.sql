@@ -5,5 +5,6 @@ CREATE TABLE productos (
   description TEXT,
   price DECIMAL NOT NULL,
   stock INTEGER DEFAULT 0,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  caregory TEXT NOT NULL
 );

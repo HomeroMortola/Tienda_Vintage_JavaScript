@@ -1,4 +1,7 @@
-class VinylsBuilder extends ProductBuilder {
+import { ProductBuilder } from './ProductBuilder.js';
+import { Vinyls } from './Vinyls.js';
+
+export class VinylsBuilder extends ProductBuilder {
 
     constructor() {
         super();
@@ -21,6 +24,9 @@ class VinylsBuilder extends ProductBuilder {
      */
 
     setArtist(artist) {
+        if (!artist || artist.trim() === "") {
+            throw new Error("el artista no puede estar vacio");
+        }
         this.artist = artist;
         return this;
     }
@@ -30,6 +36,9 @@ class VinylsBuilder extends ProductBuilder {
      */
 
     setGenre(genre) {
+        if (!genre || genre.trim() === "") {
+            throw new Error("el genero no puede estar vacio");
+        }
         this.genre = genre;
         return this;
     }
@@ -39,6 +48,9 @@ class VinylsBuilder extends ProductBuilder {
      */
 
     setYear(year) {
+        if (typeof year !== "number" || year < 1900 || year > new Date().getFullYear()) {
+            throw new Error("el year debe ser un numero entre 1900 y el year actual");
+        }
         this.year = year;
         return this;
     }
