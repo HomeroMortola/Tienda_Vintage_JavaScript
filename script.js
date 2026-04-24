@@ -11,54 +11,79 @@ const getSessionId = () => {
 const SESSION_ID = getSessionId();
 const API_URL = 'http://localhost:3000';
 
-async function fetchInventory(category = null) {
+// Variable para guardar los productos y no saturar el servidor
+let allProducts = [];
+
+async function fetchInventory() {
     const grid = document.querySelector('.grid-product');
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+
     try {
         const response = await fetch('http://localhost:3000/productos');
+        if (!response.ok) throw new Error("Error en el servidor");
         
-        if (!response.ok) throw new Error("No se pudo conectar con el servidor");
+        allProducts = await response.json();
 
-        let productos = await response.json();
+        let toRender = [];
 
-        // Filtrar por categoría si se proporciona
-        if (category) {
-            productos = productos.filter(p => p.type === category || p.category === category);
+        if (currentPage === "vinilos.html") {
+            toRender = allProducts.filter(p => p.category === "Vinyls");
+        } 
+        else if (currentPage === "bandanna.html") {
+            toRender = allProducts.filter(p => p.category === "Bandana");
+        } 
+        else if (currentPage === "anteojos.html") {
+            toRender = allProducts.filter(p => p.category === "Glasses");
+        } 
+        else {
+            toRender = allProducts;
         }
 
-        // Limpiamos el contenedor antes de renderizar
-        grid.innerHTML = "";
-
-        if (productos.length === 0) {
-            grid.innerHTML = "<p class='sec-sub'>No hay productos disponibles por ahora.</p>";
-            return;
-        }
-        // Renderizamos usando directamente los datos de la base de datos
-        productos.forEach(p => {
-            const imageurl = p.image_url ? p.image_url : 'https://via.placeholder.com/300x200?text=Sin+Imagen';
-
-            grid.innerHTML += `
-                <div class="prod-card">
-                    <div class="prod-img-container">
-                        <img src="${imageurl}" alt="${p.name}" class="prod-img">
-                    </div>
-                    <div class="prod-info">
-                        <div class="prod-cat">Colección Especial</div>
-                        <h3 class="prod-name">${p.name}</h3>
-                        <div class="prod-price">$${p.price}</div>
-                        <p class="prod-desc">${p.description || "Pieza única de colección."}</p>
-                        <button class="buy-btn" onclick="agregarAlCarrito({id: ${p.id}, nombre: '${p.name}', precio: ${p.price}, descripcion: '${p.description || ''}'}, ${p.id})">
-                            Adquirir
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
+        render(toRender);
 
     } catch (error) {
-        console.error("Error al cargar productos:", error);
-        grid.innerHTML = "<p class='sec-sub'>Error al conectar con la tienda. Revisá si 'node app.js' está corriendo.</p>";
+        console.error("Error cargando productos:", error);
+        if(grid) grid.innerHTML = "<p>Error al conectar con la tienda.</p>";
     }
 }
+
+function render(list) {
+    const grid = document.querySelector('.grid-product');
+    if (!grid) return; // Seguridad por si el div no existe en algún HTML
+
+    grid.innerHTML = "";
+
+    if (list.length === 0) {
+        grid.innerHTML = "<p class='sec-sub'>No hay artículos en esta sección todavía.</p>";
+        return;
+    }
+
+    list.forEach(p => {
+        // Usamos encodeURI por si la URL de la imagen tiene espacios
+        const safeUrl = p.image_url ? encodeURI(p.image_url) : 'https://via.placeholder.com/300';
+        
+        grid.innerHTML += `
+            <div class="prod-card">
+                <div class="prod-img-container">
+                    <img src="${safeUrl}" alt="${p.name}" class="prod-img">
+                </div>
+                <div class="prod-info">
+                    <h3 class="prod-name">${p.name}</h3>
+                    <div class="prod-price">$${p.price}</div>
+                    <p class="prod-desc">${p.description || "Vintage piece."}</p>
+                    <button class="buy-btn" onclick="comprar('${p.name}')">ADQUIRIR</button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function comprar(nombre) {
+    alert(`Añadiste ${nombre} al carrito.`);
+}
+
+// Arranca cuando carga el DOM
+document.addEventListener('DOMContentLoaded', fetchInventory);
 
 function comprar(nombre) {
     alert(`Has seleccionado: ${nombre}. ¡Próximamente podrás finalizar tu compra!`);
