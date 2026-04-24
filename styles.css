@@ -62,7 +62,7 @@
   position: relative;
 }
 
-    /* Línea ornamental superior */
+    /* línea  superior */
     .ornament-line {
       display: flex;
       align-items: center;
@@ -117,7 +117,7 @@
       margin-top: 14px;
     }
 
-    /* ─── Banda de categorías ─── */
+    /* categorías*/
 
 .section-title {
   font-family: var(--f-gothic);
@@ -232,9 +232,7 @@
       margin-bottom: 36px;
     }
 
-    /* ═══════════════════════════════════════════
-       GRILLA DE PRODUCTOS
-    ═══════════════════════════════════════════ */
+    /*Productos*/
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -360,9 +358,7 @@
     }
     @keyframes shimmer { to { background-position: -200% 0; } }
 
-    /* ═══════════════════════════════════════════
-       FORMULARIO
-    ═══════════════════════════════════════════ */
+    /*FORMULARIO*/
     .checkout-layout {
       display: grid;
       grid-template-columns: 1fr 300px;
@@ -489,9 +485,7 @@
     .sum-total-lbl { font-family: var(--f-gothic); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); }
     .sum-total-val { font-family: var(--f-display); font-weight: 900; font-size: 2rem; color: var(--gold-light); }
 
-    /* ═══════════════════════════════════════════
-       REVISIÓN
-    ═══════════════════════════════════════════ */
+    /*REVISIÓN */
     .review-layout {
       display: grid;
       grid-template-columns: 1fr 300px;
@@ -532,9 +526,7 @@
     .mp-total-lbl { font-family: var(--f-gothic); font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.3); }
     .mp-total-amt { font-family: var(--f-display); font-weight: 900; font-size: 2.6rem; color: var(--gold-light); margin-bottom: 24px; line-height: 1.1; }
 
-    /* ═══════════════════════════════════════════
-       BOTONES
-    ═══════════════════════════════════════════ */
+    /*BOTONES */
     .nav-btns { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
     .btn-primary {
       background: var(--red);
@@ -604,7 +596,7 @@
     .success-rule { width: 60px; height: 3px; background: var(--red); margin: 16px auto; }
 
 
-    /*IMÁGENES POR PÁGINA */
+    /*imagenes por pagina*/
 
 .home-page .masthead {
   background: 
@@ -741,11 +733,11 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-/* 3. El contenedor de la imagen: ACÁ ACHICAMOS LA IMAGEN */
+/*  el contenedor de la imagen: ACÁ ACHICAMOS LA IMAGEN */
 .prod-img-container {
     width: 100%;
     height: 200px; /* Altura fija para que todas sean iguales */
-    background-color: #e0e0e0; /* El gris de fondo que se ve en tu imagen */
+    background-color: #e0e0e0;
     border-radius: 8px;
     margin-bottom: 15px;
     display: flex;
@@ -756,7 +748,7 @@
 
 /* La imagen dentro del contenedor */
 .prod-img {
-    max-width: 85%; /* No ocupa todo el ancho, queda "centrada" y más chica */
+    max-width: 85%; /* la imagen queda más chica */
     max-height: 85%;
     object-fit: contain;
     mix-blend-mode: multiply; /* Para que el fondo blanco de los JPG desaparezca */
@@ -785,9 +777,9 @@
     margin-bottom: 10px;
 }
 
-/* 5. El botón "COMPRAR" estilo Retro */
+/* boton comprar */
 .buy-btn {
-    background-color: #5d1c24; /* Color bordó vintage */
+    background-color: #5d1c24;
     color: #fdf6e3;
     border: none;
     border-radius: 6px;
@@ -795,7 +787,7 @@
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
-    margin-top: auto; /* Empuja el botón siempre al fondo de la tarjeta */
+    margin-top: auto; 
     transition: background 0.3s;
 }
 
