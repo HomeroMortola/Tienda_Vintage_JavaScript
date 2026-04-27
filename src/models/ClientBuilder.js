@@ -48,6 +48,9 @@ export class ClientBuilder {
      */
 
     setPhone(phone) {
+    if (typeof phone === "string" && !/^\d+$/.test(phone)) {  
+        throw new Error("el telefono solo puede contener numeros");
+    }
         this.phone = phone;
         return this;
     }
@@ -76,6 +79,9 @@ export class ClientBuilder {
      */
 
     setLocation(location) {
+    if (!location || location.trim() === "") {
+        throw new Error("la ubicacion no puede estar vacia");
+    }
         this.location = location;
         return this;
     }
