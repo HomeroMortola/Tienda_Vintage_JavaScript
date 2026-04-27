@@ -223,13 +223,15 @@
       color: var(--ink);
       margin-bottom: 6px;
     }
+
+   /*linea debajo del titulo de cada seccion y espacio etc*/
     .section-rule { width: 60px; height: 3px; background: var(--red); margin: 10px auto 6px; }
     .section-sub {
       font-family: var(--f-body);
       font-size: 13px;
       font-style: italic;
       color: var(--ink-muted);
-      margin-bottom: 36px;
+      margin-bottom: 10px;
     }
 
     /*Productos*/
