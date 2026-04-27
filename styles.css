@@ -282,7 +282,7 @@
   transform: scale(1.05);
 }
     .bg-vinilo   { background: var(--ink); }
-    .bg-panuelo  { background: #2a1540; }
+    .bg-bandana  { background: #2a1540; }
     .bg-anteojos { background: #0f2820; }
     .prod-visual svg { width: 70%; height: 70%; }
 
@@ -607,7 +607,6 @@
 }
 
 .vinilo-page .masthead {
-
  background: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("L\ o\ r\ e\ e\ e\ h\ h.jpg");
@@ -615,7 +614,7 @@
   background-position: center;
 }
   
-.panuelo-page .masthead {
+.bandana-page .masthead {
   background-image: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("img/panuelo.jpg");
@@ -625,6 +624,8 @@
   background-image: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("defi.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
 .section-title {
@@ -681,7 +682,7 @@
   display: none; 
 }
 .vinilo-page .masthead {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
 }
 .anteojos-page .masthead {
   background: 
@@ -692,7 +693,7 @@
 }
 
 .anteojos-page .masthead {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
 }
 .categoria-titulo {
   font-family: var(--f-gothic);
