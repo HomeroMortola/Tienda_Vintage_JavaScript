@@ -67,7 +67,7 @@ describe('VinylsBuilder', () => {
     it('falla si el genero está vacio', () => {
         expect(() => {
             builder.setGenre('').build();
-        }).toThrow('el género no puede estar vacio');
+        }).toThrow('el genero no puede estar vacio');
     });
 
     it('falla si el year es menor a 1900', () => {
