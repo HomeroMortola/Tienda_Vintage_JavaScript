@@ -22,12 +22,22 @@ export class VinylsBuilder extends ProductBuilder {
     /**
      * @param {string} artist
      */
-
     setArtist(artist) {
         if (!artist || artist.trim() === "") {
             throw new Error("el artista no puede estar vacio");
         }
         this.artist = artist;
+        return this;
+    }
+
+    /**
+     * @param {string} album
+     */
+    setAlbum(album) {
+        if (!album || album.trim() === "") {
+            throw new Error("el album no puede estar vacio");
+        }
+        this.album = album;
         return this;
     }
 

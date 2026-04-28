@@ -8,6 +8,7 @@ export class Vinyls extends Product {
     constructor(builder) {
         super(builder.id, builder.price, builder.stock, builder.productName);
         this.artist = builder.artist;
+        this.album = builder.album;
         this.year = builder.year;
         this.genre = builder.genre;
         Object.freeze(this);

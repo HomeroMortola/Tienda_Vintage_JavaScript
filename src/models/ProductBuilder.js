@@ -5,22 +5,10 @@ export class ProductBuilder {
     }
 
     reset() {
-        this.id = 0;
+        this.id = null;
         this.price = 0;
         this.stock = 0
         this.productName = "";
-        return this;
-    }
-
-    /**
-     * @param {number} id
-     */
-
-    setId(id) {
-        if (typeof id !== "number" || id <= 0) {
-            throw new Error("l id debe ser un numero mayor a cero");
-        }
-        this.id = id;
         return this;
     }
 

@@ -8,4 +8,14 @@ class T_Shirt extends Product {
         this.color = builder.color;
         Object.freeze(this);
     }
+
+    getData() {
+        return {
+            id: this.id,
+            price: this.price,
+            stock: this.stock,
+            size: this.size,
+            color: this.color
+        }
+    }
 }
