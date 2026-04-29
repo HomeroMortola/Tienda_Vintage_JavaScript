@@ -27,6 +27,18 @@ export class GlasesBuilder extends ProductBuilder {
     }
 
     /**
+     * @param {string} shape
+     */
+
+    setShape(shape) {
+        if (!shape || shape.trim() === "") {
+            throw new Error("la forma no puede estar vacia");
+        }
+        this.shape = shape;
+        return this;
+    }
+
+    /**
      * @returns {Glases}
      */
     build() {

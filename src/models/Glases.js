@@ -9,6 +9,7 @@ export class Glases extends Product {
     constructor(builder) {
         super(builder.id, builder.price, builder.stock, builder.productName, builder.image_url);
         this.color = builder.color;
+        this.shape = builder.shape;
         Object.freeze(this);
     }
 

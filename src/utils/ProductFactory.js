@@ -8,7 +8,7 @@ export const PRODUCT_CONFIG = {
     T_Shirt : {
         builder: () => new T_ShirtBuilder(),
         fields: [
-            {id: 'size', label: 'Talla', type: 'select', options: ['S', 'M', 'L', 'XL']},
+            {id: 'size', label: 'Talla', type: 'select', options: ['S', 'M', 'L', 'XL'], setter: 'setSize'},
             {id: 'color', label: 'Color', type: 'text', setter: 'setColor'}
         ]
     },
