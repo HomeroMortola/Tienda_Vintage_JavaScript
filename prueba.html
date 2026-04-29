@@ -60,10 +60,12 @@
             "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
     }
 }
+
 </script>
 
     <script type="module">
     import { PRODUCT_CONFIG } from './src/utils/ProductFactory.js';
+    import { saveProduct } from './src/repositories/ProductRepository.js';
 
     // Envolvemos todo en un listener para esperar al HTML
     document.addEventListener('DOMContentLoaded', () => {
@@ -101,7 +103,51 @@
             }
         });
     }
-});
+    });
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+    const btnGuardar = document.getElementById('btn-guardar');
+    // 2. Lógica del Botón Guardar (Reemplaza al onclick)
+        if (btnGuardar) {
+            btnGuardar.addEventListener('click', async () => {
+                const tipo = selectTipo.value;
+                if (!tipo) return alert("Seleccioná un tipo de producto");
+
+                const config = PRODUCT_CONFIG[tipo];
+                
+                // Instanciamos el Builder usando la Factory
+                const builder = config.builder();
+
+                // Seteamos los datos básicos
+                builder.setName(document.getElementById('nombre').value)
+                       .setPrice(parseFloat(document.getElementById('precio').value))
+                       .setStock(parseInt(document.getElementById('stock').value))
+                       .setCategory(tipo)
+                       .setDescription("Carga desde panel admin");
+
+                // Seteamos los datos dinámicos (los que tienen prefijo extra-)
+                config.fields.forEach(campo => {
+                    const valor = document.getElementById(`extra-${campo.id}`).value;
+                    if (builder[campo.setter]) {
+                        builder[campo.setter](valor);
+                    }
+                });
+
+                const productoFinal = builder.build();
+
+                try {
+                    console.log("Enviando producto...", productoFinal);
+                    const resultado = await repo.saveProduct(productoFinal);
+                    alert("¡Producto guardado y sincronizado!");
+                } catch (error) {
+                    console.error("Error en el flujo de guardado:", error);
+                    alert("Hubo un error al guardar.");
+                }
+            });
+        }
+    });
+    
     </script>
 </body>
 </html>

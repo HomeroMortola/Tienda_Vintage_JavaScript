@@ -2,8 +2,7 @@ import { supabase } from '../config/supabase.js'
 
 export class ProductRepository {
     async getProducts() {
-        const { data, error } = await supabase.from('products').select('*');
-
+        const { data, error } = await supabase.from('products').select('*').eq('state', true);
         if (error) throw error;
         return data;
     }
@@ -46,6 +45,5 @@ export class ProductRepository {
 
     return data[0];
 
-        return data[0];
     };
 }
