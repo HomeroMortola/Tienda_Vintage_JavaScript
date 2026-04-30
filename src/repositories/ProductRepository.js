@@ -47,17 +47,15 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
 
     async saveProduct(product) {
-                
-        const { id, name, price, stock, category, description, image_url, ...rest } = product;
 
         const dataForSupabase = {
-                nombre: name,        
-                precio: price,
-                stock: stock,
-                category: category,
-                descripcion: description,
-                image_url: image_url,
-                metadata: rest   
+                name: product.name,        
+                price: product.price,
+                stock: product.stock,
+                category: product.category,
+                description: product.description,
+                image_url: product.image_url,
+                metadata: product.metadata || {}  
             };
 
         const { data, error } = await supabase
