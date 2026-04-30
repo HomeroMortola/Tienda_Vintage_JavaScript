@@ -1,5 +1,5 @@
 import { supabase } from '../config/supabase.js'
-import { product_config } from '../utils/ProductFactory.js';
+import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
     export class ProductRepository {
         async getProducts() {
@@ -46,7 +46,7 @@ import { product_config } from '../utils/ProductFactory.js';
             };
 
         const { data, error } = await supabase
-                .from('productos') 
+                .from('products') 
                 .insert([dataForSupabase])
                 .select();
 

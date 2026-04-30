@@ -13,31 +13,27 @@ const API_URL = 'http://localhost:3000';
 
 // Variable para guardar los productos y no saturar el servidor
 let allProducts = [];
+const repo = new ProductRepository();
 
 async function fetchInventory() {
     const grid = document.querySelector('.grid-product');
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
 
     try {
-        const response = await fetch('http://localhost:3000/productos');
-        if (!response.ok) throw new Error("Error en el servidor");
-        
-        allProducts = await response.json();
+        allProducts = await repo.getProducts();
 
-        let toRender = [];
+        const categoryMap = {
+            "vinilos.html": "Vinyls",
+            "bandanna.html": "Bandanna",
+            "anteojos.html": "Glases", // O "Glasses" según tu Factory
+            "remeras.html": "T_Shirt"
+        };
 
-        if (currentPage === "vinilos.html") {
-            toRender = allProducts.filter(p => p.category === "Vinyls");
-        } 
-        else if (currentPage === "bandanna.html") {
-            toRender = allProducts.filter(p => p.category === "Bandana");
-        } 
-        else if (currentPage === "anteojos.html") {
-            toRender = allProducts.filter(p => p.category === "Glasses");
-        } 
-        else {
-            toRender = allProducts;
-        }
+        const targetCategory = categoryMap[currentPage];
+
+        const toRender = targetCategory 
+            ? allProducts.filter(p => p.category === targetCategory)
+            : allProducts;
 
         render(toRender);
 
@@ -75,7 +71,18 @@ function render(list) {
                 </div>
             </div>
         `;
+        grid.appendChild(card);
+
+        card.querySelector('.buy-btn').addEventListener('click', () => {
+            agregarAlCarrito(p, p.id);
+        });
     });
+}
+
+function renderExtraInfo(p) {
+    if (p.size) return `<p class="extra-info">Talla: ${p.size}</p>`;
+    if (p.artist) return `<p class="extra-info">Artista: ${p.artist}</p>`;
+    return '';
 }
 
 function comprar(nombre) {
