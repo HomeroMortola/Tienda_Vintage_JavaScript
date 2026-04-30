@@ -84,4 +84,21 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
         return data[0];
 
         };
+
+async getProductsByCategory(categoryName) {
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', categoryName) 
+        .eq('state', true);
+
+    if (error) {
+        console.error(`Error al traer ${categoryName}:`, error);
+        throw error;
     }
+
+    return (data || [])
+        .map(item => this.mapToProductObject(item))
+        .filter(Boolean); 
+    };
+}

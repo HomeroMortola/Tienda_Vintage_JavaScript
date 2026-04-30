@@ -8,7 +8,7 @@ export class ProductBuilder {
         this.id = null;
         this.price = 0;
         this.stock = 0
-        this.productName = "";
+        this.name = "";
         this.image_url = "";
         this.description ="";
         this.category = "";
@@ -16,13 +16,13 @@ export class ProductBuilder {
     }
 
     /**
-     * @param {string} productName
+     * @param {string} name
      */
-    setName(productName) {
-        if (!productName || productName.trim() === "") {
+    setName(name) {
+        if (!name || name.trim() === "") {
             throw new Error("el nombre del producto no puede estar vacio");
         }
-        this.productName = productName;
+        this.name = name;
         return this;
     }
 

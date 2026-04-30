@@ -5,7 +5,7 @@ export class Bandanna extends Product {
    * @param {BandannaBuilder} builder 
    */
     constructor(builder) {
-        super(builder.id, builder.price, builder.stock, builder.productName, builder.image_url, builder.description, builder.category);
+        super(builder.id, builder.price, builder.stock, builder.name, builder.image_url, builder.description, builder.category);
         this.size = builder.size;
         this.color = builder.color;
         Object.freeze(this);
@@ -13,7 +13,7 @@ export class Bandanna extends Product {
     getData() {
         return {
             id: this.id,
-            name: this.productName,
+            name: this.name,
             price: this.price,
             stock: this.stock,
             size: this.size,

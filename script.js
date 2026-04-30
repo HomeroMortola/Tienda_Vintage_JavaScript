@@ -1,4 +1,9 @@
-// Generar ID de sesión única para el usuario
+const categoryMap = {
+    "vinilos.html": "Vinyls",   // Ajustado a 'Vinyl' (como en tu DB)
+    "bandanna.html": "Bandana",
+    "anteojos.html": "Glasses",
+    "remeras.html": "T_Shirt"
+};
 
 import { ProductRepository } from '../src/repositories/ProductRepository.js';
 
@@ -19,26 +24,22 @@ let allProducts = [];
 const repo = new ProductRepository();
 
 async function fetchInventory() {
-    const grid = document.querySelector('.grid-product');
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
-
+    
     try {
-        allProducts = await repo.getProducts();
-
-        const categoryMap = {
-            "vinilos.html": "Vinyls",
-            "bandanna.html": "Bandanna",
-            "anteojos.html": "Glases", // O "Glasses" según tu Factory
-            "remeras.html": "T_Shirt"
-        };
-
+        const currentPage = window.location.pathname.split("/").pop() || "index.html";
         const targetCategory = categoryMap[currentPage];
+        
 
-        const toRender = targetCategory 
-            ? allProducts.filter(p => p.category === targetCategory)
-            : allProducts;
+       let products;
 
-        render(toRender);
+        if(targetCategory) {
+            products = await repo.getProductsByCategory(targetCategory);
+        }
+        else {
+            products = await repo.getProducts();
+        }
+
+        render(products);
 
     } catch (error) {
         console.error("Error cargando productos:", error);
