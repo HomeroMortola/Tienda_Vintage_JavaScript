@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="importmap">{"imports": {"@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"}}</script>
     <title>Admin - Retro Vibes Co.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Oswald:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script type="module" src="./adminScript.js"></script>
   </head>
 
   <body class="home-page">
@@ -39,32 +41,16 @@
         Usuario o contraseña incorrectos
       </div>
 
-      <button class="btn-primary" style="width:100%; margin-top:20px; font-size:12px; padding:16px;" onclick="doLogin()">
-        Ingresar
-      </button>
+      <button class="btn-primary"style="width:100%; margin-top:20px; font-size:12px; padding:16px;"onclick="doLogin()">Ingresar</button>
 
       <div style="text-align:center; margin-top:16px;">
         <a href="retro-vibes.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">← Volver a la tienda</a>
       </div>
 
     </div>
-
   </div>
 
   <div id="toast">Bienvenido ✓</div>
-
-  <script>
-    function doLogin() {
-      const u = document.getElementById('user-input').value.trim();
-      const p = document.getElementById('pass-input').value;
-      if (u === 'admin' && p === 'admin123') {
-        document.getElementById('login-error').style.display = 'none';
-        window.location.href = 'admin-panel.html';
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-        document.getElementById('pass-input').value = '';
-      }
-    }
-  </script>
+  
   </body>
   </html>
