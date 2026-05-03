@@ -16,11 +16,11 @@ export class ShoppingCart {
      * @param {Product} product 
      * @param {number} id 
      */
-    addProduct(product, id) {
-        this.products.push(product);
-        this.products_id.push(id);
-        this.calculate_final_price(this.products);
-    }
+    addProduct(product) { //Con la firma nueva  el ID siempre viene del propio producto
+    this.products.push(product);
+    this.products_id.push(product.id);
+    this.calculate_final_price(this.products);
+}
 
     /**
      * @param {number} id 
