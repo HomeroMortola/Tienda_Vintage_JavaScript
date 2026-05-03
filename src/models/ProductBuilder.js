@@ -70,13 +70,13 @@ export class ProductBuilder {
     }
 
     /**
-     * @param {string} image_url
+     * @param {string} publicUrl
      */
-    setImageUrl(image_url) {
-        if (!image_url || image_url.trim() === "") {
+    setImageUrl(publicUrl) {
+        if (!publicUrl || publicUrl.trim() === "") {
             throw new Error("la URL de la imagen no puede estar vacia");
         }
-        this.image_url = image_url;
+        this.image_url = publicUrl  ;
         return this;
     }
 

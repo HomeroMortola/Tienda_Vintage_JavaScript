@@ -54,14 +54,16 @@ export class VinylsBuilder extends ProductBuilder {
     }
 
     /**
-     * @param {number} year
+     * @param {number||string} year
      */
 
     setYear(year) {
-        if (typeof year !== "number" || year < 1900 || year > new Date().getFullYear()) {
+        const currentYear = new Date().getFullYear();
+        const yearTovalidate = Number(year);
+        if (isNaN(yearTovalidate) || yearTovalidate < 1900 || yearTovalidate > currentYear) {
             throw new Error("el year debe ser un numero entre 1900 y el year actual");
         }
-        this.year = year;
+        this.year = yearTovalidate;
         return this;
     }
 

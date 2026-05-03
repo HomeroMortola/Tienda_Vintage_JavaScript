@@ -99,4 +99,21 @@ async getProductsByCategory(categoryName) {
         .map(item => this.mapToProductObject(item))
         .filter(Boolean); 
     };
+    //guardar archivo en bucket de supabase
+    async uploadImage(bucket, path, file) {
+        return await supabase.storage
+            .from(bucket)
+            .upload(path, file, {
+                upsert: false
+            });
+    }
+    //obtener url pública de la imagen que recien agregamos al bucket
+    getPublicUrl(bucket, path) {
+        const { data } = supabase.storage
+            .from(bucket)
+            .getPublicUrl(path);
+        return data.publicUrl;
+    }
 }
+
+
