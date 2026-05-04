@@ -69,9 +69,9 @@ export default async function handler(req, res) {
         status: 'pending',
         user_id: userId,
         items: Items
-      })
-      .select()
-      .single();
+    });
+    .select()
+    .single();
 
     if( orderError ||!order) throw new Error('Error al crear la orden ${orderError.message}');
 
