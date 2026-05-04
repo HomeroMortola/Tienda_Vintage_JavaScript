@@ -25,13 +25,23 @@ export class ShoppingCart {
     /**
      * @param {number} id 
      */
-    removeProduct(id) {
+    /*removeProduct(id) {
         const index = this.products_id.indexOf(id);
         if (index > -1) {
             this.products.splice(index, 1);
             this.products_id.splice(index, 1);
         }
         this.calculate_final_price(this.products);
+    }*/
+
+    removeProduct(id) {
+    const index = this.products_id.indexOf(id);
+    if (index === -1) {
+        throw new Error("el producto no existe en el carrito");
+    }
+    this.products.splice(index, 1);
+    this.products_id.splice(index, 1);
+    this.calculate_final_price(this.products);
     }
 
     

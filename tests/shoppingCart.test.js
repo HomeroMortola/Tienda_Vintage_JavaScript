@@ -78,11 +78,11 @@ describe('ShoppingCart', () => {
 
     // ID inexistente 
 
-    it('no modifica el carrito al eliminar un id inexistente', () => {
-        cart.addProduct(product1);
+   it('lanza un error al eliminar un id inexistente', () => {
+    cart.addProduct(product1);
+    expect(() => {
         cart.removeProduct(999);
-        expect(cart.products.length).toBe(1);
-        expect(cart.total_price).toBe(1500);
+    }).toThrow('el producto no existe en el carrito');
     });
 
 });
