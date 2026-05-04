@@ -43,3 +43,7 @@ temp/
 # yarn.lock
 # pnpm-lock.yaml
 /src/generated/prisma
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

@@ -76,17 +76,17 @@ export default async function handler(req, res) {
     if( orderError ||!order) throw new Error('Error al crear la orden ${orderError.message}');
 
     //5. Crear la preferencia de pago en MercadoPago con los datos validados
+    req.headers.host = 'tienda-vintage-java-script.vercel.app';
 
     const preference = new Preference(client);
-
-  const result = await preference.create({
+    const result = await preference.create({
     body: {
       items: validatedItemsForMP, //Usamos los datos de productos validados y enriquecidos desde la base de datos
       back_urls: {
-        success: 'https://tienda-vintage-java-script.vercel.app/success',
-        failure: 'https://tienda-vintage-java-script.vercel.app/failure',
+        success: 'https://${req.headers.host}/success',
+        failure: 'https://${req.headers.host}/failure',
       },
-      notification_url: 'https://tienda-vintage-java-script.vercel.app/api/webhooks/mercadopago',
+      notification_url: 'https://${req.headers.host}/api/webhooks/mercadopago',
       external_reference: order.id.toString(), // Mercado pago solicita que sea string, enviamos el ID de la orden para identificarla en el webhook y actualizar su estado según el pago se complete o falle
     }
   });
