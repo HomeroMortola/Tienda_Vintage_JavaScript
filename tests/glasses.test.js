@@ -9,25 +9,29 @@ describe('GlasesBuilder', () => {
         builder = new GlasesBuilder();
     });
 
-    //construyee productou
+    // construcción correcta
 
     it('construye unos anteojos con todos los datos correctos', () => {
         const glases = builder
-            .setId(2)
             .setName('Anteojos vintage')
             .setPrice(3200)
             .setStock(5)
+            .setCategory('accesorios')
+            .setDescription('Anteojos de sol vintage')
+            .setImageUrl('https://imagen.com/anteojos.jpg')
             .setColor('Negro')
+            .setShape('redondo')
             .build();
 
-        expect(glases.id).toBe(2);
-        expect(glases.productName).toBe('Anteojos vintage');
+        expect(glases.name).toBe('Anteojos vintage');
         expect(glases.price).toBe(3200);
         expect(glases.stock).toBe(5);
+        expect(glases.category).toBe('accesorios');
         expect(glases.color).toBe('Negro');
+        expect(glases.shape).toBe('redondo');
     });
 
-    // a ver si hereda
+    // validaciones heredadas de ProductBuilder
 
     it('falla si el nombre esta vacio', () => {
         expect(() => {
@@ -53,7 +57,19 @@ describe('GlasesBuilder', () => {
         }).toThrow('el stock no puede ser negativo');
     });
 
-    // datos de anteojitos
+    it('falla si la categoria esta vacia', () => {
+        expect(() => {
+            builder.setCategory('').build();
+        }).toThrow('la categoría no puede estar vacía');
+    });
+
+    it('falla si la imagen esta vacia', () => {
+        expect(() => {
+            builder.setImageUrl('').build();
+        }).toThrow('la URL de la imagen no puede estar vacia');
+    });
+
+    // validaciones propias de los anteojitoss
 
     it('falla si el color esta vacio', () => {
         expect(() => {
@@ -61,31 +77,41 @@ describe('GlasesBuilder', () => {
         }).toThrow('el color no puede estar vacio');
     });
 
-    //  Reset automatico despues del build
+    it('falla si la forma esta vacia', () => {
+        expect(() => {
+            builder.setShape('').build();
+        }).toThrow('la forma no puede estar vacia');
+    });
 
-    it('resetea los valores después de build', () => {
+    // reset automático después del build
+
+    it('resetea los valores despues de build', () => {
         builder
-            .setId(2)
             .setName('Anteojos vintage')
             .setPrice(3200)
             .setStock(5)
+            .setCategory('accesorios')
+            .setImageUrl('https://imagen.com/anteojos.jpg')
             .setColor('Negro')
+            .setShape('redondo')
             .build();
 
-        expect(builder.productName).toBe('');
+        expect(builder.name).toBe('');
         expect(builder.price).toBe(0);
         expect(builder.color).toBe('');
     });
 
-    // Inmutabilidad
+    // inmutabilidad
 
     it('no permite modificar sus propiedades una vez creados', () => {
         const glases = builder
-            .setId(2)
             .setName('Anteojos vintage')
             .setPrice(3200)
             .setStock(5)
+            .setCategory('accesorios')
+            .setImageUrl('https://imagen.com/anteojos.jpg')
             .setColor('Negro')
+            .setShape('redondo')
             .build();
 
         expect(() => {

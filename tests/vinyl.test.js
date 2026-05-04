@@ -9,28 +9,33 @@ describe('VinylsBuilder', () => {
         builder = new VinylsBuilder();
     });
 
-    
-    it('construye un vinilo con todos los datos correctos', () => { //verificando que se este construyendo
+    // construcción correcta
+
+    it('construye un vinilo con todos los datos correctos', () => {
         const vinyl = builder
-            .setId(3)
-            .setName('Aaaaaa')
+            .setName('Abbey Road')
             .setPrice(5000)
             .setStock(3)
+            .setCategory('musica')
+            .setDescription('Album icónico de The Beatles')
+            .setImageUrl('https://imagen.com/abbey.jpg')
             .setArtist('The Beatles')
+            .setAlbum('Abbey Road')
             .setGenre('Rock')
             .setYear(1969)
             .build();
 
-        expect(vinyl.id).toBe(3);
-        expect(vinyl.productName).toBe('Aaaaaa');
+        expect(vinyl.name).toBe('Abbey Road');
         expect(vinyl.price).toBe(5000);
         expect(vinyl.stock).toBe(3);
+        expect(vinyl.category).toBe('musica');
         expect(vinyl.artist).toBe('The Beatles');
+        expect(vinyl.album).toBe('Abbey Road');
         expect(vinyl.genre).toBe('Rock');
         expect(vinyl.year).toBe(1969);
     });
 
-    //verificando que se este heredando de productBuilder
+    // validaciones heredadas de ProductBuilder
 
     it('falla si el nombre esta vacio', () => {
         expect(() => {
@@ -56,15 +61,33 @@ describe('VinylsBuilder', () => {
         }).toThrow('el stock no puede ser negativo');
     });
 
-    // viendo que se cumpla los datos propios de vinyl
+    it('falla si la categoria esta vacia', () => {
+        expect(() => {
+            builder.setCategory('').build();
+        }).toThrow('la categoría no puede estar vacía');
+    });
 
-    it('falla si el artista está vacío', () => {
+    it('falla si la imagen esta vacia', () => {
+        expect(() => {
+            builder.setImageUrl('').build();
+        }).toThrow('la URL de la imagen no puede estar vacia');
+    });
+
+    // validaciones propias de Vinyls
+
+    it('falla si el artista esta vacio', () => {
         expect(() => {
             builder.setArtist('').build();
         }).toThrow('el artista no puede estar vacio');
     });
 
-    it('falla si el genero está vacio', () => {
+    it('falla si el album esta vacio', () => {
+        expect(() => {
+            builder.setAlbum('').build();
+        }).toThrow('el album no puede estar vacio');
+    });
+
+    it('falla si el genero esta vacio', () => {
         expect(() => {
             builder.setGenre('').build();
         }).toThrow('el genero no puede estar vacio');
@@ -82,37 +105,56 @@ describe('VinylsBuilder', () => {
         }).toThrow('el year debe ser un numero entre 1900 y el year actual');
     });
 
-    //Reset automatico despues del build
-
-    it('resetea los valores después de build', () => {
-        builder
-            .setId(3)
-            .setName('Aaaaaa')
+    it('acepta year como string numerico', () => {
+        const vinyl = builder
+            .setName('Mans Best Friend')
             .setPrice(5000)
             .setStock(3)
+            .setCategory('musica')
+            .setImageUrl('https://imagen.com/abbey.jpg')
             .setArtist('Sabrina Carpenter')
+            .setAlbum('Mans Best Friend')
             .setGenre('Pop')
-            .setYear(2025)
+            .setYear('1969')
+            .build();
+        expect(vinyl.year).toBe(1969);
+    });
+
+    // reset automático después del build
+
+    it('resetea los valores despues de build', () => {
+        builder
+            .setName('Nada Personal')
+            .setPrice(5000)
+            .setStock(3)
+            .setCategory('musica')
+            .setImageUrl('https://imagen.com/abbey.jpg')
+            .setArtist('Soda Stereo')
+            .setAlbum('Nada Personal')
+            .setGenre('Rock')
+            .setYear(1969)
             .build();
 
-        expect(builder.productName).toBe('');
+        expect(builder.name).toBe('');
         expect(builder.price).toBe(0);
         expect(builder.artist).toBe('');
         expect(builder.genre).toBe('');
         expect(builder.year).toBe(0);
     });
 
-    //debe ser inmutable
+    // inmutabilidad
 
     it('no permite modificar sus propiedades una vez creado', () => {
         const vinyl = builder
-            .setId(3)
-            .setName('Aaaaaa')
+            .setName('clics modernos')
             .setPrice(5000)
             .setStock(3)
-            .setArtist('Sabrina Carpenter')
-            .setGenre('Pop')
-            .setYear(2025)
+            .setCategory('musica')
+            .setImageUrl('https://imagen.com/abbey.jpg')
+            .setArtist('Charly Garcia')
+            .setAlbum('clics modernos')
+            .setGenre('Rock')
+            .setYear(1969)
             .build();
 
         expect(() => {
