@@ -14,8 +14,6 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
     mapToProductObject(item) {
         const rawCategory = item.category ? item.category.trim() : "";
         const config = PRODUCT_CONFIG[rawCategory];
-    
-        
         if (!config) {
             console.error(`ERROR: La categoría "${rawCategory}" (del producto ${item.name}) no existe en PRODUCT_CONFIG.`);
             console.log("Categorías disponibles:", Object.keys(PRODUCT_CONFIG));
@@ -94,11 +92,11 @@ async getProductsByCategory(categoryName) {
         console.error(`Error al traer ${categoryName}:`, error);
         throw error;
     }
-
     return (data || [])
         .map(item => this.mapToProductObject(item))
         .filter(Boolean); 
     };
+
     //guardar archivo en bucket de supabase
     async uploadImage(bucket, path, file) {
         return await supabase.storage
