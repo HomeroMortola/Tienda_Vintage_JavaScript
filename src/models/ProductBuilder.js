@@ -5,13 +5,17 @@ export class ProductBuilder {
     }
 
     reset() {
-        this.id = null;
-        this.price = 0;
-        this.stock = 0
-        this.name = "";
-        this.image_url = "";
-        this.description ="";
-        this.category = "";
+        this.product = {
+            id : null,
+            price: 0,
+            stock: 0,
+            name: "",
+            image_url: "",
+            description: "",
+            category: "",
+            metadata: {}
+        };
+        
         return this;
     }
 
@@ -77,6 +81,11 @@ export class ProductBuilder {
             throw new Error("la URL de la imagen no puede estar vacia");
         }
         this.image_url = publicUrl  ;
+        return this;
+    }
+
+    setMetaValue(key, value) {
+        this.product.metadata[key] = value;
         return this;
     }
 

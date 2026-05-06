@@ -6,8 +6,9 @@ export class Bandanna extends Product {
    */
     constructor(builder) {
         super(builder.id, builder.price, builder.stock, builder.name, builder.image_url, builder.description, builder.category);
-        this.size = builder.size;
-        this.color = builder.color;
+        this.metadata = { ...builder.product.metadata };
+        this.size = this.metadata.size || "";
+        this.color = this.metadata.color || "";
         Object.freeze(this);
     }
     getData() {

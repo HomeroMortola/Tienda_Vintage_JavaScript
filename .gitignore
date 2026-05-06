@@ -5,7 +5,7 @@ node_modules/
 dist/
 build/
 out/
-
+**/env.js
 # Archivos de TypeScript
 *.tsbuildinfo
 
