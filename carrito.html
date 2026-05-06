@@ -35,11 +35,9 @@
       <div class="section-rule"></div>
       <p class="section-sub">Revisá tu selección antes de continuar</p></div>
 
-  <div class="products-grid"></div>
-
   <!-- esta franja cONECTAAAAAAR a base de datos-->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-      <span class="prod-cat"><strong id="item-count">3</strong> artículos en tu carrito</span> 
+      <span class="prod-cat"><strong id="item-count">0</strong> artículos en tu carrito</span> 
       <button class="btn-back" onclick="vaciarCarrito()">✕ Vaciar carrito</button>
     </div>
 
@@ -55,61 +53,22 @@
           <span></span>
         </div>
 
-<!--HACER VOLAR DEMOOOOS-->
-
-        <div id="cart-items" style="border:2px solid var(--ink);border-top:none;">
-
-          <div style="display:grid;grid-template-columns:70px 1fr 130px 110px 40px;gap:12px;padding:14px 16px;background:var(--cream);border-bottom:1px solid var(--paper-dark);align-items:center;" data-id="1" data-price="8500">
-            <div style="width:70px;height:52px;background:var(--paper-dark);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🎵</div>
-            <div><div class="prod-name">Led Zeppelin IV</div><div class="prod-cat">Vinilo · $8.500</div></div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <button class="qty-btn" onclick="cambiarCantidad(1,-1)">−</button>
-              <span class="qty-num" id="qty-1">1</span>
-              <button class="qty-btn" onclick="cambiarCantidad(1,1)">+</button>
-            </div>
-            <div class="prod-price" id="sub-1">$8.500</div>
-            <button class="prod-btn" onclick="eliminarItem(1)" style="padding:4px 8px;">✕</button>
-          </div>
-
-          <div style="display:grid;grid-template-columns:70px 1fr 130px 110px 40px;gap:12px;padding:14px 16px;background:var(--cream);border-bottom:1px solid var(--paper-dark);align-items:center;" data-id="2" data-price="10500">
-            <div style="width:70px;height:52px;background:var(--paper-dark);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🕶️</div>
-            <div><div class="prod-name">Cat Eye</div><div class="prod-cat">Anteojos · $10.500</div></div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <button class="qty-btn" onclick="cambiarCantidad(2,-1)">−</button>
-              <span class="qty-num" id="qty-2">1</span>
-              <button class="qty-btn" onclick="cambiarCantidad(2,1)">+</button>
-            </div>
-            <div class="prod-price" id="sub-2">$10.500</div>
-            <button class="prod-btn" onclick="eliminarItem(2)" style="padding:4px 8px;">✕</button>
-          </div>
-
-          <div style="display:grid;grid-template-columns:70px 1fr 130px 110px 40px;gap:12px;padding:14px 16px;background:var(--cream);align-items:center;" data-id="3" data-price="14000">
-            <div style="width:70px;height:52px;background:var(--paper-dark);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🧣</div>
-            <div><div class="prod-name">Pañuelo Floral</div><div class="prod-cat">Pañuelo · $14.000</div></div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <button class="qty-btn" onclick="cambiarCantidad(3,-1)">−</button>
-              <span class="qty-num" id="qty-3">2</span>
-              <button class="qty-btn" onclick="cambiarCantidad(3,1)">+</button>
-            </div>
-            <div class="prod-price" id="sub-3">$28.000</div>
-            <button class="prod-btn" onclick="eliminarItem(3)" style="padding:4px 8px;">✕</button>
-          </div>
-
-        </div>
-      </div>
-
+       
       <!-- Resumen -->
+      <div id="cart-items"></div>
       <aside class="summary-box">
         <div class="summary-logo"><span>Retro</span> Vibes Co.</div>
 
-        <div class="sum-row"><span class="lbl">Subtotal</span><span id="resumen-subtotal">$47.000</span></div>
+        <div class="sum-row"><span class="lbl">Subtotal</span><span id="resumen-subtotal">$0</span></div>
         <div class="sum-row"><span class="lbl">Envío</span><span>A calcular</span></div>
         <div class="sum-row"><span class="lbl">Descuento</span><span id="resumen-descuento">—</span></div>
 
         <div class="sum-total-row">
           <span class="sum-total-lbl">Total</span>
-          <span class="sum-total-val" id="resumen-total">$47.000</span>
+          <span class="sum-total-val" id="resumen-total">$0</span>
         </div>
+        
+        <div class="products-grid"></div>
 
         <div style="margin-bottom:20px;">
           <label style="color:rgba(255,255,255,.4);">Código de descuento</label>
@@ -117,7 +76,7 @@
         </div>
 
         <button class="btn-primary" style="width:100%;margin-bottom:10px;" onclick="mostrarToast('Redirigiendo al checkout...')">Ir al checkout →</button>
-        <button class="btn-back" style="width:100%;" onclick="window.location.href='paginabase.html'">← Seguir comprando</button>
+        <button class="btn-back" style="width:100%;" onclick="window.location.href='retro-vibes.html'">← Seguir comprando</button>
         
 
         <p class="prod-desc" style="text-align:center;margin-top:16px;color:rgba(255,255,255,.25);">Pagos seguros con MercadoPago · Envíos a todo el país</p>
