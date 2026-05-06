@@ -5,7 +5,7 @@ node_modules/
 dist/
 build/
 out/
-
+**/env.js
 # Archivos de TypeScript
 *.tsbuildinfo
 
@@ -43,3 +43,7 @@ temp/
 # yarn.lock
 # pnpm-lock.yaml
 /src/generated/prisma
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

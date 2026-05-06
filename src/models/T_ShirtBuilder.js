@@ -4,8 +4,8 @@ export class T_ShirtBuilder extends ProductBuilder {
 
     constructor() {
         super();
-        this.size = "";
-        this.color = "";
+        this.setMetaValue('size', "");
+        this.setMetaValue('color', "");
     }
 
 
@@ -13,7 +13,7 @@ export class T_ShirtBuilder extends ProductBuilder {
      * @param {string} size
      */
     setSize(size) {
-        this.size = size;
+        this.setMetaValue('size', size);
         return this;
     }
 
@@ -21,7 +21,7 @@ export class T_ShirtBuilder extends ProductBuilder {
      * @param {string} color
      */
     setColor(color) {
-        this.color = color;
+        this.setMetaValue('color', color);
         return this;
     }
 

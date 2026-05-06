@@ -1,10 +1,30 @@
 // api/checkout.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-import { supabase } from '../../config/supabase.js'; // Importamos el cliente de Supabase para consultar los productos y crear la orden
+import { createClient } from '@supabase/supabase-js';
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY); // Usamos el Service Role Key para saltar RLS y validar stock/precios sin importar el usuario
+
+const APP_URL = process.env.APP_URL;
+
+function resolveAppUrl(req) {
+  if (APP_URL && APP_URL.trim()) {
+    return APP_URL.trim().replace(/\/+$/, '');
+  }
+
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const host = req.headers.host;
+  const protocol = forwardedProto || (host && host.includes('localhost') ? 'http' : 'https');
+  const finalHost = forwardedHost || host;
+
+  if (!finalHost) {
+    throw new Error('No se pudo resolver la URL base. Configura APP_URL en variables de entorno.');
+  }
+
+  return `${protocol}://${finalHost}`.replace(/\/+$/, '');
+}
 
 export default async function handler(req, res) {
 
@@ -13,6 +33,7 @@ export default async function handler(req, res) {
   }
 
   const { items, userId } = req.body; // Enviamos el carrito y el ID del usuario desde el frontend al crear la preferencia a la API de supabase
+  const appUrl = resolveAppUrl(req);
  
   try {
     //1. Obtener los IDs para consultar a Supabase de una sola vez
@@ -30,8 +51,8 @@ export default async function handler(req, res) {
     let serverSideTotal = 0;
     const validatedItemsForMP = [];
 
-    for (const Item of Items){
-      const dbProduct = dbProducts.find(p => p.id === Items.id);
+    for (const Item of items){
+      const dbProduct = dbProducts.find(p => p.id === Item.id);
       
       //A. Valido si el producto existe
       if (!dbProduct) {
@@ -68,25 +89,23 @@ export default async function handler(req, res) {
         total: serverSideTotal,
         status: 'pending',
         user_id: userId,
-        items: Items
-    });
+        items
+    })
     .select()
     .single();
 
-    if( orderError ||!order) throw new Error('Error al crear la orden ${orderError.message}');
+    if( orderError ||!order) throw new Error(`Error al crear la orden: ${orderError?.message ?? 'desconocido'}`);
 
     //5. Crear la preferencia de pago en MercadoPago con los datos validados
-
     const preference = new Preference(client);
-
-  const result = await preference.create({
+    const result = await preference.create({
     body: {
       items: validatedItemsForMP, //Usamos los datos de productos validados y enriquecidos desde la base de datos
       back_urls: {
-        success: 'https://tienda-vintage-java-script.vercel.app/success',
-        failure: 'https://tienda-vintage-java-script.vercel.app/failure',
+        success: `${appUrl}/success`,
+        failure: `${appUrl}/failure`,
       },
-      notification_url: 'https://tienda-vintage-java-script.vercel.app/api/webhooks/mercadopago',
+      notification_url: `${appUrl}/api/webhooks/mercadopago`,
       external_reference: order.id.toString(), // Mercado pago solicita que sea string, enviamos el ID de la orden para identificarla en el webhook y actualizar su estado según el pago se complete o falle
     }
   });
@@ -98,4 +117,7 @@ export default async function handler(req, res) {
     console.error('Error en checkout:', error);
     res.status(500).json({ error: error.message });
   }
+
+
+
 }

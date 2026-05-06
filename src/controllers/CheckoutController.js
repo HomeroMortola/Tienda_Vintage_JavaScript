@@ -1,39 +1,25 @@
-import { MercadoPagoChargeCommand } from '../commands/MercadoPagoChargeCommand.js';
-import { SaveOrderCommand } from '../commands/SaveOrderCommand.js';
-import { PaymentProcessor } from '../services/PaymentProcessor.js'; // El orquestador que hicimos antes
+import { executePurchase } from "../services/checkoutService.js";
 
+/** Checkout con cuerpo extendido (email, token Mercado Pago, etc.). Misma tubería Command que POST /carrito/comprar */
 export const processCheckout = async (req, res) => {
-    // 1. Recibimos los datos del frontend (TypeScript)
-    const { token, amount, email, items } = req.body;
+    try {
+        const { sessionId } = req.body;
+        if (!sessionId) {
+            return res.status(400).json({ error: "Falta sessionId" });
+        }
 
-    // 2. Instanciamos el Orquestador
-    const processor = new PaymentProcessor();
+        const result = await executePurchase(sessionId, req.body);
 
-    // 3. Preparamos los comandos con los datos reales
-    const chargeCmd = new MercadoPagoChargeCommand({
-        token,
-        amount,
-        email,
-        description: 'Compra en Tienda Online',
-        paymentMethodId: 'visa' // Esto idealmente también viene del frontend
-    });
+        if (!result.success) {
+            return res.status(400).json({ error: result.error ?? "No se pudo completar la compra" });
+        }
 
-    const saveOrderCmd = new SaveOrderCommand({
-        email,
-        items,
-        total: amount
-    });
-
-    // 4. Encolamos y ejecutamos
-    processor.addCommand(chargeCmd);
-    processor.addCommand(saveOrderCmd);
-
-    const result = await processor.process();
-
-    // 5. Respondemos al Frontend
-    if (result.success) {
-        res.status(200).json({ message: 'Orden completada con éxito' });
-    } else {
-        res.status(400).json({ error: result.error });
+        res.status(200).json({
+            message: "Orden completada con éxito",
+            order: result.order,
+        });
+    } catch (error) {
+        console.error("processCheckout:", error);
+        res.status(500).json({ error: "Error al procesar el checkout" });
     }
 };

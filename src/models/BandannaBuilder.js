@@ -10,8 +10,8 @@ export class BandannaBuilder extends ProductBuilder {
 
     reset() {
         super.reset();
-        this.size = "";
-        this.color = "";
+        this.setMetaValue('size', "");
+        this.setMetaValue('color', "");
         return this;
     }
 
@@ -22,7 +22,7 @@ export class BandannaBuilder extends ProductBuilder {
         if (!size || size.trim() === "") {
             throw new Error("el tamaño no puede estar vacio");
         }
-        this.size = size;
+        this.setMetaValue('size', size);
         return this;
     }
 
@@ -33,7 +33,7 @@ export class BandannaBuilder extends ProductBuilder {
         if (!color || color.trim() === "") {
             throw new Error("el color no puede estar vacio");
         }
-        this.color = color;
+        this.setMetaValue('color', color);
         return this;
     }
 
