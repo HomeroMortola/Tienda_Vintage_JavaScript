@@ -1,6 +1,6 @@
 const categoryMap = {
-    "vinilos.html": "Vinyls",   // Ajustado a 'Vinyl' (como en tu DB)
-    "bandanna.html": "Bandana",
+    "vinilos.html": "Vinyls", 
+    "bandanna.html": "Bandanna",
     "anteojos.html": "Glasses",
     "remeras.html": "T_Shirt"
 };
