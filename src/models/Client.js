@@ -12,6 +12,7 @@ export class Client {
         this.phone = builder.phone;
         this.dni = builder.dni;
         this.location = builder.location;
+        this.password = builder.password
         Object.freeze(this);
     }
 

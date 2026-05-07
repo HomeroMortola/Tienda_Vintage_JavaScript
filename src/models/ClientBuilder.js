@@ -9,6 +9,7 @@ export class ClientBuilder {
         this.phone = null;
         this.dni = null;
         this.location = "";
+        this.password ="";
     }
 
     /**
@@ -84,6 +85,17 @@ export class ClientBuilder {
     }
         this.location = location;
         return this;
+    }
+
+    /**
+     * @param {string} password
+     */
+    setPassword(password) {
+    if (!password || password.trim() === "") {
+        throw new Error("la contraseña no puede estar vacia");
+    }
+    this.password = password;
+    return this;
     }
 
 
