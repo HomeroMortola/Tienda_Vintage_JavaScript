@@ -1,62 +1,112 @@
-<!doctype html>
-<html lang="es">
+  <!DOCTYPE html>
+  <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Vinilos - Retro Vibes Co.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <link rel="stylesheet" href="styles.css" />
-
-    <!--<style>
-      /* Altura del masthead para que la imagen de fondo se vea bien */
-      .vinilo-page .masthead {
-        padding-top: 60px;
-        padding-bottom: 40px;
-        min-height: 220px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
-  </head>-->
-
-  <!-- Clase vinilo-page en el body activa la imagen del masthead definida en styles.css -->
   <body class="vinilo-page">
-    <div class="shell">
-      <!-- HEADER -->
-      <header class="masthead">
-        <div class="brand-name"><span>Retro</span> Vibes Co.</div>
-        <div class="brand-tagline">Sección Vinilos</div>
-      </header>
+  <div class="shell">
 
-      <!-- Banda navegación  -->
-        <div class="nav-band">
-          <a href="retro-vibes.html" class="nav-item">Catalogo</a>
-          <a href="vinilos.html" class="nav-item active">Vinilos</a>
-          <a href="bandanna.html" class="nav-item">Bandanas</a>
-          <a href="anteojos.html" class="nav-item">Anteojos</a>
-          <a href="carrito.html" class="nav-item">Carrito</a>
+    <header class="masthead">
+      <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+      <div class="brand-tagline">Vinilos · Pañuelos · Anteojos · Est. 1974</div>
+      <div class="masthead-rule"></div>
+    </header>
+
+    <section class="section active">
+      <div class="section-head">
+        <h1 class="section-title">Vinyls</h1>
+        <p class="section-sub">Clásicos que nunca pasan de moda</p>
+      </div>
+
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="prod-visual"><img src="acdc.jpg" alt="Led Zeppelin IV"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Led Zeppelin IV</div>
+            <div class="prod-desc">1971 · Rock clásico</div>
+            <div class="prod-footer">
+              <div class="prod-price">$8500</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
         </div>
-      
-        <!--grid productos-->
-      <section class="section-active">
-        <div class="section-head">
-          <h1 class="section-title">Vinilos</h1>
-          <p class="section-sub">Clásicos que nunca pasan de moda</p>
+
+        <div class="product-card">
+          <div class="prod-visual"><img src="bohemian.jpg" alt="Bohemian Rhapsody"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Vinyls Bohemian Rhapsody</div>
+            <div class="prod-desc">Queen · 1975</div>
+            <div class="prod-footer">
+              <div class="prod-price">$11200</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
         </div>
 
-        <div class="products-grid"></div>
+        <div class="product-card">
+          <div class="prod-visual"><img src="kess+.jpg" alt="Kess"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Vinyl Kess</div>
+            <div class="prod-desc">Fleetwood Mac · 1977</div>
+            <div class="prod-footer">
+              <div class="prod-price">$14000</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
+        </div>
 
-        <div class="grid-product"></div>
-      </section>
-    </div>
-    <script src="script.js"></script>
+        <div class="product-card">
+          <div class="prod-visual"><img src="pinkflo.jpg" alt="Pink Floyd"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Vinyl Pink Floyd</div>
+            <div class="prod-desc">Fleetwood Mac · 1977</div>
+            <div class="prod-footer">
+              <div class="prod-price">$14000</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="prod-visual"><img src="roling.jpg" alt="Rolling Stones"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Vinyl Rolling Stones</div>
+            <div class="prod-desc">Fleetwood Mac · 1977</div>
+            <div class="prod-footer">
+              <div class="prod-price">$14000</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="prod-visual"><img src="roses.jpg" alt="Guns N Roses"></div>
+          <div class="prod-body">
+            <div class="prod-cat">Vinyls</div>
+            <div class="prod-name">Vinyl Guns N' Roses</div>
+            <div class="prod-desc">Appetite for Destruction · 1987</div>
+            <div class="prod-footer">
+              <div class="prod-price">$14000</div>
+              <button class="prod-btn">Elegir</button>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- cierra products-grid -->
+    </section> <!-- cierra section -->
+
+  </div> <!-- cierra shell -->
   </body>
-</html>
+  </html>
