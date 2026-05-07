@@ -795,10 +795,7 @@
 .buy-btn:hover {
     background-color: #3d1218;
 }
-<<<<<<< HEAD
 
-
-=======
 .admin-masthead {
       background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("image1.png");
       background-size: cover;
@@ -1021,4 +1018,4 @@
     font-size: 13px;
     letter-spacing: 3px;
 }
->>>>>>> 518736df1e7d4c7081f9643c863334352298478e
+
