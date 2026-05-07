@@ -1,6 +1,5 @@
 // src/controllers/CartController.js
 
-<<<<<<< HEAD
 import { ShoppingCart } from "../models/ShoppingCart.js";
 import { APP_URL } from "../../api/appURL.js";
 import { executePurcharse } from "../../api/checkout.js";
@@ -14,10 +13,7 @@ const getOrCreateCart = (sessionId) => {
     return carts.get(sessionId);
 };
 
-=======
-import { getOrCreateCart } from "../services/cartStore.js";
-import { executePurchase } from "../services/checkoutService.js";
->>>>>>> 518736df1e7d4c7081f9643c863334352298478e
+
 
 export const addToCart = (req, res) => {
     try {
