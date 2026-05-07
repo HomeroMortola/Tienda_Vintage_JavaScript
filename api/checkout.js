@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     if( orderError ||!order) throw new Error('Error al crear la orden ${orderError.message}');
 
     //5. Crear la preferencia de pago en MercadoPago con los datos validados
-    req.headers.host = 'tienda-vintage-java-script.vercel.app';
+    req.headers.host = APP_URL;
 
     const preference = new Preference(client);
     const result = await preference.create({
