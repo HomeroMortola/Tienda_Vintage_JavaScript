@@ -223,13 +223,15 @@
       color: var(--ink);
       margin-bottom: 6px;
     }
+
+   /*linea debajo del titulo de cada seccion y espacio etc*/
     .section-rule { width: 60px; height: 3px; background: var(--red); margin: 10px auto 6px; }
     .section-sub {
       font-family: var(--f-body);
       font-size: 13px;
       font-style: italic;
       color: var(--ink-muted);
-      margin-bottom: 36px;
+      margin-bottom: 10px;
     }
 
     /*Productos*/
@@ -282,7 +284,7 @@
   transform: scale(1.05);
 }
     .bg-vinilo   { background: var(--ink); }
-    .bg-panuelo  { background: #2a1540; }
+    .bg-bandana  { background: #2a1540; }
     .bg-anteojos { background: #0f2820; }
     .prod-visual svg { width: 70%; height: 70%; }
 
@@ -607,7 +609,6 @@
 }
 
 .vinilo-page .masthead {
-
  background: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("L\ o\ r\ e\ e\ e\ h\ h.jpg");
@@ -615,7 +616,7 @@
   background-position: center;
 }
   
-.panuelo-page .masthead {
+.bandana-page .masthead {
   background-image: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
     url("img/panuelo.jpg");
@@ -681,7 +682,7 @@
   display: none; 
 }
 .vinilo-page .masthead {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
 }
 .anteojos-page .masthead {
   background: 
@@ -692,7 +693,7 @@
 }
 
 .anteojos-page .masthead {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
 }
 .categoria-titulo {
   font-family: var(--f-gothic);
@@ -794,5 +795,230 @@
 .buy-btn:hover {
     background-color: #3d1218;
 }
+<<<<<<< HEAD
 
 
+=======
+.admin-masthead {
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("image1.png");
+      background-size: cover;
+      background-position: center;
+    }
+    .admin-form-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .admin-title {
+      font-family: var(--f-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      font-style: italic;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .admin-sub {
+      font-family: var(--f-body);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--ink-muted);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .admin-rule {
+      width: 60px;
+      height: 3px;
+      background: var(--red);
+      margin: 10px auto 28px;
+    }
+    .dynamic-block {
+      border: 1px solid var(--ink);
+      background: var(--cream);
+      margin-top: 4px;
+    }
+    .dynamic-block-head {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--f-gothic);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+    }
+    .dynamic-block-body {
+      padding: 0;
+    }
+    .dynamic-block-body .form-group {
+      border-right: none;
+    }
+    .dynamic-placeholder {
+      font-family: var(--f-body);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--ink-muted);
+      padding: 16px;
+    }
+    #preview {
+      max-width: 100px;
+      margin-top: 10px;
+      display: none;
+      border: 1px solid var(--paper-deep);
+    }
+    .form-actions {
+      margin-top: 28px;
+    }
+    .form-actions .btn-primary {
+      width: 100%;
+      padding: 14px;
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+    input[type="file"] {
+      font-family: var(--f-body);
+      font-size: 12px;
+      color: var(--ink-muted);
+      border-bottom: 1.5px solid var(--paper-deep);
+      padding: 6px 0;
+      width: 100%;
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      outline: none;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+      align-items: start;
+    }
+
+/* ── MODAL DETALLE PRODUCTO ── */
+.product-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 16, 8, 0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.product-modal-overlay.open {
+    display: flex;
+}
+
+.product-modal-box {
+    background: #fdf6e3;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background .15s;
+}
+.modal-close-btn:hover { background: var(--red); }
+
+.modal-img {
+    width: 100%;
+    height: 280px;
+    object-fit: contain;
+    background: #e8e0d0;
+    border-radius: 10px 10px 0 0;
+    mix-blend-mode: multiply;
+}
+
+.modal-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.modal-price {
+    font-family: var(--f-gothic);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--red);
+}
+
+.modal-desc {
+    font-family: var(--f-body);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-muted);
+    line-height: 1.6;
+}
+
+.modal-meta {
+    border-top: 1px solid var(--paper-deep);
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dashed var(--paper-deep);
+    padding-bottom: 6px;
+}
+
+.modal-meta-key {
+    font-family: var(--f-gothic);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
+
+.modal-meta-val {
+    font-family: var(--f-body);
+    font-size: 13px;
+    color: var(--ink);
+}
+
+.modal-buy-btn {
+    margin-top: 8px;
+    width: 100%;
+    padding: 14px;
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+>>>>>>> 518736df1e7d4c7081f9643c863334352298478e

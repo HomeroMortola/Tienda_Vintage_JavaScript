@@ -1,11 +1,19 @@
 // api/checkout.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { supabase } from '../../config/supabase.js'; // Importamos el cliente de Supabase para consultar los productos y crear la orden
 
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
-export default async function handler(req, res) {
-  const { items, userId } = req.body; // Enviamos el carrito y el ID del usuario desde el frontend al crear la preferencia a la API de supabase
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY); // Usamos el Service Role Key para saltar RLS y validar stock/precios sin importar el usuario
 
+export default async function handler(req, res) {
+
+  if(req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido' });
+  }
+
+  const { items, userId } = req.body; // Enviamos el carrito y el ID del usuario desde el frontend al crear la preferencia a la API de supabase
+ 
   try {
     //1. Obtener los IDs para consultar a Supabase de una sola vez
     const productsIds = items.map(item => item.id);
@@ -13,7 +21,7 @@ export default async function handler(req, res) {
     //2. Consultar precios y stock reales en Supabase usando el Service Role Key (salta RLS)
     const { data: dbProducts, error } = await supabase
       .from('products')
-      .select('id, price, stock')
+      .select('id, name, price, stock')
       .in('id', productsIds);
       
       if (error || !dbProducts) throw new Error('Error al consultar productos en Supabase');
@@ -54,7 +62,7 @@ export default async function handler(req, res) {
     }
 
     //4. Persistencia de los datos: Validamos que el total calculado sea el mismo que nosotros calculamos
-    const {data: order } = await supabase
+    const {data: order, error: orderError} = await supabase
       .from('orders')
       .insert({
         total: serverSideTotal,
@@ -65,20 +73,20 @@ export default async function handler(req, res) {
     .select()
     .single();
 
-    if(!order) throw new Error('Error al crear la orden en Supabase');
+    if( orderError ||!order) throw new Error('Error al crear la orden ${orderError.message}');
 
     //5. Crear la preferencia de pago en MercadoPago con los datos validados
+    req.headers.host = 'tienda-vintage-java-script.vercel.app';
 
     const preference = new Preference(client);
-
-  const result = await preference.create({
+    const result = await preference.create({
     body: {
       items: validatedItemsForMP, //Usamos los datos de productos validados y enriquecidos desde la base de datos
       back_urls: {
-        success: 'https://{APP_URL}/success',
-        failure: 'https://{APP_URL}/failure',
+        success: '{APP_URL}/success',
+        failure: '{APP_URL}/failure',
       },
-      notification_url: 'https://{APP_URL}/api/webhooks/mercadopago',
+      notification_url: '{APP_URL}/api/webhooks/mercadopago',
       external_reference: order.id, // Para vincular el pago al usuario en tu DB
     }
   });

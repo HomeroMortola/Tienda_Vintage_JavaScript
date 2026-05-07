@@ -1,15 +1,11 @@
-class T_ShirtBuilder extends ProductBuilder {
+import { T_Shirt } from './T_Shirt.js';
+import { ProductBuilder } from './ProductBuilder.js';
+export class T_ShirtBuilder extends ProductBuilder {
+
     constructor() {
         super();
-        this.size = "";
-        this.color = "";
-    }
-
-    reset() {
-        super.reset();
-        this.size = "";
-        this.color = "";
-        return this;
+        this.setMetaValue('size', "");
+        this.setMetaValue('color', "");
     }
 
 
@@ -17,7 +13,7 @@ class T_ShirtBuilder extends ProductBuilder {
      * @param {string} size
      */
     setSize(size) {
-        this.size = size;
+        this.setMetaValue('size', size);
         return this;
     }
 
@@ -25,7 +21,7 @@ class T_ShirtBuilder extends ProductBuilder {
      * @param {string} color
      */
     setColor(color) {
-        this.color = color;
+        this.setMetaValue('color', color);
         return this;
     }
 
@@ -34,9 +30,7 @@ class T_ShirtBuilder extends ProductBuilder {
      * @returns {T_Shirt}
      */
     build() {
-        const t_shirt = new T_Shirt(this);
-        this.reset();
-        return t_shirt;
+        return new T_Shirt(this);
     }
 }
 

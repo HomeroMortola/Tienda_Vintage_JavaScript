@@ -1,5 +1,6 @@
 // src/controllers/CartController.js
 
+<<<<<<< HEAD
 import { ShoppingCart } from "../models/ShoppingCart.js";
 import { APP_URL } from "../../api/appURL.js";
 import { executePurcharse } from "../../api/checkout.js";
@@ -13,11 +14,15 @@ const getOrCreateCart = (sessionId) => {
     return carts.get(sessionId);
 };
 
+=======
+import { getOrCreateCart } from "../services/cartStore.js";
+import { executePurchase } from "../services/checkoutService.js";
+>>>>>>> 518736df1e7d4c7081f9643c863334352298478e
 
 export const addToCart = (req, res) => {
     try {
         const { sessionId, product, productId } = req.body;
-        
+
         if (!sessionId || !product || productId === undefined) {
             return res.status(400).json({ error: "Faltan datos (sessionId, product, productId)" });
         }
@@ -31,8 +36,8 @@ export const addToCart = (req, res) => {
             message: "Producto agregado al carrito",
             cart: {
                 items: cart.products.length,
-                total: cart.total_price
-            }
+                total: cart.total_price,
+            },
         });
     } catch (error) {
         console.error("Error al agregar producto:", error);
@@ -40,21 +45,20 @@ export const addToCart = (req, res) => {
     }
 };
 
-
 export const getCart = (req, res) => {
     try {
         const { sessionId } = req.query;
-        
+
         if (!sessionId) {
             return res.status(400).json({ error: "Falta sessionId" });
         }
 
         const cart = getOrCreateCart(sessionId);
-        
+
         res.json({
             products: cart.products,
             total: cart.total_price,
-            itemCount: cart.products.length
+            itemCount: cart.products.length,
         });
     } catch (error) {
         console.error("Error al obtener carrito:", error);
@@ -62,14 +66,13 @@ export const getCart = (req, res) => {
     }
 };
 
-
 export const removeFromCart = (req, res) => {
     try {
         const { sessionId } = req.body;
         const { id } = req.params;
-        const productId = parseInt(id);
+        const productId = parseInt(id, 10);
 
-        if (!sessionId || isNaN(productId)) {
+        if (!sessionId || Number.isNaN(productId)) {
             return res.status(400).json({ error: "Datos inválidos" });
         }
 
@@ -82,8 +85,8 @@ export const removeFromCart = (req, res) => {
             message: "Producto eliminado del carrito",
             cart: {
                 items: cart.products.length,
-                total: cart.total_price
-            }
+                total: cart.total_price,
+            },
         });
     } catch (error) {
         console.error("Error al eliminar producto:", error);
@@ -91,8 +94,7 @@ export const removeFromCart = (req, res) => {
     }
 };
 
-
-export const checkout = (req, res) => {
+export const checkout = async (req, res) => {
     try {
         const { sessionId } = req.body;
 
@@ -100,27 +102,16 @@ export const checkout = (req, res) => {
             return res.status(400).json({ error: "Falta sessionId" });
         }
 
-        const cart = getOrCreateCart(sessionId);
-        
-        if (cart.products.length === 0) {
-            return res.status(400).json({ error: "El carrito está vacío" });
+        const result = await executePurchase(sessionId, req.body);
+
+        if (!result.success) {
+            return res.status(400).json({ error: result.error ?? "No se pudo completar la compra" });
         }
-
-        // Aquí iría la lógica de pago (Stripe, MercadoPago, etc.)
-        const purchaseData = {
-            orderId: Date.now(),
-            products: cart.products,
-            total: cart.total_price,
-            date: new Date().toISOString()
-        };
-
-        // Vaciar carrito después de compra exitosa
-        carts.delete(sessionId);
 
         res.json({
             success: true,
             message: "¡Compra realizada exitosamente!",
-            order: purchaseData
+            order: result.order,
         });
     } catch (error) {
         console.error("Error en checkout:", error);

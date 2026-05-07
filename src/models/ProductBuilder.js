@@ -5,33 +5,28 @@ export class ProductBuilder {
     }
 
     reset() {
-        this.id = 0;
-        this.price = 0;
-        this.stock = 0
-        this.productName = "";
+        this.product = {
+            id : null,
+            price: 0,
+            stock: 0,
+            name: "",
+            image_url: "",
+            description: "",
+            category: "",
+            metadata: {}
+        };
+        
         return this;
     }
 
     /**
-     * @param {number} id
+     * @param {string} name
      */
-
-    setId(id) {
-        if (typeof id !== "number" || id <= 0) {
-            throw new Error("l id debe ser un numero mayor a cero");
-        }
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * @param {string} productName
-     */
-    setName(productName) {
-        if (!productName || productName.trim() === "") {
+    setName(name) {
+        if (!name || name.trim() === "") {
             throw new Error("el nombre del producto no puede estar vacio");
         }
-        this.productName = productName;
+        this.name = name;
         return this;
     }
 
@@ -47,6 +42,26 @@ export class ProductBuilder {
     }
 
     /**
+     * @param {string} category
+     */
+    setCategory(category) {
+        if (!category || category.trim() === "") {
+            throw new Error("la categoría no puede estar vacía");
+        }
+        this.category = category;
+        return this;
+    }
+    /**
+     * @param {string} description
+     */
+    setDescription(description) {
+        this.description = description;
+        return this;
+    }
+    
+    
+
+    /**
      * @param {number} stock
      */
 
@@ -58,7 +73,23 @@ export class ProductBuilder {
         return this;
     }
 
+    /**
+     * @param {string} publicUrl
+     */
+    setImageUrl(publicUrl) {
+        if (!publicUrl || publicUrl.trim() === "") {
+            throw new Error("la URL de la imagen no puede estar vacia");
+        }
+        this.image_url = publicUrl  ;
+        return this;
+    }
 
+    setMetaValue(key, value) {
+        this.product.metadata[key] = value;
+        return this;
+    }
+
+    
     /**
      * @returns {Product}
      */

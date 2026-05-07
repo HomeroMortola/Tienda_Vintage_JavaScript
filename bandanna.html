@@ -1,35 +1,46 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+        }
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bandanas - Retro Vibes Co.</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="styles.css" />
+  </head>
 
-  <!-- Clase bandanna-page en el body -->
-  <body class="bandanna-page">
+  <body class="home-page">
     <div class="shell">
       <!-- HEADER -->
       <header class="masthead">
+        <div class="ornament-line">
+          ✦ &nbsp; Tienda de artículos vintage &nbsp; ✦
+        </div>
         <div class="brand-name"><span>Retro</span> Vibes Co.</div>
-        <div class="brand-tagline">Sección Bandanas</div>
+        <div class="brand-tagline">
+          Vinilos · Bandanas · Anteojos · Est. 1974
+        </div>
+        <div class="masthead-rule"></div>
       </header>
 
       <!-- Banda navegación  -->
-        <div class="nav-band">   
-          <a href="retro-vibes.html" class="nav-item">Catalogo</a>
-          <a href="vinilos.html" class="nav-item">Vinilos</a>
-          <a href="bandanna.html" class="nav-item active">Bandanas</a>
-          <a href="anteojos.html" class="nav-item">Anteojos</a>
-          <a href="carrito.html" class="nav-item">Carrito</a>
-        </div>
+      <div class="nav-band">
+        <a href="index.html" class="nav-item">Catalogo</a>
+        <a href="vinilos.html" class="nav-item">Vinilos</a>
+        <a href="bandanna.html" class="nav-item active">Bandanas</a>
+        <a href="anteojos.html" class="nav-item">Anteojos</a>
+        <a href="carrito.html" class="nav-item">Carrito</a>
+      </div>
 
       <!-- GRID DE PRODUCTOS -->
       <section class="section active">
@@ -37,12 +48,35 @@
           <h1 class="section-title">Bandanas</h1>
           <p class="section-sub">Vintage y estilo retro</p>
         </div>
-        
+
+        <!-- barra de busqueda -->
+        <div
+          class="search-container"
+          style="max-width: 450px; margin: 0 auto 40px auto; padding: 0 24px"
+        >
+          <input
+            type="text"
+            id="product-search"
+            placeholder="Buscar en bandanas..."
+            style="
+              width: 100%;
+              padding: 10px 15px;
+              border: 2px solid var(--ink);
+              background: var(--cream);
+              font-family: var(--f-gothic);
+              letter-spacing: 1px;
+              text-transform: uppercase;
+              font-size: 11px;
+              outline: none;
+            "
+          />
+        </div>
+
         <div class="products-grid"></div>
-        
+
         <div class="grid-product"></div>
       </section>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

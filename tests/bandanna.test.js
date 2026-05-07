@@ -9,32 +9,37 @@ describe('BandannaBuilder', () => {
         builder = new BandannaBuilder();
     });
 
-it('construye una bandana con todos los datos correctos', () => { //verificando que se este construyendo
+    // construcción correcta
+
+    it('construye una bandana con todos los datos correctos', () => {
         const bandanna = builder
-            .setId(1)
             .setName('Bandana clasica')
             .setPrice(1500)
             .setStock(10)
+            .setCategory('accesorios')
+            .setDescription('Bandana vintage')
+            .setImageUrl('https://imagen.com/bandana.jpg')
             .setSize('M')
             .setColor('Rojo')
             .build();
 
-        expect(bandanna.id).toBe(1);
-        expect(bandanna.productName).toBe('Bandana clasica');
+        expect(bandanna.name).toBe('Bandana clasica');
         expect(bandanna.price).toBe(1500);
         expect(bandanna.stock).toBe(10);
+        expect(bandanna.category).toBe('accesorios');
         expect(bandanna.size).toBe('M');
         expect(bandanna.color).toBe('Rojo');
     });
 
-    // verificando que se este heredando de productBuilder
+    // validaciones heredadas de ProductBuilder
+
     it('falla si el nombre esta vacio', () => {
         expect(() => {
             builder.setName('').build();
         }).toThrow('el nombre del producto no puede estar vacio');
     });
 
-      it('falla si el precio es cero', () => {
+    it('falla si el precio es cero', () => {
         expect(() => {
             builder.setPrice(0).build();
         }).toThrow('el precio debe ser un numero mayor a cero');
@@ -54,53 +59,71 @@ it('construye una bandana con todos los datos correctos', () => { //verificando 
 
     it('acepta stock en cero', () => {
         const bandanna = builder
-            .setId(1)
             .setName('Bandana clasica')
             .setPrice(1500)
             .setStock(0)
+            .setCategory('accesorios')
+            .setImageUrl('https://imagen.com/bandana.jpg')
             .setSize('M')
             .setColor('Rojo')
             .build();
         expect(bandanna.stock).toBe(0);
     });
 
-    // validando la bandanna ahora
+    it('falla si la categoria esta vacia', () => {
+        expect(() => {
+            builder.setCategory('').build();
+        }).toThrow('la categoría no puede estar vacía');
+    });
+
+    it('falla si la imagen esta vacia', () => {
+        expect(() => {
+            builder.setImageUrl('').build();
+        }).toThrow('la URL de la imagen no puede estar vacia');
+    });
+
+    // validaciones propias de Bandanna
+
     it('falla si el tamaño esta vacio', () => {
         expect(() => {
             builder.setSize('').build();
         }).toThrow('el tamaño no puede estar vacio');
     });
 
-    it('falla si el color está vacio', () => {
+    it('falla si el color esta vacio', () => {
         expect(() => {
             builder.setColor('').build();
         }).toThrow('el color no puede estar vacio');
     });
 
-    //Reset automatico despues del build
-     it('resetea los valores después de build', () => {
+    // reset automático después del build
+
+    it('resetea los valores despues de build', () => {
         builder
-            .setId(1)
             .setName('Bandana clasica')
             .setPrice(1500)
             .setStock(10)
+            .setCategory('accesorios')
+            .setImageUrl('https://imagen.com/bandana.jpg')
             .setSize('M')
             .setColor('Rojo')
             .build();
 
-        expect(builder.productName).toBe('');
+        expect(builder.name).toBe('');
         expect(builder.price).toBe(0);
         expect(builder.size).toBe('');
         expect(builder.color).toBe('');
     });
 
-    // Inmutabilidad del producto creado
+    // inmutabilidad 
+
     it('no permite modificar sus propiedades una vez creada', () => {
         const bandanna = builder
-            .setId(1)
             .setName('Bandana clasica')
             .setPrice(1500)
             .setStock(10)
+            .setCategory('accesorios')
+            .setImageUrl('https://imagen.com/bandana.jpg')
             .setSize('M')
             .setColor('Rojo')
             .build();
@@ -109,11 +132,5 @@ it('construye una bandana con todos los datos correctos', () => { //verificando 
             bandanna.color = 'Azul';
         }).toThrow();
     });
-
-
-
-
-
-
 
 });

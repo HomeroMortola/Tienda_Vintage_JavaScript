@@ -16,22 +16,32 @@ export class ShoppingCart {
      * @param {Product} product 
      * @param {number} id 
      */
-    addProduct(product, id) {
-        this.products.push(product);
-        this.products_id.push(id);
-        this.calculate_final_price(this.products);
-    }
+    addProduct(product) { //Con la firma nueva  el ID siempre viene del propio producto
+    this.products.push(product);
+    this.products_id.push(product.id);
+    this.calculate_final_price(this.products);
+}
 
     /**
      * @param {number} id 
      */
-    removeProduct(id) {
+    /*removeProduct(id) {
         const index = this.products_id.indexOf(id);
         if (index > -1) {
             this.products.splice(index, 1);
             this.products_id.splice(index, 1);
         }
         this.calculate_final_price(this.products);
+    }*/
+
+    removeProduct(id) {
+    const index = this.products_id.indexOf(id);
+    if (index === -1) {
+        throw new Error("el producto no existe en el carrito");
+    }
+    this.products.splice(index, 1);
+    this.products_id.splice(index, 1);
+    this.calculate_final_price(this.products);
     }
 
     

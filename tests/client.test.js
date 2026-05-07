@@ -67,6 +67,26 @@ describe('ClientBuilder', () => {
     }).toThrow('el DNI debe tener exactamente 8 digitos');
     });
 
+
+    it('falla si el telefono contiene letras', () => {
+        expect(() => {
+            builder.setPhone('ABC123').build();
+        }).toThrow('el telefono solo puede contener numeros');
+    });
+
+
+    it('falla si la ubicacion esta vacia', () => {
+        expect(() => {
+            builder.setLocation('').build();
+        }).toThrow('la ubicacion no puede estar vacia');
+    });
+
+    it('falla si la ubicacion es solo espacios', () => {
+        expect(() => {
+            builder.setLocation('   ').build();
+        }).toThrow('la ubicacion no puede estar vacia');
+    });
+
 });
 
 describe('Client', () => {
@@ -83,14 +103,3 @@ describe('Client', () => {
     });
 
 });
-
-/*it('no permite modificar sus propiedades una vez creado', () => {
-    const client = new ClientBuilder()
-        .setId(1)
-        .setName('Juan')
-        .build();
-
-    expect(() => {
-        client.name = 'Otro nombre';
-    }).toThrow();
-});*/

@@ -1,4 +1,11 @@
-// Generar ID de sesión única para el usuario
+const categoryMap = {
+    "vinilos.html": "Vinyls", 
+    "bandanna.html": "Bandanna",
+    "anteojos.html": "Glasses"
+};
+
+import { ProductRepository } from '../src/repositories/ProductRepository.js';
+
 const getSessionId = () => {
     let sessionId = localStorage.getItem('sessionId');
     if (!sessionId) {
@@ -13,33 +20,25 @@ const API_URL = 'http://localhost:3000';
 
 // Variable para guardar los productos y no saturar el servidor
 let allProducts = [];
+const repo = new ProductRepository();
 
 async function fetchInventory() {
-    const grid = document.querySelector('.grid-product');
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
-
+    
     try {
-        const response = await fetch('http://localhost:3000/productos');
-        if (!response.ok) throw new Error("Error en el servidor");
+        const currentPage = window.location.pathname.split("/").pop() || "index.html";
+        const targetCategory = categoryMap[currentPage];
         
-        allProducts = await response.json();
 
-        let toRender = [];
+       let products;
 
-        if (currentPage === "vinilos.html") {
-            toRender = allProducts.filter(p => p.category === "Vinyls");
-        } 
-        else if (currentPage === "bandanna.html") {
-            toRender = allProducts.filter(p => p.category === "Bandana");
-        } 
-        else if (currentPage === "anteojos.html") {
-            toRender = allProducts.filter(p => p.category === "Glasses");
-        } 
+        if(targetCategory) {
+            products = await repo.getProductsByCategory(targetCategory);
+        }
         else {
-            toRender = allProducts;
+            products = await repo.getProducts();
         }
 
-        render(toRender);
+        render(products);
 
     } catch (error) {
         console.error("Error cargando productos:", error);
@@ -59,35 +58,81 @@ function render(list) {
     }
 
     list.forEach(p => {
-        // Usamos encodeURI por si la URL de la imagen tiene espacios
-        const imageURl = p.image_url ? p.image_url : 'https://via.placeholder.com/300';
-        
-        grid.innerHTML += `
-            <div class="prod-card">
-                <div class="prod-img-container">
-                    <img src="${imageURl}" alt="${p.name}" class="prod-img">
-                </div>
-                <div class="prod-info">
-                    <h3 class="prod-name">${p.name}</h3>
-                    <div class="prod-price">$${p.price}</div>
-                    <p class="prod-desc">${p.description || "Vintage piece."}</p>
-                    <button class="buy-btn" onclick="comprar('${p.name}')">ADQUIRIR</button>
-                </div>
+        const card = document.createElement('div');
+        card.className = 'prod-card';
+
+        const image_url = p.image_url ? p.image_url : 'https://via.placeholder.com/300';
+
+        card.innerHTML = `
+            <div class="prod-img-container">
+                <img src="${image_url}" alt="${p.name}" class="prod-img">
+            </div>
+            <div class="prod-info">
+                <h3 class="prod-name">${p.name}</h3>
+                <div class="prod-price">$${p.price}</div>
+                <p class="prod-desc">${p.description || "Vintage piece."}</p>
+                <button class="buy-btn">VER DETALLE</button>
             </div>
         `;
+
+        card.querySelector('.buy-btn').addEventListener('click', () => mostrarDetalle(p));
+        grid.appendChild(card);
     });
 }
 
-function comprar(nombre) {
-    alert(`Añadiste ${nombre} al carrito.`);
+function mostrarDetalle(p) {
+    const image_url = p.image_url || 'https://via.placeholder.com/300';
+
+    const meta = p.metadata || {};
+    const metaHtml = Object.entries(meta)
+        .filter(([, v]) => v !== null && v !== undefined && v !== '')
+        .map(([k, v]) => `
+            <div class="modal-meta-row">
+                <span class="modal-meta-key">${k}</span>
+                <span class="modal-meta-val">${v}</span>
+            </div>
+        `).join('');
+
+    let modal = document.getElementById('product-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'product-modal';
+        modal.className = 'product-modal-overlay';
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) cerrarModal();
+        });
+    }
+
+    modal.innerHTML = `
+        <div class="product-modal-box">
+            <button class="modal-close-btn" id="modal-close">✕</button>
+            <img src="${image_url}" alt="${p.name}" class="modal-img">
+            <div class="modal-body">
+                <h2 class="modal-name">${p.name}</h2>
+                <div class="modal-price">$${p.price}</div>
+                ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
+                ${metaHtml ? `<div class="modal-meta">${metaHtml}</div>` : ''}
+                <button class="buy-btn modal-buy-btn">COMPRAR</button>
+            </div>
+        </div>
+    `;
+
+    modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+    const modal = document.getElementById('product-modal');
+    if (modal) {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
 }
 
 // Arranca cuando carga el DOM
 document.addEventListener('DOMContentLoaded', fetchInventory);
-
-function comprar(nombre) {
-    alert(`Has seleccionado: ${nombre}. ¡Próximamente podrás finalizar tu compra!`);
-}
 
 // Toggle del panel del carrito
 function toggleCart() {

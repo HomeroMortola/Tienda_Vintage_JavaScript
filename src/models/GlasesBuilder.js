@@ -1,16 +1,18 @@
-import { ProductBuilder } from './ProductBuilder.js';
 import { Glases } from './Glases.js';
+import { ProductBuilder } from './ProductBuilder.js';
 
 export class GlasesBuilder extends ProductBuilder {
 
     constructor() {
         super();
         this.color = "";
+        this.shape = "";
     }
 
     reset() {
         super.reset();
-        this.color = "";
+        this.setMetaValue('color', "");
+        this.setMetaValue('shape', "");
         return this;
     }
 
@@ -22,7 +24,19 @@ export class GlasesBuilder extends ProductBuilder {
         if (!color || color.trim() === "") {
             throw new Error("el color no puede estar vacio");
         }
-        this.color = color;
+        this.setMetaValue('color', color);
+        return this;
+    }
+
+    /**
+     * @param {string} shape
+     */
+
+    setShape(shape) {
+        if (!shape || shape.trim() === "") {
+            throw new Error("la forma no puede estar vacia");
+        }
+        this.setMetaValue('shape', shape);
         return this;
     }
 
