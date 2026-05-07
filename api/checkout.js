@@ -61,7 +61,7 @@ export default async function handler(req, res) {
         status: 'pending',
         user_id: userId,
         items: Items
-    });
+    })
     .select()
     .single();
 
@@ -75,10 +75,10 @@ export default async function handler(req, res) {
     body: {
       items: validatedItemsForMP, //Usamos los datos de productos validados y enriquecidos desde la base de datos
       back_urls: {
-        success: 'https://tienda-vintage-java-script.vercel.app/success',
-        failure: 'https://tienda-vintage-java-script.vercel.app/failure',
+        success: 'https://{APP_URL}/success',
+        failure: 'https://{APP_URL}/failure',
       },
-      notification_url: 'https://tienda-vintage-java-script.vercel.app/api/webhooks/mercadopago',
+      notification_url: 'https://{APP_URL}/api/webhooks/mercadopago',
       external_reference: order.id, // Para vincular el pago al usuario en tu DB
     }
   });

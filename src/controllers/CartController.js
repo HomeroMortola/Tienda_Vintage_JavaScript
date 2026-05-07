@@ -1,6 +1,8 @@
 // src/controllers/CartController.js
 
 import { ShoppingCart } from "../models/ShoppingCart.js";
+import { APP_URL } from "../../api/appURL.js";
+import { executePurcharse } from "../../api/checkout.js";
 
 const carts = new Map();
 
