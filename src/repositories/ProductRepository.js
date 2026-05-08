@@ -2,13 +2,14 @@ import { supabase } from '../config/supabase.js'
 import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
     export class ProductRepository {
-        async getProducts() {
-            const { data, error } = await supabase.from('products').select('*').eq('state', true);
+        async _fetchProducts(query) {
+            const { data, error } = await query;
             if (error) throw error;
-    
-            return (data || [])
-            .map(item => this.mapToProductObject(item))
-            .filter(p => p !== null); 
+            return (data || []).map(item => this.mapToProductObject(item)).filter(Boolean);
+        }
+
+        async getProducts() {
+            return this._fetchProducts(supabase.from('products').select('*').eq('state', true));
         }
 
     mapToProductObject(item) {
@@ -82,19 +83,9 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
         };
 
 async getProductsByCategory(categoryName) {
-    const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('category', categoryName) 
-        .eq('state', true);
-
-    if (error) {
-        console.error(`Error al traer ${categoryName}:`, error);
-        throw error;
-    }
-    return (data || [])
-        .map(item => this.mapToProductObject(item))
-        .filter(Boolean); 
+    return this._fetchProducts(
+        supabase.from('products').select('*').eq('category', categoryName).eq('state', true)
+    );
     };
 
     //guardar archivo en bucket de supabase

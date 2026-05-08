@@ -8,4 +8,14 @@ export class Product {
         this.description = description;
         this.category = category;
     }
+
+    getBaseData() {
+        return {
+            id: this.id,
+            name: this.name,
+            price: this.price,
+            stock: this.stock,
+            image_url: this.image_url
+        };
+    }
 }

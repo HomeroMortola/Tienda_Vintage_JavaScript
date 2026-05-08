@@ -12,15 +12,7 @@ export class Bandanna extends Product {
         Object.freeze(this);
     }
     getData() {
-        return {
-            id: this.id,
-            name: this.name,
-            price: this.price,
-            stock: this.stock,
-            size: this.size,
-            color: this.color,
-            image_url: this.image_url
-        }
+        return { ...super.getBaseData(), size: this.size, color: this.color };
     }
 }
 

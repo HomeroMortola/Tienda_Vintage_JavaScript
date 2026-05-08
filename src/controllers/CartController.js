@@ -1,19 +1,5 @@
-// src/controllers/CartController.js
-
-import { ShoppingCart } from "../models/ShoppingCart.js";
-import { APP_URL } from "../../api/appURL.js";
-import { executePurchase } from "../services/CheckoutServices.js";
-
-const carts = new Map();
-
-const getOrCreateCart = (sessionId) => {
-    if (!carts.has(sessionId)) {
-        carts.set(sessionId, new ShoppingCart());
-    }
-    return carts.get(sessionId);
-};
-
-
+//import { getOrCreateCart } from "../services/cartStore.js";
+import { executePurchase } from "../services/checkoutService.js";
 
 export const addToCart = (req, res) => {
     try {
@@ -34,7 +20,7 @@ export const addToCart = (req, res) => {
                 items: cart.products.length,
                 total: cart.total_price,
             },
-        });
+            });
     } catch (error) {
         console.error("Error al agregar producto:", error);
         res.status(500).json({ error: "Error al agregar producto" });

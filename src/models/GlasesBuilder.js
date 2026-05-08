@@ -21,9 +21,7 @@ export class GlasesBuilder extends ProductBuilder {
      */
 
     setColor(color) {
-        if (!color || color.trim() === "") {
-            throw new Error("el color no puede estar vacio");
-        }
+        this._validateString(color, "el color no puede estar vacio");
         this.setMetaValue('color', color);
         return this;
     }
@@ -33,9 +31,7 @@ export class GlasesBuilder extends ProductBuilder {
      */
 
     setShape(shape) {
-        if (!shape || shape.trim() === "") {
-            throw new Error("la forma no puede estar vacia");
-        }
+        this._validateString(shape, "la forma no puede estar vacia");
         this.setMetaValue('shape', shape);
         return this;
     }

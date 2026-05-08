@@ -23,9 +23,7 @@ export class VinylsBuilder extends ProductBuilder {
      * @param {string} artist
      */
     setArtist(artist) {
-        if (!artist || artist.trim() === "") {
-            throw new Error("el artista no puede estar vacio");
-        }
+        this._validateString(artist, "el artista no puede estar vacio");
         this.setMetaValue('artist', artist);
         return this;
     }
@@ -34,9 +32,7 @@ export class VinylsBuilder extends ProductBuilder {
      * @param {string} album
      */
     setAlbum(album) {
-        if (!album || album.trim() === "") {
-            throw new Error("el album no puede estar vacio");
-        }
+        this._validateString(album, "el album no puede estar vacio");
         this.setMetaValue('album', album);
         return this;
     }
@@ -46,9 +42,7 @@ export class VinylsBuilder extends ProductBuilder {
      */
 
     setGenre(genre) {
-        if (!genre || genre.trim() === "") {
-            throw new Error("el genero no puede estar vacio");
-        }
+        this._validateString(genre, "el genero no puede estar vacio");
         this.setMetaValue('genre', genre);
         return this;
     }

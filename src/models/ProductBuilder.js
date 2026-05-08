@@ -23,9 +23,7 @@ export class ProductBuilder {
      * @param {string} name
      */
     setName(name) {
-        if (!name || name.trim() === "") {
-            throw new Error("el nombre del producto no puede estar vacio");
-        }
+        this._validateString(name, "el nombre del producto no puede estar vacio");
         this.name = name;
         return this;
     }
@@ -45,9 +43,7 @@ export class ProductBuilder {
      * @param {string} category
      */
     setCategory(category) {
-        if (!category || category.trim() === "") {
-            throw new Error("la categoría no puede estar vacía");
-        }
+        this._validateString(category, "la categoría no puede estar vacía");
         this.category = category;
         return this;
     }
@@ -77,11 +73,15 @@ export class ProductBuilder {
      * @param {string} publicUrl
      */
     setImageUrl(publicUrl) {
-        if (!publicUrl || publicUrl.trim() === "") {
-            throw new Error("la URL de la imagen no puede estar vacia");
-        }
-        this.image_url = publicUrl  ;
+        this._validateString(publicUrl, "la URL de la imagen no puede estar vacia");
+        this.image_url = publicUrl;
         return this;
+    }
+
+    _validateString(value, errorMessage) {
+        if (!value || value.trim() === "") {
+            throw new Error(errorMessage);
+        }
     }
 
     setMetaValue(key, value) {

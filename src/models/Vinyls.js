@@ -15,17 +15,7 @@ export class Vinyls extends Product {
     }
 
     getData() {
-        return {
-            id: this.id,
-            name: this.name,
-            price: this.price,
-            stock: this.stock,
-            artist: this.artist,
-            album: this.album,
-            year: this.year,
-            genre: this.genre,
-            image_url: this.image_url
-        }
+        return { ...super.getBaseData(), artist: this.artist, album: this.album, year: this.year, genre: this.genre };
     }
 
 }

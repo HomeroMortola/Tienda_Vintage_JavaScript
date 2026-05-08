@@ -18,6 +18,20 @@ const getSessionId = () => {
 const SESSION_ID = getSessionId();
 const API_URL = 'http://localhost:3000';
 
+async function apiFetch(path, options = {}) {
+    const response = await fetch(`${API_URL}${path}`, options);
+    if (!response.ok) throw new Error(`Error en ${path}`);
+    return response.json();
+}
+
+function jsonBody(method, data) {
+    return {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    };
+}
+
 // Variable para guardar los productos y no saturar el servidor
 let allProducts = [];
 const repo = new ProductRepository();
@@ -154,9 +168,7 @@ function mostrarNotificacion(mensaje, esError = false) {
 
 async function getCartFromServer() {
     try {
-        const response = await fetch(`${API_URL}/carrito?sessionId=${SESSION_ID}`);
-        if (!response.ok) throw new Error("Error al obtener carrito");
-        return await response.json();
+        return await apiFetch(`/carrito?sessionId=${SESSION_ID}`);
     } catch (error) {
         console.error("Error:", error);
         return { products: [], total: 0, itemCount: 0 };
@@ -166,22 +178,13 @@ async function getCartFromServer() {
 // Agregar producto al carrito
 async function agregarAlCarrito(producto, id) {
     try {
-        const response = await fetch(`${API_URL}/carrito/agregar`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                sessionId: SESSION_ID,
-                product: producto,
-                productId: id
-            })
-        });
-        
-        if (!response.ok) throw new Error("Error al agregar producto");
-        
-        const data = await response.json();
+        await apiFetch('/carrito/agregar', jsonBody('POST', {
+            sessionId: SESSION_ID,
+            product: producto,
+            productId: id
+        }));
         mostrarNotificacion(`✓ ${producto.nombre} agregado al carrito`);
         actualizarCarrito();
-        
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al agregar producto", true);
@@ -191,17 +194,9 @@ async function agregarAlCarrito(producto, id) {
 // Eliminar producto del carrito
 async function eliminarDelCarrito(id) {
     try {
-        const response = await fetch(`${API_URL}/carrito/eliminar/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: SESSION_ID })
-        });
-        
-        if (!response.ok) throw new Error("Error al eliminar producto");
-        
+        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { sessionId: SESSION_ID }));
         mostrarNotificacion(" Producto eliminado del carrito");
         actualizarCarrito();
-        
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al eliminar producto", true);
@@ -211,22 +206,9 @@ async function eliminarDelCarrito(id) {
 // Finalizar compra
 async function finalizarCompra() {
     try {
-        const response = await fetch(`${API_URL}/carrito/comprar`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: SESSION_ID })
-        });
-        
-        if (!response.ok) throw new Error("Error en la compra");
-        
-        const data = await response.json();
+        await apiFetch('/carrito/comprar', jsonBody('POST', { sessionId: SESSION_ID }));
         mostrarNotificacion(" ¡Compra realizada exitosamente!");
-        
-        // Limpiar carrito en UI
-        setTimeout(() => {
-            actualizarCarrito();
-        }, 500);
-        
+        setTimeout(() => actualizarCarrito(), 500);
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al procesar la compra", true);
