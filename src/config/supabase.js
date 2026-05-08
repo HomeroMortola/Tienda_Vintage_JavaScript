@@ -1,4 +1,4 @@
-// src/config/supabase.js
+
 import { createClient } from '@supabase/supabase-js';
 import { ENV } from '../../env.js';
 
