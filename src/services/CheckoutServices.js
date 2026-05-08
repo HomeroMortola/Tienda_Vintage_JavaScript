@@ -3,6 +3,14 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { createClient } from '@supabase/supabase-js';
 import { ENV } from '../../env.js';
 
+const supabaseUrl = process.env.SUPABASE_URL || ENV.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY || ENV.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseUrl.startsWith('https')) {
+  throw new Error("ERROR: SUPABASE_URL no definida o inválida.");
+}
+
+
 // 1. Inicialización global de clientes (Reutilización de conexiones)
 const mpClient = new MercadoPagoConfig({ 
   accessToken: ENV.MP_ACCESS_TOKEN || 'TU_ACCESS_TOKEN_POR_DEFECTO' 
