@@ -1,11 +1,11 @@
-import { executePurchase } from "../services/checkoutService.js";
+import { executePurchase } from "../services/checkout.js";
 
 /** Checkout con cuerpo extendido (email, token Mercado Pago, etc.). Misma tubería Command que POST /carrito/comprar */
 export const processCheckout = async (req, res) => {
     try {
         const { sessionId } = req.body;
         if (!sessionId) {
-            return res.status(400).json({ error: "Falta sessionId" });
+            return res.status(400).json({ error: "Falta sessionId" });s
         }
 
         const result = await executePurchase(sessionId, req.body);

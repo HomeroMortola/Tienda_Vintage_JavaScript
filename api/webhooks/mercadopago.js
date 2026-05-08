@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
       // 2. Extraer información relevante
       const orderId = paymentData.external_reference; // El ID que enviaste al crear la preferencia
-      const status = paymentData.status; // 'approved', 'rejected', 'pending', etc.
+      const status = paymentData.status; // 'approved', 'rejected', 'pending' etc.
 
       // 3. Actualizar Supabase usando el Service Role (salta RLS)
       const { error } = await supabase
