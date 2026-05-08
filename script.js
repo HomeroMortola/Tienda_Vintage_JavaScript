@@ -134,10 +134,7 @@ function mostrarDetalle(p) {
         </div>
     `;
 
-    modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
     modal.querySelector('#quantity').addEventListener('change', validationQuantity);
-
-
     modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
