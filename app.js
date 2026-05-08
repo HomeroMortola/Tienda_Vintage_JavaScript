@@ -7,7 +7,7 @@ import { addToCart, getCart, removeFromCart, checkout } from "./src/controllers/
 import { processCheckout } from "./src/controllers/CheckoutController.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 5500;
 
 app.use(cors());
 app.use(express.json());

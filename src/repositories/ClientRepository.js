@@ -10,7 +10,6 @@ export class ClientRepository {
         const { data, error } = await supabase
             .from('clients')
             .select('*')
-            .eq('state', true); // Asumiendo que usas borrado lógico
 
         if (error) throw error;
 
