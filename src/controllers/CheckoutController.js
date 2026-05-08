@@ -1,4 +1,4 @@
-import { executePurchase } from "../services/checkout.js";
+import { executePurchase } from "../services/CheckoutServices.js";
 
 /** Checkout con cuerpo extendido (email, token Mercado Pago, etc.). Misma tubería Command que POST /carrito/comprar */
 export const processCheckout = async (req, res) => {

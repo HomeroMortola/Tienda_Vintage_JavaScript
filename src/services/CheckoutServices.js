@@ -1,13 +1,16 @@
 // src/services/checkoutService.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { createClient } from '@supabase/supabase-js';
+import { ENV } from '../../env.js';
 
 // 1. Inicialización global de clientes (Reutilización de conexiones)
-const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+const mpClient = new MercadoPagoConfig({ 
+  accessToken: ENV.MP_ACCESS_TOKEN || 'TU_ACCESS_TOKEN_POR_DEFECTO' 
+})
 
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  ENV.SUPABASE_URL,
+  ENV.SUPABASE_KEY
 );
 
 /**
@@ -81,7 +84,7 @@ export const executePurchase = async (items, userId) => {
 
   // 6. Configuración dinámica de URLs para Mercado Pago
   // Usamos process.env.APP_URL como dictó la auditoría (Ej: https://tu-sitio.vercel.app o el túnel de Ngrok)
-  const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+  const baseUrl = ENV.APP_URL || 'http://localhost:3000';
   
   const preference = new Preference(mpClient);
   const result = await preference.create({
