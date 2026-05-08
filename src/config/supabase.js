@@ -1,12 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 import { ENV } from '../../env.js';
 
-const supabaseUrl = process.env.SUPABASE_URL || ENV.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY || ENV.SUPABASE_KEY;
+let supabaseUrl = process.env.SUPABASE_URL;
+let supabaseKey = process.env.SUPABASE_KEY;
 
-if (!supabaseUrl || !supabaseUrl.startsWith('https')) {
-  throw new Error("ERROR: SUPABASE_URL no definida o inválida.");
+// 2. Si no existen (estás en local), intentamos importar tu env.js
+if (!supabaseUrl || !supabaseKey) {
+  try {
+    const { ENV } = await import('../../env.js');
+    supabaseUrl = ENV.SUPABASE_URL;
+    supabaseKey = ENV.SUPABASE_KEY;
+  } catch (error) {
+    console.warn("Archivo env.js no encontrado, usando variables de entorno del sistema.");
+  }
 }
-
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
