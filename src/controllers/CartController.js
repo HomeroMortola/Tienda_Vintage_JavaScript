@@ -1,5 +1,15 @@
-//import { getOrCreateCart } from "../services/cartStore.js";
-import { executePurchase } from "../services/checkoutService.js";
+import { ShoppingCart } from "../models/ShoppingCart.js";
+import { APP_URL } from "../../api/appURL.js";
+import { executePurchase } from "../services/CheckoutServices.js";
+
+const carts = new Map();
+
+const getOrCreateCart = (sessionId) => {
+    if (!carts.has(sessionId)) {
+        carts.set(sessionId, new ShoppingCart());
+    }
+    return carts.get(sessionId);
+};
 
 export const addToCart = (req, res) => {
     try {
