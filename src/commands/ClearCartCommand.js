@@ -1,5 +1,5 @@
 import { PaymentCommand } from "./PaymentCommand.js";
-import { clearCartSession } from "../services/cartStore.js";
+import { clearCartSession } from "../services/CartController.js";
 
 /**
  * Último paso: vacía el carrito en memoria. Sin undo (la orden ya quedó persistida).
