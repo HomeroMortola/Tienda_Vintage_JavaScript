@@ -82,10 +82,10 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
         };
 
-async getProductsByCategory(categoryName) {
+    async getProductsByCategory(categoryName) {
     return this._fetchProducts(
         supabase.from('products').select('*').eq('category', categoryName).eq('state', true)
-    );
+        );
     };
 
     //guardar archivo en bucket de supabase
@@ -102,6 +102,10 @@ async getProductsByCategory(categoryName) {
             .from(bucket)
             .getPublicUrl(path);
         return data.publicUrl;
+    }
+
+    async getProductById(id) {
+        return this._fetchProducts(supabase.from('products').select('*').eq('id', id).eq('state', true));
     }
 }
 
