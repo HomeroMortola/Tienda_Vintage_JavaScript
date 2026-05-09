@@ -104,6 +104,7 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
         return data.publicUrl;
     }
 
+    //obtener producto por id
     async getProductById(id) {
         return this._fetchProducts(supabase.from('products').select('*').eq('id', id).eq('state', true));
     }
