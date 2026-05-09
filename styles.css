@@ -143,6 +143,13 @@
       border-right: 1px solid var(--paper-deep);
       cursor: default;
     }
+    
+    .user-btn:hover {
+     color: var(--red) !important;}
+
+    .nav-container .nav-band {
+     border-bottom: none !important;
+}
     .nav-item:last-child { border-right: none; }
     .nav-item.active { background: var(--ink); color: var(--paper); }
 
