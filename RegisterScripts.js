@@ -7,6 +7,7 @@ const repo = new ClientRepository();
 document.addEventListener('DOMContentLoaded', () => {
     const btnRegister = document.getElementById('btn-register');
     const errorMsg = document.getElementById('reg-error');
+    
 
     // Referencias a los inputs
     const inputs = {
@@ -45,8 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // 4. Lo enviamos al repositorio (que maneja Supabase y el servidor local)
             await repo.saveClient(newClient);
 
-            alert("¡Usuario registrado con éxito!");
+            //alert("¡Usuario registrado con éxito!");
             window.location.href = 'index.html'; // Redirección al inicio o login
+            if (nuevoCliente && nuevoCliente.id) {
+            const nuevoCliente = await repo.saveClient(newClient);
+            // Guardamos el ID en el navegador del usuario
+            localStorage.setItem('usuarioId', nuevoCliente.id);
+            }
 
         } catch (error) {
             // Capturamos los errores de validación de tu ClientBuilder
