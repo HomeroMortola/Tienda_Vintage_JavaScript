@@ -13,6 +13,7 @@ export class Client {
         this.dni = builder.dni;
         this.location = builder.location;
         this.password = builder.password
+        this.email = builder.email;
         Object.freeze(this);
     }
 

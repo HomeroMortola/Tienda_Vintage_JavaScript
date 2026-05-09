@@ -1,4 +1,4 @@
-// src/services/checkoutService.js
+
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { createClient } from '@supabase/supabase-js';
 import { ENV } from '../../env.js';
@@ -113,7 +113,7 @@ export const executePurchase = async (items, userId) => {
   return {
     preferenceId: result.id,
     initPoint: result.init_point,                 // URL para redirección a Producción
-    sandboxInitPoint: result.sandbox_init_point, // URL para redirección a Pruebas
+    sandboxInitPoint: result.sandbox_init_point, // UR para redirección a PruebasL
     orderId: order.id
   };
 };
