@@ -1,4 +1,5 @@
 export class ShoppingCart {
+
     /**
      * @param {number[]} products_id 
      * @param {Product[]} products 
@@ -16,6 +17,7 @@ export class ShoppingCart {
      * @param {Product} product 
      * @param {number} id 
      */
+
     addProduct(product) { //Con la firma nueva  el ID siempre viene del propio producto
     this.products.push(product);
     this.products_id.push(product.id);
@@ -25,14 +27,6 @@ export class ShoppingCart {
     /**
      * @param {number} id 
      */
-    /*removeProduct(id) {
-        const index = this.products_id.indexOf(id);
-        if (index > -1) {
-            this.products.splice(index, 1);
-            this.products_id.splice(index, 1);
-        }
-        this.calculate_final_price(this.products);
-    }*/
 
     removeProduct(id) {
     const index = this.products_id.indexOf(id);

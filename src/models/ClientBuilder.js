@@ -98,6 +98,21 @@ export class ClientBuilder {
     return this;
     }
 
+    /**
+     * @param {string} email
+     */
+    setEmail(email) {
+    if (!email || email.trim() === "") {
+        throw new Error("el correo electrónico no puede estar vacio");
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        throw new Error("el correo electrónico no es válido");
+    }
+    this.email = email;
+    return this;
+    }
+
 
     /**
      * @returns {Client}

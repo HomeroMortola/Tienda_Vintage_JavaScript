@@ -24,9 +24,7 @@
   </header>
 
   <!-- ── Banda navegación ── -->
- <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--ink); margin-bottom: 40px; position: relative;">
-  
-  <div style="width: 40px;"></div>
+<div class="header-row">
 
   <div class="nav-band">    
     <div class="nav-item active catalogo">Catalogo</div>
@@ -37,6 +35,7 @@
     <a href="carrito.html" class="nav-item">Carrito</a>
   </div>
 
+    <!-- ── boton register ── -->
   <a href="login.html" class="user-btn" title="Registro" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -46,25 +45,12 @@
 </div>
 
   <!-- barra de busqueda -->
-        <div
-          class="search-container"
-          style="max-width: 450px; margin: 0 auto 40px auto; padding: 0 24px"
-        >
+        <div class="search-container">
           <input
             type="text"
             id="product-search"
+            class="search-input"
             placeholder="Buscar producto..."
-            style="
-              width: 100%;
-              padding: 10px 15px;
-              border: 2px solid var(--ink);
-              background: var(--cream);
-              font-family: var(--f-gothic);
-              letter-spacing: 1px;
-              text-transform: uppercase;
-              font-size: 11px;
-              outline: none;
-            "
           />
         </div>
 

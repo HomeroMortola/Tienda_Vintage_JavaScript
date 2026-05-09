@@ -26,6 +26,8 @@
       </header>
       
       <!-- Banda navegación  -->
+<div class="header-row">
+
         <div class="nav-band">
           <a href="index.html" class="nav-item">Catalogo</a>
           <a href="vinilos.html" class="nav-item active">Vinilos</a>
@@ -34,7 +36,16 @@
           <a href="remeras.html" class="nav-item">Remeras</a>
           <a href="carrito.html" class="nav-item">Carrito</a>
         </div>
-      
+
+          <!-- ── boton register ── -->
+  <a href="login.html" class="user-btn" title="Registro" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  </a>
+</div>
+
         <!--grid productos-->
       <section class="section-active">
         <div class="section-head">
@@ -43,17 +54,14 @@
         </div>
 
          <!-- barra de busqueda -->
-        <div
-          class="search-container"
-          style="max-width: 450px; margin: 0 auto 40px auto; padding: 0 24px"
-        >
+        <div class="search-container">
           <input
             type="text"
             id="product-search"
-            placeholder="Buscar en vinilos..."
             class="search-input"
+            placeholder="Buscar producto..."
           />
-        </div>
+       
 
         <div class="products-grid"></div>
 
