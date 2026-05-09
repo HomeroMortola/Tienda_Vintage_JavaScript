@@ -148,7 +148,7 @@
     .header-row {
       display: flex; 
       align-items: flex-start; 
-      justify-content: space-between; 
+      justify-content: flex-start; 
       height: 60px;
       padding: 0;
       border-bottom: 0px solid var(--ink); 
