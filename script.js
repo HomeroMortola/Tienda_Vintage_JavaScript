@@ -127,14 +127,34 @@ function mostrarDetalle(p) {
                 <div class="modal-price">$${p.price}</div>
                 ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
                 ${metaHtml ? `<div class="modal-meta">${metaHtml}</div>` : ''}
-                <button class="buy-btn modal-buy-btn">COMPRAR</button>
+                <h3 id="quantyPurchase">Cantidad a comparar</h3>
+                <input type="number" id="quantity" name="quantity" min="1" value="1">
+                <button class="buy-btn modal-buy-btn">COMPRA</button>
             </div>
         </div>
     `;
 
+    modal.querySelector('#quantity').addEventListener('change', validationQuantity);
     modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+
+function validationQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    const value = parseInt(quantityInput.value, 10);
+
+      if (value > 6) {
+        alert("La cantidad máxima por compra es de 6 unidades.");
+        quantityInput.value = 6; // Lo bajamos al máximo permitido
+        return false;
+    } else if (value < 1 ) {
+        alert("Por favor, ingresa una cantidad válida (mínimo 1).");
+        quantityInput.value = 1;
+        return false;
+    }
+    
+    return true;
 }
 
 function cerrarModal() {

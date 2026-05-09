@@ -86,27 +86,3 @@ export const removeFromCart = (req, res) => {
     }
 };
 
-export const checkout = async (req, res) => {
-    try {
-        const { sessionId } = req.body;
-
-        if (!sessionId) {
-            return res.status(400).json({ error: "Falta sessionId" });
-        }
-
-        const result = await executePurchase(sessionId, req.body);
-
-        if (!result.success) {
-            return res.status(400).json({ error: result.error ?? "No se pudo completar la compra" });
-        }
-
-        res.json({
-            success: true,
-            message: "¡Compra realizada exitosamente!",
-            order: result.order,
-        });
-    } catch (error) {
-        console.error("Error en checkout:", error);
-        res.status(500).json({ error: "Error al procesar compra" });
-    }
-};
