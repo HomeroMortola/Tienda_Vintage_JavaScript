@@ -5,17 +5,9 @@ const categoryMap = {
 };
 
 import { ProductRepository } from '../src/repositories/ProductRepository.js';
+import { CartRepository } from '../src/repositories/CartRepository.js';
+const cartRepo = new CartRepository();
 
-const getSessionId = () => {
-    let sessionId = localStorage.getItem('sessionId');
-    if (!sessionId) {
-        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('sessionId', sessionId);
-    }
-    return sessionId;
-};
-
-const SESSION_ID = getSessionId();
 const API_URL = 'http://localhost:3000';
 
 async function apiFetch(path, options = {}) {
@@ -94,7 +86,7 @@ function render(list) {
     });
 }
 
-function mostrarDetalle(p) {
+async function mostrarDetalle(p) {
     const image_url = p.image_url || 'https://via.placeholder.com/300';
 
     const meta = p.metadata || {};
@@ -133,6 +125,36 @@ function mostrarDetalle(p) {
             </div>
         </div>
     `;
+    const btnAdd = modal.querySelector('#btn-add-to-cart');
+    btnAdd.addEventListener('click', async () => {
+        const userId = localStorage.getItem('usuarioId');
+        
+        if (!userId) {
+            alert("Debes iniciar sesión o registrarte para agregar productos al carrito.");
+            window.location.href = 'register.html';
+            return;
+        }
+
+        const quantityInput = document.getElementById('quantity');
+        const quantity = parseInt(quantityInput.value, 10);
+
+        try {
+            btnAdd.disabled = true;
+            btnAdd.textContent = "Agregando...";
+
+            // Llamamos al repositorio (asegúrate de que 'cartRepo' esté instanciado al inicio del script.js)
+            await cartRepo.addToCart(userId, p.id, quantity);
+
+            alert(`¡${p.name} agregado con éxito!`);
+            cerrarModal();
+        } catch (error) {
+            console.error("Error al agregar al carrito:", error);
+            alert("No se pudo agregar el producto. Intentá de nuevo.");
+        } finally {
+            btnAdd.disabled = false;
+            btnAdd.textContent = "COMPRA";
+        }
+    });
 
     modal.querySelector('#quantity').addEventListener('change', validationQuantity);
     modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
@@ -167,7 +189,7 @@ function cerrarModal() {
 
 // Arranca cuando carga el DOM
 document.addEventListener('DOMContentLoaded', fetchInventory);
-
+/*
 // Toggle del panel del carrito
 function toggleCart() {
     const cartPanel = document.getElementById('cart-panel');
@@ -267,6 +289,6 @@ async function actualizarCarrito() {
     if (cartTotal) {
         cartTotal.textContent = `$${cart.total.toFixed(2)}`;
     }
-}
+}*/
 
 
