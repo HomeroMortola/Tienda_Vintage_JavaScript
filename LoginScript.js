@@ -12,7 +12,7 @@ window.doLogin = async () => {
         const clients = await repo.getClients();
 
         const validUser = clients.find(client => 
-            (client.dni === u||client.name === u) && client.password === p
+            client.email === u && client.password === p
         );
 
         if (!validUser) {
