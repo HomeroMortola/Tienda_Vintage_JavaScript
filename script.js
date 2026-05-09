@@ -1,7 +1,8 @@
 const categoryMap = {
     "vinilos.html": "Vinyls", 
     "bandanna.html": "Bandanna",
-    "anteojos.html": "Glasses"
+    "anteojos.html": "Glasses",
+    "T_Shirts.html": "T_Shirts",
 };
 
 import { ProductRepository } from '../src/repositories/ProductRepository.js';

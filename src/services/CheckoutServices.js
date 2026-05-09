@@ -1,4 +1,4 @@
-// src/services/checkoutService.js
+
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { createClient } from '@supabase/supabase-js';
 import { ENV } from '../../env.js';

@@ -26,8 +26,8 @@
       <div class="form-grid">
 
         <div class="form-group full">
-          <label>Usuario</label>
-          <input type="text" id="user-input" placeholder="Usuario"/>
+          <label>Correo Electrónico</label>
+          <input type="email" id="user-input" placeholder="tu.email@ejemplo.com"/>
         </div>
 
         <div class="form-group full">
@@ -35,6 +35,9 @@
           <input type="password" id="pass-input" placeholder="••••••••"onkeydown="if(event.key==='Enter') doLogin()"/>
         </div>
 
+        <div class="RegisterCamp">
+          <a href="register.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">Regístrate aquí</a>
+        </div>
       </div>
 
       <div id="login-error" class="error-msg" style="display:none; margin-top:10px; text-align:center;">
@@ -44,7 +47,7 @@
       <button class="btn-primary"style="width:100%; margin-top:20px; font-size:12px; padding:16px;"onclick="doLogin()">Ingresar</button>
 
       <div style="text-align:center; margin-top:16px;">
-        <a href="retro-vibes.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">← Volver a la tienda</a>
+        <a href="index.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">← Volver a la tienda</a>
       </div>
 
     </div>
