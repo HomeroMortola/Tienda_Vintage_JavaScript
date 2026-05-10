@@ -23,6 +23,8 @@ window.doLogin = async () => {
 
         // 4. Redirigir
         window.location.href = 'index.html';
+        
+        alert("Login exitoso");
 
     } catch (e) {
         errorMsg.textContent = "Correo o contraseña incorrectos";
