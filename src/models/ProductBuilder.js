@@ -19,6 +19,10 @@ export class ProductBuilder {
         return this;
     }
 
+    setId(id){
+        this.id = id;
+        return this;
+    }
     /**
      * @param {string} name
      */

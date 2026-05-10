@@ -90,7 +90,7 @@ function render(list) {
 
 async function mostrarDetalle(p) {
     const image_url = p.image_url || 'https://via.placeholder.com/300';
-
+    const userId = localStorage.getItem('usuarioId');
     const meta = p.metadata || {};
     const metaHtml = Object.entries(meta)
         .filter(([, v]) => v !== null && v !== undefined && v !== '')
@@ -133,7 +133,7 @@ async function mostrarDetalle(p) {
         
         if (!userId) {
             alert("Debes iniciar sesión o registrarte para agregar productos al carrito.");
-            window.location.href = 'register.html';
+            window.location.href = 'login.html';
             return;
         }
 
@@ -144,7 +144,7 @@ async function mostrarDetalle(p) {
             btnAdd.disabled = true;
             btnAdd.textContent = "Agregando...";
 
-            // Llamamos al repositorio (asegúrate de que 'cartRepo' esté instanciado al inicio del script.js)
+            // Llamamos al repositorio 
             await cartRepo.addToCart(userId, p.id, quantity);
 
             alert(`¡${p.name} agregado con éxito!`);

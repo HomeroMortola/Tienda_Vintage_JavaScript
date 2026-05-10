@@ -23,7 +23,7 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
         const builder = config.builder();   
 
-        
+        builder.setId(item.id)
         builder.setName(item.name);
         builder.setPrice(item.price);
         builder.setStock(item.stock ?? 0);
