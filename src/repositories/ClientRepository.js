@@ -32,7 +32,8 @@ export class ClientRepository {
                 .setPhone(item.phone)
                 .setDni(item.dni)
                 .setLocation(item.location)
-                .setEmail(item.email);
+                .setEmail(item.email)
+                .setPassword(item.password);
 
             return builder.build(); //
         } catch (error) {
@@ -63,7 +64,8 @@ export class ClientRepository {
             phone: client.phone,
             dni: client.dni,
             location: client.location,
-            Gmail: email
+            Gmail: email,
+            password: client.password
         };
 
         const { data: dbData, error: dbError } = await supabase

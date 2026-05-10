@@ -15,7 +15,8 @@ export class ClientBuilder {
             phone: null,
             dni: null,
             location: "",
-            email : ""
+            email : "",
+            password : ""
         };
 
         return this;
@@ -100,6 +101,16 @@ export class ClientBuilder {
     this.email = email;
     return this;
     }
+
+    setPassword(password){
+        if (!password || password.trim() === "") {
+        throw new Error("la contraseña no puede estar vacia");
+    }
+    this.password = password;
+    return this;
+    }
+
+    
 
 
     /**

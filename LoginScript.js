@@ -1,5 +1,5 @@
 import { ClientRepository } from "./src/repositories/ClientRepository.js";
-
+import { supabase } from './srs/config/supabase.js';
 const repo = new ClientRepository();
 
 window.doLogin = async () => {
@@ -26,10 +26,12 @@ window.doLogin = async () => {
         errorMsg.style.display = 'none';
         console.log("Bienvenido:", validUser.name);
         window.location.href = 'index.html';
+        /*
         if (clients && clients.id) {
             // Guardamos el ID en el navegador del usuario
             localStorage.setItem('usuarioId', clients.id);
             }
+        */
 
     } catch (e) {
         errorMsg.textContent = "Correo o contraseña incorrectos";

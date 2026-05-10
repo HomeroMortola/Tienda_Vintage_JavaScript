@@ -5,6 +5,7 @@ const categoryMap = {
     "T_Shirts.html": "T_Shirts",
 };
 
+
 import { ProductRepository } from '../src/repositories/ProductRepository.js';
 import { CartRepository } from '../src/repositories/CartRepository.js';
 const cartRepo = new CartRepository();

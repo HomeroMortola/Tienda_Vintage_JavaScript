@@ -42,12 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 .setDni(inputs.dni.value)
                 .setPhone(inputs.phone.value)
                 .setLocation(inputs.location.value)
-                .setEmail(email);
+                .setEmail(email)
+                .setPassword(password)
+
+                
+                
+
 
             const newClient = builder.build();
+            
+            const createdClient = await repo.CreteNewClient(newClient, email, password);
 
             // Llamamos método que maneja Auth de Base de Datos
-            await repo.CreteNewClient(newClient, email, password);
+            if (createdClient && createdClient.id) {
+                localStorage.setItem('usuarioId', createdClient.id);
+            }
 
             alert("¡Usuario registrado con éxito!");
             window.location.href = 'index.html'; // Redirección al inicio o login
