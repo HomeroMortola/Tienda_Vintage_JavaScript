@@ -4,75 +4,75 @@ import { executePurchase } from "../services/CheckoutServices.js";
 
 const carts = new Map();
 
-const getOrCreateCart = (sessionId) => {
-    if (!carts.has(sessionId)) {
-        carts.set(sessionId, new ShoppingCart());
+const getOrCreateCart = (userId) => {
+    if (!carts.has(userId)) {
+        carts.set(userId, new ShoppingCart());
     }
-    return carts.get(sessionId);
+    return carts.get(userId);
 };
 
-export const addToCart = (req, res) => {
+export const addToCart = (request, response) => {
     try {
-        const { sessionId, product, productId } = req.body;
+        const { userId, product, productId } = request.body;
 
-        if (!sessionId || !product || productId === undefined) {
-            return res.status(400).json({ error: "Faltan datos (sessionId, product, productId)" });
+        if (!userId || !product || productId === undefined) {
+            return response.status(400).json({ error: "Faltan datos (userId, product, productId)" });
         }
 
-        const cart = getOrCreateCart(sessionId);
+        const cart = getOrCreateCart(userId);
         cart.addProduct(product, productId);
         cart.calculate_final_price(cart.products);
 
-        res.json({
+        response.json({
             success: true,
             message: "Producto agregado al carrito",
             cart: {
                 items: cart.products.length,
                 total: cart.total_price,
-            },
+               },
             });
     } catch (error) {
         console.error("Error al agregar producto:", error);
-        res.status(500).json({ error: "Error al agregar producto" });
+        response.status(500).json({ error: "Error al agregar producto" });
     }
 };
 
-export const getCart = (req, res) => {
+export const getCart = (request, response) => {
     try {
-        const { sessionId } = req.query;
+        const { userId } = request.query;
 
-        if (!sessionId) {
-            return res.status(400).json({ error: "Falta sessionId" });
+        if (!userId) {
+            return response.status(400).json({ error: "Falta userId" });
         }
 
-        const cart = getOrCreateCart(sessionId);
+        const cart = getOrCreateCart(userId);
 
-        res.json({
+        response.json({
             products: cart.products,
             total: cart.total_price,
             itemCount: cart.products.length,
         });
     } catch (error) {
         console.error("Error al obtener carrito:", error);
-        res.status(500).json({ error: "Error al obtener carrito" });
+        response.status(500).json({ error: "Error al obtener carrito" });
     }
 };
 
-export const removeFromCart = (req, res) => {
+export const removeFromCart = (request, response) => {
     try {
-        const { sessionId } = req.body;
-        const { id } = req.params;
+        const { userId } = request.body;
+        const { id } = request.params;
         const productId = parseInt(id, 10);
 
-        if (!sessionId || Number.isNaN(productId)) {
-            return res.status(400).json({ error: "Datos inválidos" });
+        if (!userId || Number.isNaN(productId)) {
+            return response.status(400).json({ error: "Datos inválidos" });
         }
 
-        const cart = getOrCreateCart(sessionId);
+        const cart = getOrCreateCart(userId);
         cart.removeProduct(productId);
         cart.calculate_final_price(cart.products);
 
-        res.json({
+        response.json({
             success: true,
             message: "Producto eliminado del carrito",
             cart: {
@@ -82,7 +82,11 @@ export const removeFromCart = (req, res) => {
         });
     } catch (error) {
         console.error("Error al eliminar producto:", error);
-        res.status(500).json({ error: "Error al eliminar producto" });
+        response.status(500).json({ error: "Error al eliminar producto" });
     }
+};
+
+export const clearCartSession = (userId) => {
+    carts.delete(userId);
 };
 

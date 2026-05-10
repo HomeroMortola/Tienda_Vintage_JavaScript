@@ -211,7 +211,7 @@ function mostrarNotificacion(mensaje, esError = false) {
 
 async function getCartFromServer() {
     try {
-        return await apiFetch(`/carrito?sessionId=${SESSION_ID}`);
+        return await apiFetch(`/carrito?userId=${SESSION_ID}`);
     } catch (error) {
         console.error("Error:", error);
         return { products: [], total: 0, itemCount: 0 };
@@ -222,7 +222,7 @@ async function getCartFromServer() {
 async function agregarAlCarrito(producto, id) {
     try {
         await apiFetch('/carrito/agregar', jsonBody('POST', {
-            sessionId: SESSION_ID,
+            userId: SESSION_ID,
             product: producto,
             productId: id
         }));
@@ -237,7 +237,7 @@ async function agregarAlCarrito(producto, id) {
 // Eliminar producto del carrito
 async function eliminarDelCarrito(id) {
     try {
-        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { sessionId: SESSION_ID }));
+        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { userId: SESSION_ID }));
         mostrarNotificacion(" Producto eliminado del carrito");
         actualizarCarrito();
     } catch (error) {
@@ -249,7 +249,7 @@ async function eliminarDelCarrito(id) {
 // Finalizar compra
 async function finalizarCompra() {
     try {
-        await apiFetch('/carrito/comprar', jsonBody('POST', { sessionId: SESSION_ID }));
+        await apiFetch('/carrito/comprar', jsonBody('POST', { userId: SESSION_ID }));
         mostrarNotificacion(" ¡Compra realizada exitosamente!");
         setTimeout(() => actualizarCarrito(), 500);
     } catch (error) {

@@ -45,9 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .setEmail(email)
                 .setPassword(password)
 
-                
-                
-
 
             const newClient = builder.build();
             
