@@ -143,7 +143,7 @@
       const items = await cartRepo.getCart(userId);
       
       if (!items || items.length === 0) {
-        contentDiv.innerHTML = '<p style="text-align: center; font-style: italic;">🛒 Tu carrito está vacío. ¡Ve a comprar algo!</p>';
+        contentDiv.innerHTML = '<p style="text-align: center; font-style: italic;"> Tu carrito está vacío. ¡Ve a comprar algo!</p>';
         totalSpan.textContent = '$0.00';
         return;
       }

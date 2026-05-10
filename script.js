@@ -2,7 +2,7 @@ const categoryMap = {
     "vinilos.html": "Vinyls", 
     "bandanna.html": "Bandanna",
     "anteojos.html": "Glasses",
-    "T_Shirts.html": "T_Shirts",
+    "T_Shirts.html": "T_Shirt",
 };
 
 
