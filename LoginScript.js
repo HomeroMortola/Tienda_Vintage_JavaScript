@@ -1,6 +1,4 @@
-import { ClientRepository } from "./src/repositories/ClientRepository.js";
-import { supabase } from './srs/config/supabase.js';
-const repo = new ClientRepository();
+import { supabase } from './src/config/supabase.js'; 
 
 window.doLogin = async () => {
     const u = document.getElementById('user-input').value.trim();
@@ -9,34 +7,27 @@ window.doLogin = async () => {
     const passInput = document.getElementById('pass-input');
 
     try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email: u, password: p });
+        
+        const { data, error } = await supabase.auth.signInWithPassword({ 
+            email: u, 
+            password: p 
+        });
 
-        if (error) {
-            throw new Error("Acceso denegado");
-        }
+        if (error) throw new Error("Credenciales inválidas");
 
-        errorMsg.style.display = 'none';
-        console.log("Bienvenido:", data.user.email);
+        
+        console.log("Login exitoso para:", data.user.email);
+        
+        
+        localStorage.setItem('usuarioId', data.user.id);
+
+        // 4. Redirigir
         window.location.href = 'index.html';
-
-        if (!validUser) {
-            throw new Error("Acceso denegado");
-        }
-
-        errorMsg.style.display = 'none';
-        console.log("Bienvenido:", validUser.name);
-        window.location.href = 'index.html';
-        /*
-        if (clients && clients.id) {
-            // Guardamos el ID en el navegador del usuario
-            localStorage.setItem('usuarioId', clients.id);
-            }
-        */
 
     } catch (e) {
         errorMsg.textContent = "Correo o contraseña incorrectos";
         errorMsg.style.display = 'block';
         passInput.value = '';
-        console.error("Error en login:", e.message);
+        console.error("Error:", e.message);
     }
 };
