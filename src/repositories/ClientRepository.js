@@ -18,9 +18,7 @@ export class ClientRepository {
             .filter(c => c !== null);
     }
 
-    /**
-     * Transforma la data de Supabase en una instancia de Client usando el Builder.
-     */
+    // Convierte un registro de la base de datos en una instancia de Client
     mapToClientObject(item) {
         if (!item) return null;
 
@@ -34,7 +32,7 @@ export class ClientRepository {
                 .setPhone(item.phone)
                 .setDni(item.dni)
                 .setLocation(item.location)
-                .setPassword(item.password);
+                .setEmail(item.email);
 
             return builder.build(); //
         } catch (error) {
@@ -44,24 +42,38 @@ export class ClientRepository {
     }
 
     
-    async saveClient(client) {
+    async CreteNewClient(client, email, password) {
+        const { data, error} = await supabase.auth.signUp({ email, password });
+
+        if (error) {
+            console.error("Error al crear cuenta en Supabase:", error.message);
+            throw error;
+        }
+
+        if (!data || !data.user) {
+            const errMsg = "No se recibió información del usuario después del registro.";
+            console.error(errMsg);
+            throw new Error(errMsg);
+        }
+
         const dataForSupabase = {
+            id: data.user.id,
             name: client.name,
             surname: client.surname,
             phone: client.phone,
             dni: client.dni,
             location: client.location,
-            password: client.password,
+            Gmail: email
         };
 
-        const { data, error } = await supabase
+        const { data: dbData, error: dbError } = await supabase
             .from('clients')
             .insert([dataForSupabase])
             .select();
 
-        if (error) {
-            console.error("Error al guardar cliente en Supabase:", error.message);
-            throw error;
+        if (dbError) {
+            console.error("Error al guardar cliente en Supabase:", dbError.message);
+            throw dbError;
         }
 
         // Sincronización con servidor local (siguiendo tu estructura de Product)
@@ -76,8 +88,8 @@ export class ClientRepository {
             console.error("Error al conectar con el servidor local:", err);
         }
 
-        return data[0];
-    }
+        return dbData[0];
+    }   
 
     
     async getClientById(id) {

@@ -9,11 +9,15 @@ window.doLogin = async () => {
     const passInput = document.getElementById('pass-input');
 
     try {
-        const clients = await repo.getClients();
+        const { data, error } = await supabase.auth.signInWithPassword({ email: u, password: p });
 
-        const validUser = clients.find(client => 
-            client.email === u && client.password === p
-        );
+        if (error) {
+            throw new Error("Acceso denegado");
+        }
+
+        errorMsg.style.display = 'none';
+        console.log("Bienvenido:", data.user.email);
+        window.location.href = 'index.html';
 
         if (!validUser) {
             throw new Error("Acceso denegado");
@@ -24,6 +28,7 @@ window.doLogin = async () => {
         window.location.href = 'index.html';
 
     } catch (e) {
+        errorMsg.textContent = "Correo o contraseña incorrectos";
         errorMsg.style.display = 'block';
         passInput.value = '';
         console.error("Error en login:", e.message);
