@@ -19,9 +19,7 @@ export class BandannaBuilder extends ProductBuilder {
      * @param {string} size
      */
     setSize(size) {
-        if (!size || size.trim() === "") {
-            throw new Error("el tamaño no puede estar vacio");
-        }
+        this._validateString(size, "el tamaño no puede estar vacio");
         this.setMetaValue('size', size);
         return this;
     }
@@ -30,9 +28,7 @@ export class BandannaBuilder extends ProductBuilder {
      * @param {string} color
      */
     setColor(color) {
-        if (!color || color.trim() === "") {
-            throw new Error("el color no puede estar vacio");
-        }
+        this._validateString(color, "el color no puede estar vacio");
         this.setMetaValue('color', color);
         return this;
     }

@@ -25,28 +25,50 @@
         <div class="masthead-rule"></div>
       </header>
       
-
       <!-- Banda navegación  -->
+<div class="header-row">
+
         <div class="nav-band">
-          <a href="retro-vibes.html" class="nav-item">Catalogo</a>
+          <a href="index.html" class="nav-item">Catalogo</a>
           <a href="vinilos.html" class="nav-item active">Vinilos</a>
           <a href="bandanna.html" class="nav-item">Bandanas</a>
           <a href="anteojos.html" class="nav-item">Anteojos</a>
+          <a href="T_Shirts.html" class="nav-item">Remeras</a>
           <a href="carrito.html" class="nav-item">Carrito</a>
         </div>
-      
-        <!--grid productos-->
-      <section class="section-active">
+
+          <!--boton register-->
+  <a href="login.html" class="user-btn" title="Registro" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+  </a>
+</div>
+
+ <!-- barra de busqueda -->
+        <div class="search-container">
+          <input
+            type="text"
+            id="product-search"
+            class="search-input"
+            placeholder="Buscar producto..."
+          />
+        </div> 
+
+      <!-- GRID DE PRODUCTOS -->
+      <section class="section active">
         <div class="section-head">
           <h1 class="section-title">Vinilos</h1>
           <p class="section-sub">Clásicos que nunca pasan de moda</p>
         </div>
+
 
         <div class="products-grid"></div>
 
         <div class="grid-product"></div>
       </section>
     </div>
-    <script  type="module" src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

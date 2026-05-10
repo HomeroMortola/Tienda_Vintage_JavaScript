@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 // Configuración de clientes
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 export default async function handler(req, res) {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
       // 2. Extraer información relevante
       const orderId = paymentData.external_reference; // El ID que enviaste al crear la preferencia
-      const status = paymentData.status; // 'approved', 'rejected', etc.
+      const status = paymentData.status; // 'approved', 'rejected', 'pending' etc.
 
       // 3. Actualizar Supabase usando el Service Role (salta RLS)
       const { error } = await supabase

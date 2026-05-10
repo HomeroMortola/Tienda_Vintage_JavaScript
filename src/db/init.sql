@@ -8,6 +8,8 @@ CREATE TABLE public.clients (
   phone integer NOT NULL,
   dni integer NOT NULL,
   location text NOT NULL,
+  password text NOT NULL,   
+  
   CONSTRAINT clients_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.orders (

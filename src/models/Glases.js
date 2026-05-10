@@ -14,14 +14,6 @@ export class Glases extends Product {
     }
 
     getData() {
-        return {
-            id: this.id,
-            name: this.name ,
-            price: this.price,
-            stock: this.stock,
-            shape: this.shape,
-            color: this.color,
-            image_url: this.image_url
-        }
-    } 
+        return { ...super.getBaseData(), shape: this.shape, color: this.color };
+    }
 }

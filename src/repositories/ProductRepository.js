@@ -2,13 +2,14 @@ import { supabase } from '../config/supabase.js'
 import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
     export class ProductRepository {
-        async getProducts() {
-            const { data, error } = await supabase.from('products').select('*').eq('state', true);
+        async _fetchProducts(query) {
+            const { data, error } = await query;
             if (error) throw error;
-    
-            return (data || [])
-            .map(item => this.mapToProductObject(item))
-            .filter(p => p !== null); 
+            return (data || []).map(item => this.mapToProductObject(item)).filter(Boolean);
+        }
+
+        async getProducts() {
+            return this._fetchProducts(supabase.from('products').select('*').eq('state', true));
         }
 
     mapToProductObject(item) {
@@ -22,7 +23,7 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
         const builder = config.builder();   
 
-        
+        builder.setId(item.id)
         builder.setName(item.name);
         builder.setPrice(item.price);
         builder.setStock(item.stock ?? 0);
@@ -81,20 +82,10 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
         };
 
-async getProductsByCategory(categoryName) {
-    const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('category', categoryName) 
-        .eq('state', true);
-
-    if (error) {
-        console.error(`Error al traer ${categoryName}:`, error);
-        throw error;
-    }
-    return (data || [])
-        .map(item => this.mapToProductObject(item))
-        .filter(Boolean); 
+    async getProductsByCategory(categoryName) {
+    return this._fetchProducts(
+        supabase.from('products').select('*').eq('category', categoryName).eq('state', true)
+        );
     };
 
     //guardar archivo en bucket de supabase
@@ -111,6 +102,11 @@ async getProductsByCategory(categoryName) {
             .from(bucket)
             .getPublicUrl(path);
         return data.publicUrl;
+    }
+
+    //obtener producto por id
+    async getProductById(id) {
+        return this._fetchProducts(supabase.from('products').select('*').eq('id', id).eq('state', true));
     }
 }
 

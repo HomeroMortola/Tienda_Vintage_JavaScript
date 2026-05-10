@@ -3,23 +3,24 @@ import { Client } from './Client.js';
 export class ClientBuilder {
 
     constructor() {
-        this.id = null;
-        this.name = "";
-        this.surname = "";
-        this.phone = null;
-        this.dni = null;
-        this.location = "";
+        this.reset();
     }
 
-    /**
-     * @param {number} id
-     */
 
-    setId(id) {
-        this.id = id;
+    reset() {
+        this.Client = {
+            id: null,
+            name: "",
+            surname: "",
+            phone: null,
+            dni: null,
+            location: "",
+            email : "",
+            password : ""
+        };
+
         return this;
-    }
-
+    }    
 
     /**
      * @param {string} name
@@ -33,7 +34,7 @@ export class ClientBuilder {
     }
 
     /**
-     * @param {string} surName
+     * @param {string} surname
      */
     setSurname(surname) {
     if (!surname || surname.trim() === "") {
@@ -86,12 +87,38 @@ export class ClientBuilder {
         return this;
     }
 
+    /**
+     * @param {string} email
+     */
+    setEmail(email) {
+    if (!email || email.trim() === "") {
+        throw new Error("el correo electrónico no puede estar vacio");
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        throw new Error("el correo electrónico no es válido");
+    }
+    this.email = email;
+    return this;
+    }
+
+    setPassword(password){
+        if (!password || password.trim() === "") {
+        throw new Error("la contraseña no puede estar vacia");
+    }
+    this.password = password;
+    return this;
+    }
+
+    
+
 
     /**
      * @returns {Client}
      */
     build() {
         return new Client(this);
+        r
     }
 }
 

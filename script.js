@@ -1,22 +1,30 @@
 const categoryMap = {
     "vinilos.html": "Vinyls", 
     "bandanna.html": "Bandanna",
-    "anteojos.html": "Glasses"
+    "anteojos.html": "Glasses",
+    "T_Shirts.html": "T_Shirt",
 };
+
 
 import { ProductRepository } from '../src/repositories/ProductRepository.js';
+import { CartRepository } from '../src/repositories/CartRepository.js';
+const cartRepo = new CartRepository();
 
-const getSessionId = () => {
-    let sessionId = localStorage.getItem('sessionId');
-    if (!sessionId) {
-        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('sessionId', sessionId);
-    }
-    return sessionId;
-};
-
-const SESSION_ID = getSessionId();
 const API_URL = 'http://localhost:3000';
+
+async function apiFetch(path, options = {}) {
+    const response = await fetch(`${API_URL}${path}`, options);
+    if (!response.ok) throw new Error(`Error en ${path}`);
+    return response.json();
+}
+
+function jsonBody(method, data) {
+    return {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    };
+}
 
 // Variable para guardar los productos y no saturar el servidor
 let allProducts = [];
@@ -80,9 +88,9 @@ function render(list) {
     });
 }
 
-function mostrarDetalle(p) {
+async function mostrarDetalle(p) {
     const image_url = p.image_url || 'https://via.placeholder.com/300';
-
+    const userId = localStorage.getItem('usuarioId');
     const meta = p.metadata || {};
     const metaHtml = Object.entries(meta)
         .filter(([, v]) => v !== null && v !== undefined && v !== '')
@@ -113,14 +121,63 @@ function mostrarDetalle(p) {
                 <div class="modal-price">$${p.price}</div>
                 ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
                 ${metaHtml ? `<div class="modal-meta">${metaHtml}</div>` : ''}
-                <button class="buy-btn modal-buy-btn">COMPRAR</button>
-            </div>
-        </div>
-    `;
+                        <h3 id="quantyPurchase">Cantidad a comparar</h3>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1">
+                        <button class="buy-btn modal-buy-btn">COMPRA</button>
+                    </div>
+                </div>
+            `;
+        const btnAdd = modal.querySelector('.modal-buy-btn');
+        btnAdd.addEventListener('click', async () => {
+            const userId = localStorage.getItem('usuarioId');
+        
+        if (!userId) {
+            alert("Debes iniciar sesión o registrarte para agregar productos al carrito.");
+            window.location.href = 'login.html';
+            return;
+        }
 
+        const quantityInput = document.getElementById('quantity');
+        const quantity = parseInt(quantityInput.value, 10);
+
+        try {
+            btnAdd.disabled = true;
+            btnAdd.textContent = "Agregando...";
+
+            // Llamamos al repositorio 
+            await cartRepo.addToCart(userId, p.id, quantity);
+
+            alert(`¡${p.name} agregado con éxito!`);
+            cerrarModal();
+        } catch (error) {
+            console.error("Error al agregar al carrito:", error);
+            alert("No se pudo agregar el producto. Intentá de nuevo.");
+        } finally {
+            btnAdd.disabled = false;
+            btnAdd.textContent = "COMPRA";
+        }
+       });     
+    modal.querySelector('#quantity').addEventListener('change', validationQuantity);
     modal.querySelector('#modal-close').addEventListener('click', cerrarModal);
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+
+function validationQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    const value = parseInt(quantityInput.value, 10);
+
+      if (value > 6) {
+        alert("La cantidad máxima por compra es de 6 unidades.");
+        quantityInput.value = 6; // Lo bajamos al máximo permitido
+        return false;
+    } else if (value < 1 ) {
+        alert("Por favor, ingresa una cantidad válida (mínimo 1).");
+        quantityInput.value = 1;
+        return false;
+    }
+    
+    return true;
 }
 
 function cerrarModal() {
@@ -133,7 +190,7 @@ function cerrarModal() {
 
 // Arranca cuando carga el DOM
 document.addEventListener('DOMContentLoaded', fetchInventory);
-
+/*
 // Toggle del panel del carrito
 function toggleCart() {
     const cartPanel = document.getElementById('cart-panel');
@@ -154,9 +211,7 @@ function mostrarNotificacion(mensaje, esError = false) {
 
 async function getCartFromServer() {
     try {
-        const response = await fetch(`${API_URL}/carrito?sessionId=${SESSION_ID}`);
-        if (!response.ok) throw new Error("Error al obtener carrito");
-        return await response.json();
+        return await apiFetch(`/carrito?sessionId=${SESSION_ID}`);
     } catch (error) {
         console.error("Error:", error);
         return { products: [], total: 0, itemCount: 0 };
@@ -166,22 +221,13 @@ async function getCartFromServer() {
 // Agregar producto al carrito
 async function agregarAlCarrito(producto, id) {
     try {
-        const response = await fetch(`${API_URL}/carrito/agregar`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                sessionId: SESSION_ID,
-                product: producto,
-                productId: id
-            })
-        });
-        
-        if (!response.ok) throw new Error("Error al agregar producto");
-        
-        const data = await response.json();
+        await apiFetch('/carrito/agregar', jsonBody('POST', {
+            sessionId: SESSION_ID,
+            product: producto,
+            productId: id
+        }));
         mostrarNotificacion(`✓ ${producto.nombre} agregado al carrito`);
         actualizarCarrito();
-        
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al agregar producto", true);
@@ -191,17 +237,9 @@ async function agregarAlCarrito(producto, id) {
 // Eliminar producto del carrito
 async function eliminarDelCarrito(id) {
     try {
-        const response = await fetch(`${API_URL}/carrito/eliminar/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: SESSION_ID })
-        });
-        
-        if (!response.ok) throw new Error("Error al eliminar producto");
-        
+        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { sessionId: SESSION_ID }));
         mostrarNotificacion(" Producto eliminado del carrito");
         actualizarCarrito();
-        
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al eliminar producto", true);
@@ -211,22 +249,9 @@ async function eliminarDelCarrito(id) {
 // Finalizar compra
 async function finalizarCompra() {
     try {
-        const response = await fetch(`${API_URL}/carrito/comprar`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: SESSION_ID })
-        });
-        
-        if (!response.ok) throw new Error("Error en la compra");
-        
-        const data = await response.json();
+        await apiFetch('/carrito/comprar', jsonBody('POST', { sessionId: SESSION_ID }));
         mostrarNotificacion(" ¡Compra realizada exitosamente!");
-        
-        // Limpiar carrito en UI
-        setTimeout(() => {
-            actualizarCarrito();
-        }, 500);
-        
+        setTimeout(() => actualizarCarrito(), 500);
     } catch (error) {
         console.error("Error:", error);
         mostrarNotificacion(" Error al procesar la compra", true);
@@ -265,6 +290,6 @@ async function actualizarCarrito() {
     if (cartTotal) {
         cartTotal.textContent = `$${cart.total.toFixed(2)}`;
     }
-}
+}*/
 
 
