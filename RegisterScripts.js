@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRegister = document.getElementById('btn-register');
     const errorMsg = document.getElementById('reg-error');
 
-    
+    // Referencias a los inputs
     const inputs = {
         name: document.getElementById('reg-name'),
         surname: document.getElementById('reg-surname'),
@@ -49,9 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Llamamos método que maneja Auth de Base de Datos
             await repo.CreteNewClient(newClient, email, password);
 
-            //Avisamos sobre el correo de verificación
-            alert("¡Cuenta creada! Por favor, revisa tu correo electrónico para verificar tu cuenta antes de iniciar sesión.");
-            window.location.href = 'login.html'; 
+            alert("¡Usuario registrado con éxito!");
+            window.location.href = 'index.html'; // Redirección al inicio o login
 
         } catch (error) {
             errorMsg.textContent = error.message;

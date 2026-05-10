@@ -113,7 +113,7 @@ export const executePurchase = async (items, userId) => {
   return {
     preferenceId: result.id,
     initPoint: result.init_point,                 // URL para redirección a Producción
-    sandboxInitPoint: result.sandbox_init_point, // UR para redirección a PruebasL
+    sandboxInitPoint: result.sandbox_init_point, // URL para redirección a Pruebas
     orderId: order.id
   };
 };
