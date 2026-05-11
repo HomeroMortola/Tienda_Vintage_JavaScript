@@ -1,5 +1,5 @@
 // api/appURL.js
+import 'dotenv/config';
 
-export const APP_URL = (process.env.APP_URL || "https://tienda-vintage-java-script.vercel.app/") || "http://localhost:3000";
-
+export const APP_URL = process.env.APP_URL;
 

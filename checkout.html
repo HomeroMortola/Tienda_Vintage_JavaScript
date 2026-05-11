@@ -4,8 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Checkout - Retro Vibes Co.</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Oswald:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
     
     <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -15,47 +18,84 @@
     <div class="shell">
         <header class="masthead">
             <div class="ornament-line">✦ Panel de Pagos ✦</div>
-            <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+            <h1 class="brand-name"><span>Retro</span> Vibes Co.</h1>
             <div class="masthead-rule"></div>
         </header>
 
-        <div style="max-width:400px; margin:80px auto 0;">
-            <form id="checkout-form" onsubmit="return false;">
-                <div class="form-grid">
-                    <div id="login-error" class="error-msg" style="display:none; margin-top:10px; text-align:center;">
-                        Por favor, complete todos los campos
+        <main class="content">
+            <section class="checkout-layout">
+                <nav aria-label="Navegación de retorno" style="margin-bottom: 24px;">
+                    <a href="index.html" class="nav-item" style="color: var(--ink-muted); text-decoration: none; display: inline-block; margin-bottom: 16px;">
+                        ← Volver al catálogo
+                    </a>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+                        <span class="prod-cat"><strong id="item-count">0</strong> artículos en tu carrito</span>
                     </div>
+                    
+                    <p class="prod-cat" style="font-size: 16px; color: var(--ink-muted); margin: 0;">
+                        <strong>Completa tus datos para finalizar tu compra</strong> 
+                    </p>
+                </nav>
 
-                    <div class="form-group full">
-                        <label for="name-input">Nombre</label>
-                        <input type="text" id="name-input" placeholder="Juan" required/>
-                    </div>
-                    <div class="form-group full">
-                        <label for="lastname-input">Apellido</label>
-                        <input type="text" id="lastname-input" placeholder="Pérez" required/>
-                    </div>
-                    <div class="form-group full">
-                        <label for="email-input">Correo Electrónico</label>
-                        <input type="email" id="email-input" placeholder="juan.perez@example.com" required/>
-                    </div>
-                    </div>
-                    <div id="payment-methods" class="form-group full">
-                        <label>Método de Pago</label>
-                        <div style="display:flex;gap:12px;margin-top:8px;">
-                            <button type="button" class="btn-primary" onclick="mostrarToast('Método de pago no disponible en demo')" style="width:100%;margin-bottom:10px; text-decoration: none; window.location.href = '${APP_URL}/api/webhooks/mercadopago'">Mercado Pago</button>
+                <form id="checkout-form">
+                    <div class="form-grid"> 
+                        <div class="form-group full"> 
+                            <label for="cart-summary">Resumen de tu compra</label>
+                            <section id="cart-summary" style="background: var(--paper); padding: 12px; border-radius: 4px; margin-top: 8px; border: 1px solid var(--ink-muted);">
+                                <p style="color: var(--ink-muted); margin: 0; text-align: center;" id="empty-cart-msg">Tu carrito está vacío</p>
+                            </section>
                         </div>
 
-                <div id="payment-brick-container" style="margin-top: 20px;"></div>
-            </form>
+                        <div id="login-error" class="error-msg" role="alert" style="display: none; margin-top: 10px; text-align: center; color: red;">
+                            Por favor, revise los datos ingresados.
+                        </div>
 
-            <div style="text-align:center; margin-top:16px;">
-                <a href="carrito.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">← Volver al carrito</a>
-            </div>
+                        <div class="form-group full">
+                            <label for="name-input">Nombre</label>
+                            <input type="text" id="name-input" name="name" placeholder="Ej. Juan" required />
+                        </div>
+                        
+                        <div class="form-group full">
+                            <label for="lastname-input">Apellido</label>
+                            <input type="text" id="lastname-input" name="lastname" placeholder="Ej. Pérez" required />
+                        </div>
+                        
+                        <div class="form-group full">
+                            <label for="email-input">Correo Electrónico</label>
+                            <input type="email" id="email-input" name="email" placeholder="juan@ejemplo.com" required />
+                        </div>
+                        
+                        <div class="form-group full">
+                            <label for="address-input">Dirección de Envío</label>
+                            <input type="text" id="address-input" name="address" placeholder="Calle Falsa 123" required />
+                        </div>
 
-            <div id="toast" style="display:none;">Compra realizada con éxito</div>
-        </div>
+                        <div class="form-group full">
+                            <label for="city-input">Ciudad</label>
+                            <input type="text" id="city-input" name="city" placeholder="Buenos Aires" required />
+                        </div>
+
+                        <div id="payment-methods" class="form-group full">
+                            <label>Método de Pago</label>
+                            <div style="display:flex; gap:12px; margin-top:8px;">
+                                <button type="submit" id="pay-button" class="btn-primary" style="width:100%; margin-bottom:10px;">
+                                    Pagar con Mercado Pago
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <footer style="text-align:center; margin-top:16px;">
+                    <a href="carrito.html" class="prod-cat" style="color:var(--ink-muted); text-decoration:none;">← Volver al carrito</a>
+                </footer>
+
+                <div id="toast" role="status" aria-live="polite" style="display:none;">Compra realizada con éxito</div>
+            </section>
+        </main>
     </div>
 
-    <script type="module" src="checkout.js"></script>
+    <script type="module" src="public/CheckoutClient.js"></script>
 </body>
 </html>

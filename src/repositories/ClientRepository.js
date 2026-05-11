@@ -64,8 +64,7 @@ export class ClientRepository {
             phone: client.phone,
             dni: client.dni,
             location: client.location,
-            Gmail: email,
-            password: client.password
+            Gmail: email
         };
 
         const { data: dbData, error: dbError } = await supabase

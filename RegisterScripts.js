@@ -43,10 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .setPhone(inputs.phone.value)
                 .setLocation(inputs.location.value)
                 .setEmail(email)
-                .setPassword(password)
-
-                
-                
 
 
             const newClient = builder.build();

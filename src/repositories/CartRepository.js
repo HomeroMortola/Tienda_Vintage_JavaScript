@@ -1,13 +1,8 @@
 import { supabase } from '../config/supabase.js';
 import { ProductRepository } from './ProductRepository.js';
+import { CART_CONFIG } from '../utils/CartFactory.js';
 
 
-const userId = localStorage.getItem('usuarioId');
-/*
-if (!userId) {
-    window.location.href = 'register.html'; // Protegemos la vista
-}
-*/
 
 export class CartRepository {
     constructor() {

@@ -2,7 +2,7 @@ const categoryMap = {
     "vinilos.html": "Vinyls", 
     "bandanna.html": "Bandanna",
     "anteojos.html": "Glasses",
-    "T_Shirts.html": "T_Shirts",
+    "T_Shirts.html": "T_Shirt",
 };
 
 
@@ -90,7 +90,7 @@ function render(list) {
 
 async function mostrarDetalle(p) {
     const image_url = p.image_url || 'https://via.placeholder.com/300';
-
+    const userId = localStorage.getItem('usuarioId');
     const meta = p.metadata || {};
     const metaHtml = Object.entries(meta)
         .filter(([, v]) => v !== null && v !== undefined && v !== '')
@@ -133,7 +133,7 @@ async function mostrarDetalle(p) {
         
         if (!userId) {
             alert("Debes iniciar sesión o registrarte para agregar productos al carrito.");
-            window.location.href = 'register.html';
+            window.location.href = 'login.html';
             return;
         }
 
@@ -144,7 +144,7 @@ async function mostrarDetalle(p) {
             btnAdd.disabled = true;
             btnAdd.textContent = "Agregando...";
 
-            // Llamamos al repositorio (asegúrate de que 'cartRepo' esté instanciado al inicio del script.js)
+            // Llamamos al repositorio 
             await cartRepo.addToCart(userId, p.id, quantity);
 
             alert(`¡${p.name} agregado con éxito!`);
@@ -211,7 +211,7 @@ function mostrarNotificacion(mensaje, esError = false) {
 
 async function getCartFromServer() {
     try {
-        return await apiFetch(`/carrito?sessionId=${SESSION_ID}`);
+        return await apiFetch(`/carrito?userId=${SESSION_ID}`);
     } catch (error) {
         console.error("Error:", error);
         return { products: [], total: 0, itemCount: 0 };
@@ -222,7 +222,7 @@ async function getCartFromServer() {
 async function agregarAlCarrito(producto, id) {
     try {
         await apiFetch('/carrito/agregar', jsonBody('POST', {
-            sessionId: SESSION_ID,
+            userId: SESSION_ID,
             product: producto,
             productId: id
         }));
@@ -237,7 +237,7 @@ async function agregarAlCarrito(producto, id) {
 // Eliminar producto del carrito
 async function eliminarDelCarrito(id) {
     try {
-        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { sessionId: SESSION_ID }));
+        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { userId: SESSION_ID }));
         mostrarNotificacion(" Producto eliminado del carrito");
         actualizarCarrito();
     } catch (error) {
@@ -249,7 +249,7 @@ async function eliminarDelCarrito(id) {
 // Finalizar compra
 async function finalizarCompra() {
     try {
-        await apiFetch('/carrito/comprar', jsonBody('POST', { sessionId: SESSION_ID }));
+        await apiFetch('/carrito/comprar', jsonBody('POST', { userId: SESSION_ID }));
         mostrarNotificacion(" ¡Compra realizada exitosamente!");
         setTimeout(() => actualizarCarrito(), 500);
     } catch (error) {
