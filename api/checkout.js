@@ -48,8 +48,8 @@ export default async function handler(req, res) {
 
         // Devolvemos el link de sandbox para pruebas
         res.status(200).json({ 
-            initPoint: result.sandbox_init_point,
-            preferenceId: result.id 
+            initPoint: result.init_point,
+            preferenceId: result.id
         }); 
 
     } catch (error) {
@@ -57,3 +57,5 @@ export default async function handler(req, res) {
         res.status(500).json({ error: "Error al crear la orden de pago", message: error.message });
     }
 }
+
+
