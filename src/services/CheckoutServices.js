@@ -57,11 +57,14 @@ export const executePurchase = async (items, userId) => {
   });
 
   // 4. Persistencia: Creación de orden en estado "pending"
+  console.log("Calculando total:", serverSideTotal);
+  if (isNaN(serverSideTotal)) throw new Error("El total calculado no es un número válido");
+  
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
-      total_price: serverSideTotal,
-      status: 0, // Nota: el esquema dice double precision, pero un string es más lógico.
+      total_price: Number(serverSideTotal.toFixed(2)),
+      status: 'pending', // Nota: el esquema dice double precision, pero un string es más lógico.
       user_id: userId,
       items: items
     })
