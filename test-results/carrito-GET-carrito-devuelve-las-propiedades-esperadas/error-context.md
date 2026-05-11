@@ -12,12 +12,7 @@
 # Error details
 
 ```
-Error: expect(received).toHaveProperty(path)
-
-Expected path: "products"
-Received path: []
-
-Received value: {"error": "Falta userId"}
+SyntaxError: Unexpected token 'T', "The page c"... is not valid JSON
 ```
 
 # Test source
@@ -44,9 +39,9 @@ Received value: {"error": "Falta userId"}
   19  | 
   20  |     test('devuelve las propiedades esperadas', async ({ request }) => {
   21  |         const response = await request.get(`/carrito?sessionId=${SESSION_ID}`);
-  22  |         const body = await response.json();
-> 23  |         expect(body).toHaveProperty('products');
-      |                      ^ Error: expect(received).toHaveProperty(path)
+> 22  |         const body = await response.json();
+      |                      ^ SyntaxError: Unexpected token 'T', "The page c"... is not valid JSON
+  23  |         expect(body).toHaveProperty('products');
   24  |         expect(body).toHaveProperty('total');
   25  |         expect(body).toHaveProperty('itemCount');
   26  |     });

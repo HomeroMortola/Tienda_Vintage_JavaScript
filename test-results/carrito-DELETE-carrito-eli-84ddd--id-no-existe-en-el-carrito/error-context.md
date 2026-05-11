@@ -15,7 +15,7 @@
 Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: 500
-Received: 400
+Received: 404
 ```
 
 # Test source

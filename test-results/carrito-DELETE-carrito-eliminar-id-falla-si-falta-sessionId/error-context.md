@@ -6,24 +6,21 @@
 
 # Test info
 
-- Name: carrito.spec.js >> GET /carrito >> devuelve status 200
-- Location: tests-e2e\carrito.spec.js:15:5
+- Name: carrito.spec.js >> DELETE /carrito/eliminar/:id >> falla si falta sessionId
+- Location: tests-e2e\carrito.spec.js:100:5
 
 # Error details
 
 ```
 Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: 200
+Expected: 400
 Received: 404
 ```
 
 # Test source
 
 ```ts
-  1   | import { test, expect } from '@playwright/test';
-  2   | 
-  3   | const SESSION_ID = 'test-session-123';
   4   | 
   5   | const productoMock = {
   6   |     id: 1,
@@ -37,8 +34,7 @@ Received: 404
   14  | 
   15  |     test('devuelve status 200', async ({ request }) => {
   16  |         const response = await request.get(`/carrito?sessionId=${SESSION_ID}`);
-> 17  |         expect(response.status()).toBe(200);
-      |                                   ^ Error: expect(received).toBe(expected) // Object.is equality
+  17  |         expect(response.status()).toBe(200);
   18  |     });
   19  | 
   20  |     test('devuelve las propiedades esperadas', async ({ request }) => {
@@ -125,7 +121,8 @@ Received: 404
   101 |         const response = await request.delete(`/carrito/eliminar/${productoMock.id}`, {
   102 |             data: {}
   103 |         });
-  104 |         expect(response.status()).toBe(400);
+> 104 |         expect(response.status()).toBe(400);
+      |                                   ^ Error: expect(received).toBe(expected) // Object.is equality
   105 |         const body = await response.json();
   106 |         expect(body).toHaveProperty('error');
   107 |     });

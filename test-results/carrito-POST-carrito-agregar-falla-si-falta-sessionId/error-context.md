@@ -6,15 +6,15 @@
 
 # Test info
 
-- Name: carrito.spec.js >> GET /carrito >> devuelve status 200
-- Location: tests-e2e\carrito.spec.js:15:5
+- Name: carrito.spec.js >> POST /carrito/agregar >> falla si falta sessionId
+- Location: tests-e2e\carrito.spec.js:54:5
 
 # Error details
 
 ```
 Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: 200
+Expected: 400
 Received: 404
 ```
 
@@ -37,8 +37,7 @@ Received: 404
   14  | 
   15  |     test('devuelve status 200', async ({ request }) => {
   16  |         const response = await request.get(`/carrito?sessionId=${SESSION_ID}`);
-> 17  |         expect(response.status()).toBe(200);
-      |                                   ^ Error: expect(received).toBe(expected) // Object.is equality
+  17  |         expect(response.status()).toBe(200);
   18  |     });
   19  | 
   20  |     test('devuelve las propiedades esperadas', async ({ request }) => {
@@ -82,7 +81,8 @@ Received: 404
   58  |                 productId: productoMock.id
   59  |             }
   60  |         });
-  61  |         expect(response.status()).toBe(400);
+> 61  |         expect(response.status()).toBe(400);
+      |                                   ^ Error: expect(received).toBe(expected) // Object.is equality
   62  |         const body = await response.json();
   63  |         expect(body).toHaveProperty('error');
   64  |     });
