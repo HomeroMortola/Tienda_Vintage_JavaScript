@@ -41,16 +41,17 @@ export const executePurchase = async (items, userId) => {
   const validatedItemsForMP = items.map(item => {
     const dbProduct = dbProductsMap[item.id];
     if (!dbProduct) throw new Error(`Producto no encontrado (ID: ${item.id})`);
+    
     if (dbProduct.stock < (item.quantity || 1)) throw new Error(`Sin stock suficiente para: ${dbProduct.name}`);
     
-    serverSideTotal += dbProduct.price * (item.quantity || 1);
+    const price = Number(dbProduct.price);
+    serverSideTotal += price * qty;
 
     return {
       id: dbProduct.id,
       title: dbProduct.name,
       unit_price: dbProduct.price,
-      total_price: serverSideTotal,
-      quantity: item.quantity || 1,
+      quantity: item.qty || 1,
       currency_id: 'ARS'
     };
   });
