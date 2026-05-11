@@ -4,13 +4,13 @@ test.describe('Página principal — catálogo', () => {
 
     test('la página carga correctamente', async ({ page }) => {
         await page.goto('/index.html');
-        await expect(page).toHaveTitle('Retro Vibes Co.');
+        await expect(page).toHaveTitle('Retro Vibes Co. - Tienda Vintage');
         await page.screenshot({ path: 'screenshots/01-pagina-principal.png' });
     });
 
     test('el grid de productos se llena con productos', async ({ page }) => {
         await page.goto('/index.html');
-        await page.waitForSelector('.prod-card', { timeout: 15000 });
+        await page.waitForSelector('.prod-card');
         const productos = await page.locator('.prod-card').count();
         expect(productos).toBeGreaterThan(0);
         await page.screenshot({ path: 'screenshots/02-productos-cargados.png' });
@@ -99,10 +99,12 @@ test.describe('Modal de producto', () => {
 test.describe('Navegación', () => {
 
     test('el link de Vinilos navega correctamente', async ({ page }) => {
+        page.on('console', msg => console.log(msg.text()));
         await page.goto('/index.html');
         await page.click('a[href="vinilos.html"]');
         await expect(page).toHaveURL(/vinilos/);
-        await page.screenshot({ path: 'screenshots/11-pagina-vinilos.png' });
+        await page.waitForSelector('.prod-card', { timeout: 15000 });
+        await page.screenshot({ path: 'screenshots/11-pagina-vinilos.png', fullPage: true });
     });
 
     test('el link de Bandanas navega correctamente', async ({ page }) => {

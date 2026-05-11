@@ -122,7 +122,7 @@ async function mostrarDetalle(p) {
                 ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
                 ${metaHtml ? `<div class="modal-meta">${metaHtml}</div>` : ''}
                         <h3 id="quantyPurchase">Cantidad a comparar</h3>
-                        <input type="number" id="quantity" name="quantity" min="1" value="1">
+                        <input type="number" id="quantity" name="quantity" min="1" max="6" value="1">
                         <button class="buy-btn modal-buy-btn">COMPRA</button>
                     </div>
                 </div>
@@ -190,106 +190,5 @@ function cerrarModal() {
 
 // Arranca cuando carga el DOM
 document.addEventListener('DOMContentLoaded', fetchInventory);
-/*
-// Toggle del panel del carrito
-function toggleCart() {
-    const cartPanel = document.getElementById('cart-panel');
-    if (cartPanel) {
-        cartPanel.classList.toggle('open');
-    }
-}
-
-// Mostrar notificación
-function mostrarNotificacion(mensaje, esError = false) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${esError ? 'error' : 'success'}`;
-    notification.textContent = mensaje;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => notification.remove(), 3000);
-}
-
-async function getCartFromServer() {
-    try {
-        return await apiFetch(`/carrito?userId=${SESSION_ID}`);
-    } catch (error) {
-        console.error("Error:", error);
-        return { products: [], total: 0, itemCount: 0 };
-    }
-}
-
-// Agregar producto al carrito
-async function agregarAlCarrito(producto, id) {
-    try {
-        await apiFetch('/carrito/agregar', jsonBody('POST', {
-            userId: SESSION_ID,
-            product: producto,
-            productId: id
-        }));
-        mostrarNotificacion(`✓ ${producto.nombre} agregado al carrito`);
-        actualizarCarrito();
-    } catch (error) {
-        console.error("Error:", error);
-        mostrarNotificacion(" Error al agregar producto", true);
-    }
-}
-
-// Eliminar producto del carrito
-async function eliminarDelCarrito(id) {
-    try {
-        await apiFetch(`/carrito/eliminar/${id}`, jsonBody('DELETE', { userId: SESSION_ID }));
-        mostrarNotificacion(" Producto eliminado del carrito");
-        actualizarCarrito();
-    } catch (error) {
-        console.error("Error:", error);
-        mostrarNotificacion(" Error al eliminar producto", true);
-    }
-}
-
-// Finalizar compra
-async function finalizarCompra() {
-    try {
-        await apiFetch('/carrito/comprar', jsonBody('POST', { userId: SESSION_ID }));
-        mostrarNotificacion(" ¡Compra realizada exitosamente!");
-        setTimeout(() => actualizarCarrito(), 500);
-    } catch (error) {
-        console.error("Error:", error);
-        mostrarNotificacion(" Error al procesar la compra", true);
-    }
-}
-
-// Actualizar carrito en la UI
-async function actualizarCarrito() {
-    const cart = await getCartFromServer();
-    const cartIcon = document.querySelector('.cart-icon');
-    const cartPanel = document.getElementById('cart-panel');
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-
-    // Actualizar badge de cantidad
-    if (cartIcon) {
-        cartIcon.textContent = cart.itemCount;
-    }
-
-    // Renderizar items del carrito
-    if (cartItems && cart.products.length > 0) {
-        cartItems.innerHTML = cart.products.map((product, index) => `
-            <div class="cart-item">
-                <div class="cart-item-info">
-                    <h4>${product.nombre || product.productName}</h4>
-                    <p class="cart-item-price">$${product.precio || product.price}</p>
-                </div>
-                <button class="remove-btn" onclick="eliminarDelCarrito(${product.id})">✕</button>
-            </div>
-        `).join('');
-    } else if (cartItems) {
-        cartItems.innerHTML = '<p class="empty-cart">El carrito está vacío</p>';
-    }
-
-    // Actualizar total
-    if (cartTotal) {
-        cartTotal.textContent = `$${cart.total.toFixed(2)}`;
-    }
-}*/
 
 
