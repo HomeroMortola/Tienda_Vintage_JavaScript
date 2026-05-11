@@ -32,6 +32,7 @@
     <a href="vinilos.html" class="nav-item">Vinilos</a>
     <a href="bandanna.html" class="nav-item">Bandanas</a>
     <a href="anteojos.html" class="nav-item">Anteojos</a>
+    <a href="T_Shirts.html" class="nav-item">Remeras</a>
     <a href="carrito.html" class="nav-item">Carrito</a>
   </div>
 
@@ -55,6 +56,24 @@
         </div>
 
   <h1 class="categoria-titulo">Productos</h1>
+  <div id="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: monospace;">
+    <strong>ID de Usuario (localStorage):</strong> <span id="display-user-id">Cargando...</span>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userId = localStorage.getItem('usuarioId');
+        const displayElement = document.getElementById('display-user-id');
+        
+        if (userId) {
+            displayElement.textContent = userId;
+            displayElement.style.color = "green";
+        } else {
+            displayElement.textContent = "No hay ID guardado aún.";
+            displayElement.style.color = "red";
+        }
+    });
+</script>
 
   <div class="grid-product"></div>
 
