@@ -225,7 +225,7 @@ body {
 
 .login-link {
   font-family: var(--f-gothic);
-  font-size: 0.80rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -328,8 +328,10 @@ body {
 
 .section-head {
   text-align: center;
+  margin-top: 12px;
   margin-bottom: 8px;
 }
+
 .section-kicker {
   font-family: var(--f-display);
   font-size: 10px;
@@ -373,6 +375,7 @@ body {
   gap: 0;
   border: 2px solid var(--ink);
 }
+
 @media (max-width: 720px) {
   .products-grid {
     grid-template-columns: 1fr 1fr;
@@ -1549,4 +1552,40 @@ input[type="file"] {
   text-transform: uppercase;
   font-size: 11px;
   outline: none;
+}
+
+/*mobile para carrito*/
+@media (max-width: 768px) {
+  .checkout-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cart-table-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .cart-item-row,
+  .cart-table-header {
+    min-width: 650px;
+  }
+
+  .summary-box {
+    width: 100%;
+  }
+
+  .section-title {
+    font-size: 3rem;
+  }
+
+  .sum-total-val {
+    font-size: 2rem;
+  }
+
+  .btn-primary,
+  .btn-back {
+    width: 100%;
+  }
 }
