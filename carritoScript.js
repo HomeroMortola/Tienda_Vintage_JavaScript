@@ -1,9 +1,10 @@
 // carritoScript.js
 import { supabase } from './src/config/supabase.js';
 import { CartRepository } from './src/repositories/CartRepository.js';
+import { supabase } from './src/config/supabase.js'
 
-const cartRepo = new CartRepository();
-const userId = localStorage.getItem('usuarioId');
+  const cartRepo = new CartRepository();
+  const userId = localStorage.getItem('usuarioId'); 
 
 const fmt = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 

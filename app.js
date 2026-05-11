@@ -7,13 +7,13 @@ import { fileURLToPath } from "url";
 
 import { createProduct, getProducts } from "./src/controllers/ProductController.js";
 import { addToCart, getCart, removeFromCart } from "./src/controllers/CartController.js";
-import { processCheckout } from "./src/controllers/CheckoutController.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 5500;
+const PORT = 3000;
 
 
 app.use(cors({
@@ -33,7 +33,7 @@ app.post("/createproduct", createProduct);
 app.post("/carrito/agregar", addToCart);
 app.delete("/carrito/eliminar/:id", removeFromCart);
 app.get("/carrito", getCart);
-app.post("/checkout", processCheckout);
+
 
 // Rutas para las páginas de éxito y fallo (para Mercado Pago)
 app.get("/success", (req, res) => {

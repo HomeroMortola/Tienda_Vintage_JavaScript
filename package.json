@@ -1,7 +1,6 @@
 {
   "name": "fifa",
   "version": "1.0.0",
-  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "vitest"
