@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const AUTH_DB = {
     user: 'admin',
-    pass: 'admin123',
+    pass: 'Retrovibes_2026',
     target: 'admin-panel.html'
 };
 
