@@ -42,8 +42,10 @@ async function cargarCarrito() {
 
       const row = document.createElement("div");
       row.className = "cart-item-row";
+      /*
       row.style.display = "grid";
       row.style.gridTemplateColumns = "70px 1fr 130px 110px 40px";
+      */
       row.style.gap = "12px";
       row.style.padding = "12px 16px";
       row.style.alignItems = "center";
