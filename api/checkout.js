@@ -1,8 +1,8 @@
 // api/checkout.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-
-const mpClient = new MercadoPagoConfig({ accessToken: ENV.MP_ACCESS_TOKEN });
+// Configuración de clientes usando process.env para seguridad
+const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
@@ -16,8 +16,8 @@ export default async function handler(req, res) {
         const dynamicBaseUrl = `${protocol}://${host}`;
         
         // Priorizamos ENV.APP_URL si no es localhost, de lo contrario usamos la URL dinámica (ngrok)
-        const baseUrl = (ENV.APP_URL && !ENV.APP_URL.includes('localhost')) 
-            ? ENV.APP_URL 
+        const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost')) 
+            ? process.env.APP_URL 
             : dynamicBaseUrl;
 
         console.log('Usando Base URL para Webhooks:', baseUrl);
