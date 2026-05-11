@@ -53,7 +53,7 @@ async function cargarCarrito() {
                 </div>
                 <div class="item-qty-controls" style="display:flex; align-items:center; gap:8px;">
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity - 1})">-</button>
-                    <span id="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
+                    <span id="qty-val-${item.cartItemId}" style="width:20px; text-align:center;">${item.quantity}</span>
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
                 </div>
                 <div class="item-price-box">
@@ -88,11 +88,15 @@ window.updateQty = async (itemId, newQty) => {
     let finalQty = parseInt(newQty);
     if (finalQty > 6) {
         alert("La cantidad máxima por compra es de 6 unidades.");
-        document.getElementById('qty-val').value = 6;
+        finalQty = 6;
+
+        const qtyInput = document.getElementById('qty-val-' + itemId);
+        if (qtyInput) qtyInput.textContent = 6;
+
     }
-    if (newQty < 1) return;
+    if (isNaN(finalQty) || finalQty < 1) return;
     try {
-        const { error } = await supabase.from('cart_items').update({ quantity: newQty }).eq('id', itemId);
+        const { error } = await supabase.from('cart_items').update({ quantity: finalQty }).eq('id', itemId);
         if (error) throw error;
         cargarCarrito();
     } catch (e) { 
