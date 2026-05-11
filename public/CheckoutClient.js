@@ -1,70 +1,120 @@
-// public/checkoutClient.js
+// public/CheckoutClient.js
+import { CartRepository } from '../src/repositories/CartRepository.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
     const checkoutForm = document.getElementById('checkout-form');
     const payButton = document.getElementById('pay-button');
     const toast = document.getElementById('toast');
     const errorMsg = document.getElementById('login-error');
+    const counterElement = document.getElementById('item-count');
 
-    // 1. Interceptamos el envío del formulario
-    checkoutForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que la página se recargue
+    const cartRepo = new CartRepository();
+    const userId = localStorage.getItem('usuarioId');
 
-        // Ocultamos mensajes de error previos y cambiamos el estado del botón
-        errorMsg.style.display = 'none';
-        payButton.disabled = true;
-        payButton.innerText = 'Procesando pago...';
-
+    // 1. Cargar contador de items y resumen
+    if (userId && counterElement) {
         try {
-            // 2. Recuperamos el carrito (Asumiendo que lo guardas en localStorage)
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+            const items = await cartRepo.getCart(userId);
+            const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+            counterElement.innerText = totalQuantity;
             
-            if (cartItems.length === 0) {
-                throw new Error('El carrito está vacío. Agrega productos antes de pagar.');
+            // Opcional: Renderizar resumen en el div cart-summary
+            const summaryDiv = document.getElementById('cart-summary');
+            if (summaryDiv && items.length > 0) {
+                summaryDiv.innerHTML = items.map(item => `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+                        <span>${item.product.name} x ${item.quantity}</span>
+                        <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `).join('') + `
+                    <div style="border-top: 1px solid var(--ink-muted); margin-top: 8px; padding-top: 8px; font-weight: bold; display: flex; justify-content: space-between;">
+                        <span>Total</span>
+                        <span>$${items.reduce((total, item) => total + (item.product.price * item.quantity), 0).toFixed(2)}</span>
+                    </div>
+                `;
             }
-
-            // 3. Recopilamos los datos del comprador
-            const buyerData = {
-                name: document.getElementById('name-input').value,
-                surname: document.getElementById('lastname-input').value,
-                email: document.getElementById('email-input').value,
-                // Puedes agregar más campos según lo que necesite tu backend
-            };
-
-            // 4. Hacemos la petición POST a nuestra propia API en Vercel
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    items: cartItems,
-                    buyer: buyerData
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Error al generar la orden de pago');
-            }
-
-            // 5. ¡LA REDIRECCIÓN MÁGICA!
-            // data.initPoint es la URL oficial que nos devolvió Mercado Pago desde el backend
-            toast.style.display = 'block';
-            toast.innerText = 'Redirigiendo a Mercado Pago...';
-            
-            // Redirigimos al usuario a la URL de pago de producción (o sandboxInitPoint para pruebas)
-            window.location.href = data.initPoint; 
-
         } catch (error) {
-            console.error('Error en el checkout:', error);
-            errorMsg.innerText = error.message;
-            errorMsg.style.display = 'block';
-            
-            // Restauramos el botón si algo falla
-            payButton.disabled = false;
-            payButton.innerText = 'Pagar con Mercado Pago';
+            console.error("No se pudo cargar el carrito:", error);
         }
-    });
+    }
+
+    // 2. Manejar el envío del formulario
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            errorMsg.style.display = 'none';
+            payButton.disabled = true;
+            payButton.innerText = 'Procesando pago...';
+
+            try {
+                if (!userId) {
+                    throw new Error('Debes iniciar sesión para realizar la compra.');
+                }
+
+                // Recuperar carrito REAL desde la base de datos
+                const items = await cartRepo.getCart(userId);
+                
+                if (items.length === 0) {
+                    throw new Error('El carrito está vacío. Agrega productos antes de pagar.');
+                }
+
+                // Formatear items para el backend (id y cantidad)
+                const itemsForBackend = items.map(item => ({
+                    id: item.product.id,
+                    quantity: item.quantity
+                }));
+
+                // Datos del comprador
+                const buyerData = {
+                    name: document.getElementById('name-input').value,
+                    surname: document.getElementById('lastname-input').value,
+                    email: document.getElementById('email-input').value,
+                    address: document.getElementById('address-input').value,
+                    city: document.getElementById('city-input').value
+                };
+
+                const response = await fetch('/checkout', {  // 👈 Ruta relativa, funciona local y en Ngrok automáticamente
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+    },
+    body: JSON.stringify({
+        userId: userId,
+        items: itemsForBackend,
+        buyer: buyerData
+    })
+});
+
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error al generar la orden de pago');
+                }
+
+                // Redirección a Mercado Pago
+                if (data.initPoint) {
+                    toast.style.display = 'block';
+                    toast.innerText = 'Redirigiendo a Mercado Pago...';
+
+                    
+                    setTimeout(() => {
+                        window.location.href = data.initPoint;
+                    }, 1000);
+                } else {
+                    throw new Error('No se recibió el punto de inicio de pago.');
+                }
+
+            } catch (error) {
+                console.error('Error en el checkout:', error);
+                errorMsg.innerText = error.message;
+                errorMsg.style.display = 'block';
+                payButton.disabled = false;
+                payButton.innerText = 'Pagar con Mercado Pago';
+            }
+        });
+    }
 });

@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script type="importmap">{"imports": {"@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"}}</script>
+  <script type="importmap">
+  {
+    "imports": {
+      "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+    }
+  }
+  </script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Retro Vibes Co.</title>
+  <title>Retro Vibes Co. - Tienda Vintage</title>
   <link rel="icon" type="image/png" sizes="32x32" href="logook.png">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Colocker&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bestlovers&display=swap" rel="stylesheet">
 </head>
- <body class="home-page">
+
+<body class="home-page">
 <div class="shell">
 
   <!-- ══ MASTHEAD ══ -->
@@ -25,36 +32,39 @@
   </header>
 
   <!-- ── Banda navegación ── -->
-<div class="header-row">
 
-  <div class="nav-band">    
-    <div class="nav-item active catalogo">Catalogo</div>
-    <a href="vinilos.html" class="nav-item">Vinilos</a>
-    <a href="bandanna.html" class="nav-item">Bandanas</a>
-    <a href="anteojos.html" class="nav-item">Anteojos</a>
-    <a href="carrito.html" class="nav-item">Carrito</a>
-  </div>
+  <nav class="header-row" aria-label="Navegación principal">
+    <div class="nav-band">    
+      <a href="index.html" class="nav-item active">Catalogo</a>
+      <a href="vinilos.html" class="nav-item">Vinilos</a>
+      <a href="bandanna.html" class="nav-item">Bandanas</a>
+      <a href="anteojos.html" class="nav-item">Anteojos</a>
+      <a href="T_Shirts.html" class="nav-item">Remeras</a>
+      <a href="carrito.html" class="nav-item">Carrito</a>
+    </div>
 
     <!-- ── boton register ── -->
-  <a href="login.html" class="user-btn" title="Registro" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-  </a>
-</div>
+    <a href="login.html" class="user-btn" title="Registro/Login" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </a>
+  </nav>
 
-  <!-- barra de busqueda -->
-        <div class="search-container">
-          <input
-            type="text"
-            id="product-search"
-            class="search-input"
-            placeholder="Buscar producto..."
-          />
-        </div>
+  <main>
+    <!-- barra de busqueda -->
+    <section class="search-container" aria-label="Buscador de productos">
+      <input
+        type="text"
+        id="product-search"
+        class="search-input"
+        placeholder="Buscar producto..."
+      />
+    </section>
 
-  <h1 class="categoria-titulo">Productos</h1>
+
+    <h1 class="categoria-titulo">Nuestros Productos</h1>
   <div id="debug-info" style="background: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: monospace;">
     <strong>ID de Usuario (localStorage):</strong> <span id="display-user-id">Cargando...</span>
 </div>
@@ -74,10 +84,10 @@
     });
 </script>
 
-  <div class="grid-product"></div>
-
-  <script  type="module" src="script.js"></script>
-  
+    <section class="grid-product" id="products-grid">
+      <!-- Los productos se cargan dinámicamente aquí -->
+    </section>
+  </main>
 
   <footer style="text-align:center; margin-top:60px; padding-top:20px; border-top:1px solid var(--paper-deep);">
     <span class="prod-cat" style="font-size:8px; color:var(--paper-deep); letter-spacing:2px;">
@@ -85,6 +95,10 @@
       <a href="admin.html" style="color:var(--paper-deep); text-decoration:none;">Admin</a>
     </span>
   </footer>
+
+</div>
+
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
