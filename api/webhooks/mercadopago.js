@@ -1,11 +1,10 @@
 // api/webhooks/mercadopago.js
 import { createClient } from '@supabase/supabase-js';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
-import { ENV } from '../../env.js';
+
 
 // Configuración de clientes usando ENV para consistencia
-const supabase = createClient(ENV.SUPABASE_URL, ENV.SUPABASE_KEY);
-const mpClient = new MercadoPagoConfig({ accessToken: ENV.MP_ACCESS_TOKEN });
+const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 export default async function handler(request, response) {
   if (request.method !== 'POST') return response.status(405).send('Method Not Allowed');
