@@ -85,13 +85,10 @@ function actualizarTotales(total, count) {
 
 // Funciones globales (window. porque es un módulo)
 window.updateQty = async (itemId, newQty) => {
-    let finalQty = document.getElementById('qty-val').value;
+    let finalQty = parseInt(newQty);
     if (finalQty > 6) {
         alert("La cantidad máxima por compra es de 6 unidades.");
         document.getElementById('qty-val').value = 6;
-        
-        const inputElement = document.getElementById('qty-val');
-        if (inputElement) inputElement.value = 6;
     }
     if (newQty < 1) return;
     try {
