@@ -10,7 +10,7 @@ test.describe('Página principal — catálogo', () => {
 
     test('el grid de productos se llena con productos', async ({ page }) => {
         await page.goto('/index.html');
-        await page.waitForSelector('.prod-card');
+        await page.waitForSelector('.prod-card', { timeout: 15000 });
         const productos = await page.locator('.prod-card').count();
         expect(productos).toBeGreaterThan(0);
         await page.screenshot({ path: 'screenshots/02-productos-cargados.png' });
