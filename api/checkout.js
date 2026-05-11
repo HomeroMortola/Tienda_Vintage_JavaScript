@@ -10,12 +10,10 @@ export default async function handler(req, res) {
     try {
         const { items, buyer, userId, orderId } = req.body;
 
-        // Para pruebas con ngrok, intentamos detectar la URL base si ENV.APP_URL no está configurada o es localhost
         const host = req.headers['x-forwarded-host'] || req.headers.host;
         const protocol = req.headers['x-forwarded-proto'] || 'http';
         const dynamicBaseUrl = `${protocol}://${host}`;
         
-        // Priorizamos ENV.APP_URL si no es localhost, de lo contrario usamos la URL dinámica (ngrok)
         const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost')) 
             ? process.env.APP_URL 
             : dynamicBaseUrl;
