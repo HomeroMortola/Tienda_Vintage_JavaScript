@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 
-// Configuración de clientes usando ENV
+// Configuración de clientes usando process.env para seguridad y consistencia
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
