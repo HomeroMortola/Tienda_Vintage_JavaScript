@@ -41,25 +41,30 @@ export const executePurchase = async (items, userId) => {
   const validatedItemsForMP = items.map(item => {
     const dbProduct = dbProductsMap[item.id];
     if (!dbProduct) throw new Error(`Producto no encontrado (ID: ${item.id})`);
+    
     if (dbProduct.stock < (item.quantity || 1)) throw new Error(`Sin stock suficiente para: ${dbProduct.name}`);
     
-    serverSideTotal += dbProduct.price * (item.quantity || 1);
+    const price = Number(dbProduct.price);
+    serverSideTotal += price * qty;
 
     return {
       id: dbProduct.id,
       title: dbProduct.name,
       unit_price: dbProduct.price,
-      quantity: item.quantity || 1,
+      quantity: item.qty || 1,
       currency_id: 'ARS'
     };
   });
 
   // 4. Persistencia: Creación de orden en estado "pending"
+  console.log("Calculando total:", serverSideTotal);
+  if (isNaN(serverSideTotal)) throw new Error("El total calculado no es un número válido");
+  
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
-      total_price: serverSideTotal,
-      status: 0, // Nota: el esquema dice double precision, pero un string es más lógico.
+      total_price: Number(serverSideTotal.toFixed(2)),
+      status: 'pending', // Nota: el esquema dice double precision, pero un string es más lógico.
       user_id: userId,
       items: items
     })

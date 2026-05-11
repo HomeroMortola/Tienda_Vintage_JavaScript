@@ -1,5 +1,6 @@
 // api/checkout.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { supabase } from '../src/config/supabase.js';
 
 // Configuración de clientes usando process.env para seguridad
 const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
@@ -10,12 +11,31 @@ export default async function handler(req, res) {
     try {
         const { items, buyer, userId, orderId } = req.body;
 
-        // Para pruebas con ngrok, intentamos detectar la URL base si ENV.APP_URL no está configurada o es localhost
+        if (!items || items.length === 0) {
+            return res.status(400).json({ error: "El carrito está vacío" });
+        }
+
+        // Obtener los IDs de los productos para consultar sus precios reales
+        const productIds = items.map(item => item.id);
+        const { data: dbProducts, error: dbError } = await supabase
+            .from('products')
+            .select('id, name, price')
+            .in('id', productIds);
+
+        if (dbError || !dbProducts) {
+            throw new Error("Error al consultar precios en la base de datos");
+        }
+
+        // Crear un mapa para búsqueda rápida
+        const productsMap = dbProducts.reduce((acc, p) => {
+            acc[p.id] = p;
+            return acc;
+        }, {});
+
         const host = req.headers['x-forwarded-host'] || req.headers.host;
         const protocol = req.headers['x-forwarded-proto'] || 'http';
         const dynamicBaseUrl = `${protocol}://${host}`;
-        
-        // Priorizamos ENV.APP_URL si no es localhost, de lo contrario usamos la URL dinámica (ngrok)
+
         const baseUrl = (process.env.APP_URL && !process.env.APP_URL.includes('localhost')) 
             ? process.env.APP_URL 
             : dynamicBaseUrl;
@@ -23,15 +43,21 @@ export default async function handler(req, res) {
         console.log('Usando Base URL para Webhooks:', baseUrl);
 
         const preference = new Preference(mpClient);
-        
+
         const result = await preference.create({
             body: {
-                items: items.map(item => ({
-                    id: item.id,
-                    title: item.name || 'Producto Retro Vibes', 
-                    quantity: parseInt(item.quantity) || 1,
-                    unit_price: parseFloat(item.price) || 1000 
-                })),
+                items: items.map(item => {
+                    const dbProduct = productsMap[item.id];
+                    if (!dbProduct) {
+                        throw new Error(`Producto con ID ${item.id} no encontrado`);
+                    }
+                    return {
+                        id: item.id,
+                        title: dbProduct.name, 
+                        quantity: parseInt(item.quantity) || 1,
+                        unit_price: parseFloat(dbProduct.price)
+                    };
+                }),
                 payer: {
                     name: buyer.name,
                     surname: buyer.surname,
@@ -48,9 +74,9 @@ export default async function handler(req, res) {
             }
         });
 
-        // Devolvemos el link de sandbox para pruebas
+        // Devolvemos init_point (MP decidirá si es sandbox o real según el token)
         res.status(200).json({ 
-            initPoint: result.sandbox_init_point,
+            initPoint: result.init_point,
             preferenceId: result.id 
         }); 
 
@@ -59,3 +85,6 @@ export default async function handler(req, res) {
         res.status(500).json({ error: "Error al crear la orden de pago", message: error.message });
     }
 }
+
+
+

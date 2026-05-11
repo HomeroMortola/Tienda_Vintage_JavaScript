@@ -4,8 +4,14 @@ test.describe('Página principal — catálogo', () => {
 
     test('la página carga correctamente', async ({ page }) => {
         await page.goto('/index.html');
+        await page.waitForSelector('.prod-card', { timeout: 15000 });
+        // Esperar carga completa de recursos
+        await page.waitForLoadState('networkidle');
+
+        // Espera extra por imágenes
+        await page.waitForTimeout(3000);
         await expect(page).toHaveTitle('Retro Vibes Co. - Tienda Vintage');
-        await page.screenshot({ path: 'screenshots/01-pagina-principal.png' });
+        await page.screenshot({ path: 'screenshots/01-pagina-principal.png',fullPage: true });
     });
 
     test('el grid de productos se llena con productos', async ({ page }) => {
@@ -28,10 +34,14 @@ test.describe('Página principal — catálogo', () => {
     test('el botón VER DETALLE existe en cada producto', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+
+        // Espera extra por imágenes
+        await page.waitForTimeout(3000);
         const primerBoton = page.locator('.buy-btn').first();
         await expect(primerBoton).toBeVisible();
         await expect(primerBoton).toHaveText('VER DETALLE');
-        await page.screenshot({ path: 'screenshots/04-boton-ver-detalle.png' });
+        await page.screenshot({ path: 'screenshots/04-boton-ver-detalle.png', fullPage: true });
     });
 
 });
@@ -41,6 +51,8 @@ test.describe('Modal de producto', () => {
     test('el modal se abre al hacer clic en VER DETALLE', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         await expect(page.locator('.product-modal-overlay')).toBeVisible();
         await page.screenshot({ path: 'screenshots/05-modal-abierto.png' });
@@ -58,6 +70,8 @@ test.describe('Modal de producto', () => {
     test('el modal tiene input de cantidad', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         await expect(page.locator('#quantity')).toBeVisible();
         await page.screenshot({ path: 'screenshots/07-modal-cantidad.png' });
@@ -66,6 +80,8 @@ test.describe('Modal de producto', () => {
     test('la cantidad maxima es 6', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         const input = page.locator('#quantity');
         await input.fill('10');
@@ -77,6 +93,8 @@ test.describe('Modal de producto', () => {
     test('la cantidad minima es 1', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         const input = page.locator('#quantity');
         await input.fill('0');
@@ -88,6 +106,8 @@ test.describe('Modal de producto', () => {
     test('el modal se cierra al hacer clic en X', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         await page.locator('#modal-close').click();
         await expect(page.locator('.product-modal-overlay')).not.toHaveClass(/open/);
@@ -99,26 +119,99 @@ test.describe('Modal de producto', () => {
 test.describe('Navegación', () => {
 
     test('el link de Vinilos navega correctamente', async ({ page }) => {
-        page.on('console', msg => console.log(msg.text()));
+         // Logs del navegador
+        page.on('console', msg =>
+            console.log('BROWSER:', msg.text())
+        );
+        // Todas las respuestas HTTP
+        page.on('response', response => {
+            console.log(
+                'RESPONSE:',
+                response.status(),
+                response.url()
+            );
+        });
+        // Requests que fallan
+        page.on('requestfailed', request => {
+            console.log(
+                'FAILED:',
+                request.url()
+            );
+        });
         await page.goto('/index.html');
         await page.click('a[href="vinilos.html"]');
         await expect(page).toHaveURL(/vinilos/);
         await page.waitForSelector('.prod-card', { timeout: 15000 });
+        // Esperar carga completa de recursos
+        await page.waitForLoadState('networkidle');
+
+        // Espera extra por imágenes
+        await page.waitForTimeout(3000);
         await page.screenshot({ path: 'screenshots/11-pagina-vinilos.png', fullPage: true });
     });
 
     test('el link de Bandanas navega correctamente', async ({ page }) => {
+        // Logs del navegador
+        page.on('console', msg =>
+            console.log('BROWSER:', msg.text())
+        );
+        // Todas las respuestas HTTP
+        page.on('response', response => {
+            console.log(
+                'RESPONSE:',
+                response.status(),
+                response.url()
+            );
+        });
+        // Requests que fallan
+        page.on('requestfailed', request => {
+            console.log(
+                'FAILED:',
+                request.url()
+            );
+        });
         await page.goto('/index.html');
         await page.click('a[href="bandanna.html"]');
         await expect(page).toHaveURL(/bandanna/);
-        await page.screenshot({ path: 'screenshots/12-pagina-bandanas.png' });
+        await page.waitForSelector('.prod-card', { timeout: 15000 });
+        // Esperar carga completa de recursos
+        await page.waitForLoadState('networkidle');
+
+        // Espera extra por imágenes
+        await page.waitForTimeout(3000);
+        await page.screenshot({ path: 'screenshots/12-pagina-bandanas.png', fullPage: true });
     });
 
     test('el link de Anteojos navega correctamente', async ({ page }) => {
+        // Logs del navegador
+        page.on('console', msg =>
+            console.log('BROWSER:', msg.text())
+        );
+        // Todas las respuestas HTTP
+        page.on('response', response => {
+            console.log(
+                'RESPONSE:',
+                response.status(),
+                response.url()
+            );
+        });
+        // Requests que fallan
+        page.on('requestfailed', request => {
+            console.log(
+                'FAILED:',
+                request.url()
+            );
+        });
         await page.goto('/index.html');
         await page.click('a[href="anteojos.html"]');
         await expect(page).toHaveURL(/anteojos/);
-        await page.screenshot({ path: 'screenshots/13-pagina-anteojos.png' });
+        await page.waitForSelector('.prod-card', { timeout: 15000 });
+        // Esperar carga completa de recursos
+        await page.waitForLoadState('networkidle');
+
+        // Espera extra por imágenes
+        await page.waitForTimeout(3000);
+        await page.screenshot({ path: 'screenshots/13-pagina-anteojos.png', fullPage: true });
     });
 
 });
