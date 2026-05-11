@@ -53,7 +53,7 @@ async function cargarCarrito() {
                 </div>
                 <div class="item-qty-controls" style="display:flex; align-items:center; gap:8px;">
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity - 1})">-</button>
-                    <span class="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
+                    <span id="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
                 </div>
                 <div class="item-price-box">
@@ -78,7 +78,6 @@ function actualizarTotales(total, count) {
     const itemCountEl = document.getElementById('item-count');
     const subtotalEl = document.getElementById('resumen-subtotal');
     const totalEl = document.getElementById('resumen-total');
-
     if (itemCountEl) itemCountEl.textContent = count;
     if (subtotalEl) subtotalEl.textContent = fmt(total);
     if (totalEl) totalEl.textContent = fmt(total);
@@ -86,6 +85,11 @@ function actualizarTotales(total, count) {
 
 // Funciones globales (window. porque es un módulo)
 window.updateQty = async (itemId, newQty) => {
+    const qty = document.getElementById('qty-val').value;
+    if (qty > 6) {
+        mostrarToast("La cantidad máxima por compra es de 6 unidades.");
+        return;
+    }
     if (newQty < 1) return;
     try {
         const { error } = await supabase.from('cart_items').update({ quantity: newQty }).eq('id', itemId);
