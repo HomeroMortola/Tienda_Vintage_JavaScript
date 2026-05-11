@@ -1,6 +1,5 @@
 // api/appURL.js
-import { env } from 'Tienda_Vintage_JavaScript/.env';
+import 'dotenv/config';
 
-export const APP_URL = (process.env.APP_URL);
-
+export const APP_URL = process.env.APP_URL;
 
