@@ -63,6 +63,7 @@ async function cargarCarrito() {
                     <span id="qty-val-${item.cartItemId}" style="width:20px; text-align:center;">${item.quantity}</span>
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
                 </div>
+                <div id="error-msg-${item.cartItemId}" style="display:none; color: #fff; background: #2c1b0e; padding: 5px; font-size: 10px; margin-top: 5px; text-align: center; border-radius: 2px;">></div>
                 <div class="item-price-box">
                     <div class="item-subtotal" style="font-weight:600; color:var(--ink);">${fmt(subtotal)}</div>
                     <div class="item-unit-price" style="font-size:10px; color:var(--ink-muted);">(${fmt(p.price)} c/u)</div>
@@ -93,8 +94,15 @@ function actualizarTotales(total, count) {
 // Funciones globales (window. porque es un módulo)
 window.updateQty = async (itemId, newQty) => {
     let finalQty = parseInt(newQty);
+    const errorMsgEl = document.getElementById('error-msg-' + itemId);
+    
     if (finalQty > 6) {
-        alert("La cantidad máxima por compra es de 6 unidades.");
+        if (errorMsgEl) {
+            errorMsgEl.textContent = "Máximo 6 unidades por compra.";
+            errorMsgEl.style.display = 'block';
+            setTimeout(() => errorMsgEl.style.display = 'none', 3000);
+        }
+        
         finalQty = 6;
 
         const qtyInput = document.getElementById('qty-val-' + itemId);
