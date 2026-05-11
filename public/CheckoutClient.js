@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     city: document.getElementById('city-input').value
                 };
 
-                const response = await fetch('/api/checkout', {  // 👈 Ruta relativa, funciona local y en Ngrok automáticamente
+                const response = await fetch('/api/checkout', { 
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

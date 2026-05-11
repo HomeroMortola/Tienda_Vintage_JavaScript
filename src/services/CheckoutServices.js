@@ -1,12 +1,13 @@
+// src/services/CheckoutServices.js
+
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { supabase } from '../config/supabase.js';
-import { ENV } from '../../env.js';
+
 
 // 1. Inicialización de Mercado Pago
 const mpClient = new MercadoPagoConfig({ 
-  accessToken: ENV.MP_ACCESS_TOKEN 
+    accessToken: process.env.MP_ACCESS_TOKEN 
 });
-
 /**
  * Orquesta el flujo de compra: validación de stock, creación de orden y preferencia en MP.
  * @param {Array} items - Carrito de compras desde el frontend
@@ -70,7 +71,9 @@ export const executePurchase = async (items, userId) => {
   }
 
   // 5. Creación de preferencia en Mercado Pago
-  const baseUrl = ENV.APP_URL;
+  const baseUrl = process.env.APP_URL 
+        ? `https://${process.env.APP_URL}` 
+        : 'http://localhost:3000';
   const preference = new Preference(mpClient);
   const result = await preference.create({
     body: {

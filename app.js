@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 
 import { createProduct, getProducts } from "./src/controllers/ProductController.js";
 import { addToCart, getCart, removeFromCart } from "./src/controllers/CartController.js";
+import { processCheckout } from "./src/controllers/CheckoutController.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
