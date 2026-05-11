@@ -122,7 +122,7 @@ async function mostrarDetalle(p) {
                 ${p.description ? `<p class="modal-desc">${p.description}</p>` : ''}
                 ${metaHtml ? `<div class="modal-meta">${metaHtml}</div>` : ''}
                         <h3 id="quantyPurchase">Cantidad a comparar</h3>
-                        <input type="number" id="quantity" name="quantity" min="1" value="1">
+                        <input type="number" id="quantity" name="quantity" min="1" max="6" value="1">
                         <button class="buy-btn modal-buy-btn">COMPRA</button>
                     </div>
                 </div>
