@@ -328,8 +328,10 @@ body {
 
 .section-head {
   text-align: center;
+  margin-top: 12px;
   margin-bottom: 8px;
 }
+
 .section-kicker {
   font-family: var(--f-display);
   font-size: 10px;
