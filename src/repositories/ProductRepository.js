@@ -46,41 +46,29 @@ import { PRODUCT_CONFIG } from '../utils/ProductFactory.js';
 
 
     async saveProduct(product) {
+    const dataForSupabase = {
+        name: product.name,        
+        price: product.price,
+        stock: product.stock,
+        category: product.category,
+        description: product.description,
+        image_url: product.image_url,
+        metadata: product.metadata || {}  
+    };
 
-        const dataForSupabase = {
-                name: product.name,        
-                price: product.price,
-                stock: product.stock,
-                category: product.category,
-                description: product.description,
-                image_url: product.image_url,
-                metadata: product.metadata || {}  
-            };
+    const { data, error } = await supabase
+        .from('products') 
+        .insert([dataForSupabase])
+        .select();
 
-        const { data, error } = await supabase
-                .from('products') 
-                .insert([dataForSupabase])
-                .select();
+    if (error) {
+        console.error("Error al guardar en Supabase:", error.message);
+        throw error;
+    }
 
-            if (error) {
-                console.error("Error al guardar en Supabase:", error.message);
-                throw error;
-            }
-            try {
-            await fetch('http://localhost:3000/createproduct', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataForSupabase) 
-            });
-            console.log("Enviado exitosamente al servidor local (app.js)");
-            } 
-            catch (err) {
-            console.error("Error al conectar con app.js:", err);
-            }
+    return data[0];
+}
 
-        return data[0];
-
-        };
 
     async getProductsByCategory(categoryName) {
     return this._fetchProducts(
