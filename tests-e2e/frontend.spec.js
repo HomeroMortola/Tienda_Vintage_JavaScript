@@ -70,6 +70,8 @@ test.describe('Modal de producto', () => {
     test('el modal tiene input de cantidad', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         await expect(page.locator('#quantity')).toBeVisible();
         await page.screenshot({ path: 'screenshots/07-modal-cantidad.png' });
@@ -78,6 +80,8 @@ test.describe('Modal de producto', () => {
     test('la cantidad maxima es 6', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         const input = page.locator('#quantity');
         await input.fill('10');
@@ -89,6 +93,8 @@ test.describe('Modal de producto', () => {
     test('la cantidad minima es 1', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         const input = page.locator('#quantity');
         await input.fill('0');
@@ -100,6 +106,8 @@ test.describe('Modal de producto', () => {
     test('el modal se cierra al hacer clic en X', async ({ page }) => {
         await page.goto('/index.html');
         await page.waitForSelector('.prod-card');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(3000);
         await page.locator('.buy-btn').first().click();
         await page.locator('#modal-close').click();
         await expect(page.locator('.product-modal-overlay')).not.toHaveClass(/open/);
