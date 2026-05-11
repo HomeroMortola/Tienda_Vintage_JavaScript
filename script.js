@@ -78,7 +78,7 @@ function render(list) {
             <div class="prod-info">
                 <h3 class="prod-name">${p.name}</h3>
                 <div class="prod-price">$${p.price}</div>
-                <p class="prod-desc">${p.description || "Vintage piece."}</p>
+                <p class="prod-desc">${"Vintage piece."}</p>
                 <button class="buy-btn">VER DETALLE</button>
             </div>
         `;
