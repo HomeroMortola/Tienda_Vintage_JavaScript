@@ -233,7 +233,7 @@ test.describe('Checkout', () => {
         await expect(page.locator('#city-input')).toBeVisible();
         await page.screenshot({ path: 'screenshots/15-formulario-checkout.png' });
     });
-
+    
     test('el botón de pago con Mercado Pago existe', async ({ page }) => {
         await page.goto('/checkout.html');
         await expect(page.locator('#pay-button')).toBeVisible();
@@ -241,4 +241,76 @@ test.describe('Checkout', () => {
         await page.screenshot({ path: 'screenshots/16-boton-mercadopago.png' });
     });
 
+    test('el usuario puede completar el checkout', async ({ page }) => {
+
+    await page.goto('/checkout.html');
+
+    await page.fill('#name-input', 'Victoria');
+    await page.fill('#lastname-input', 'Bladilo');
+    await page.fill('#email-input', 'victoria@test.com');
+    await page.fill('#address-input', 'San Martín 123');
+    await page.fill('#city-input', 'Corrientes');
+
+    await page.screenshot({ path: 'screenshots/17-checkout-completo.png' });
+    });
+
+    test('el formulario no se envía si faltan campos', async ({ page }) => {
+
+    await page.goto('/checkout.html');
+
+    // Click sin completar
+    await page.click('#pay-button');
+
+    // Seguimos en checkout
+    await expect(page).toHaveURL(/checkout/);
+
+    // El input sigue inválido
+    await expect(
+        page.locator('#name-input')
+    ).toHaveAttribute('required', '');
+
+    await page.screenshot({path: 'screenshots/20-validacion-checkout.png'});
+
+});
+
+    test('redirige a Mercado Pago al finalizar la compra', async ({ page }) => {
+
+    // HOME
+    await page.goto('/index.html');
+
+    // Esperar productos
+    await page.waitForSelector('.prod-card');
+
+    // Abrir modal
+    await page.locator('.buy-btn').first().click();
+
+    // Esperar modal
+    await page.waitForSelector('.product-modal-overlay.open');
+
+    // Agregar carrito
+    await page.locator('.buy-btn').first().click();
+
+    // Ir carrito
+    await page.goto('/carrito.html');
+
+    // Ir checkout
+    await page.goto('/checkout.html');
+
+    // Completar formulario
+    await page.fill('#name-input', 'Victoria');
+    await page.fill('#lastname-input', 'Bladilo');
+    await page.fill('#email-input', 'victoria@test.com');
+    await page.fill('#address-input', 'San Martin 123');
+    await page.fill('#city-input', 'Corrientes');
+
+    // Pagar
+    await page.click('#pay-button');
+
+    // Esperar cambio URL
+    await expect.poll(
+        async () => page.url(),
+        { timeout: 30000 }
+    ).toContain('mercadopago');
+
+});
 });
