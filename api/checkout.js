@@ -1,0 +1,61 @@
+// api/checkout.js
+import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { ENV } from '../env.js';
+
+const mpClient = new MercadoPagoConfig({ accessToken: ENV.MP_ACCESS_TOKEN });
+
+export default async function handler(req, res) {
+    if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
+
+    try {
+        const { items, buyer, userId, orderId } = req.body;
+
+        // Para pruebas con ngrok, intentamos detectar la URL base si ENV.APP_URL no está configurada o es localhost
+        const host = req.headers['x-forwarded-host'] || req.headers.host;
+        const protocol = req.headers['x-forwarded-proto'] || 'http';
+        const dynamicBaseUrl = `${protocol}://${host}`;
+        
+        // Priorizamos ENV.APP_URL si no es localhost, de lo contrario usamos la URL dinámica (ngrok)
+        const baseUrl = (ENV.APP_URL && !ENV.APP_URL.includes('localhost')) 
+            ? ENV.APP_URL 
+            : dynamicBaseUrl;
+
+        console.log('Usando Base URL para Webhooks:', baseUrl);
+
+        const preference = new Preference(mpClient);
+        
+        const result = await preference.create({
+            body: {
+                items: items.map(item => ({
+                    id: item.id,
+                    title: item.name || 'Producto Retro Vibes', 
+                    quantity: parseInt(item.quantity) || 1,
+                    unit_price: parseFloat(item.price) || 1000 
+                })),
+                payer: {
+                    name: buyer.name,
+                    surname: buyer.surname,
+                    email: buyer.email
+                },
+                back_urls: {
+                    success: `${baseUrl}/success`,
+                    failure: `${baseUrl}/failure`,
+                    pending: `${baseUrl}/pending`
+                },
+                auto_return: 'approved',
+                notification_url: `${baseUrl}/api/webhooks/mercadopago`,
+                external_reference: orderId || `order-${Date.now()}`
+            }
+        });
+
+        // Devolvemos el link de sandbox para pruebas
+        res.status(200).json({ 
+            initPoint: result.sandbox_init_point,
+            preferenceId: result.id 
+        }); 
+
+    } catch (error) {
+        console.error("Error creando checkout:", error);
+        res.status(500).json({ error: "Error al crear la orden de pago", message: error.message });
+    }
+}

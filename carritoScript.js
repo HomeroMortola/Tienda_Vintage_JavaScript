@@ -1,104 +1,149 @@
+// carritoScript.js
+import { supabase } from './src/config/supabase.js';
 import { CartRepository } from './src/repositories/CartRepository.js';
 
-  const cartRepo = new CartRepository();
-  const userId = localStorage.getItem('usuarioId');
+const cartRepo = new CartRepository();
+const userId = localStorage.getItem('usuarioId');
 
-  // Formateador de moneda (respetando tu estilo)
-  const fmt = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  async function cargarCarrito() {
+async function cargarCarrito() {
     const container = document.getElementById('cart-items');
     
     if (!userId) {
-      container.innerHTML = '<div class="empty-msg">Debes iniciar sesión para ver tu carrito.</div>';
-      return;
+        container.innerHTML = '<div style="padding:48px; text-align:center; font-style:italic; color:var(--ink-muted);">Debes iniciar sesión para ver tu carrito.</div>';
+        return;
     }
 
     try {
-      const items = await cartRepo.getCart(userId);
-      
-      if (items.length === 0) {
-        container.innerHTML = '<div class="empty-msg">🛒 Tu carrito está vacío</div>';
-        actualizarTotales(0);
-        return;
-      }
+        const items = await cartRepo.getCart(userId);
+        
+        if (items.length === 0) {
+            container.innerHTML = '<div style="padding:48px; text-align:center; font-style:italic; color:var(--ink-muted);">🛒 Tu carrito está vacío</div>';
+            actualizarTotales(0, 0);
+            return;
+        }
 
-      let totalGeneral = 0;
-      container.innerHTML = ''; // Limpiar placeholders
+        let totalGeneral = 0;
+        container.innerHTML = ''; 
 
-      items.forEach(item => {
-        const p = item.product;
-        const subtotal = p.price * item.quantity;
-        totalGeneral += subtotal;
+        items.forEach(item => {
+            const p = item.product;
+            if (!p) return;
 
-        // Creamos la fila respetando EXACTAMENTE tus clases de CSS
-        const row = document.createElement('div');
-        row.className = 'cart-item-row';
-        row.dataset.id = item.cartItemId;
+            const subtotal = p.price * item.quantity;
+            totalGeneral += subtotal;
 
-        row.innerHTML = `
-          <div class="item-img-box">
-            <img src="${p.image_url}" alt="${p.name}">
-          </div>
-          <div class="item-info">
-            <div class="item-title">${p.name}</div>
-            <div class="item-meta">${p.category}</div>
-          </div>
-          <div class="item-qty-controls">
-            <button class="qty-btn" onclick="updateQty('${item.cartItemId}', ${item.quantity - 1})">-</button>
-            <span class="qty-val">${item.quantity}</span>
-            <button class="qty-btn" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
-          </div>
-          <div class="item-price-box">
-            <div class="item-price">${fmt(p.price)}</div>
-            <div class="item-subtotal">${fmt(subtotal)}</div>
-          </div>
-          <button class="item-remove" onclick="eliminarItem('${item.cartItemId}')">✕</button>
-        `;
-        container.appendChild(row);
-      });
+            const row = document.createElement('div');
+            row.className = 'cart-item-row';
+            row.style.display = 'grid';
+            row.style.gridTemplateColumns = '70px 1fr 130px 110px 40px';
+            row.style.gap = '12px';
+            row.style.padding = '12px 16px';
+            row.style.alignItems = 'center';
+            row.style.borderBottom = '1px solid var(--paper-deep)';
+            row.dataset.id = item.cartItemId;
 
-      actualizarTotales(totalGeneral);
+            row.innerHTML = `
+                <div class="item-img-box" style="width:60px; height:60px; overflow:hidden; border-radius:4px;">
+                    <img src="${p.image_url || 'https://via.placeholder.com/60'}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="item-info">
+                    <div class="item-title" style="font-family:'Playfair Display', serif; font-weight:700; color:var(--ink);">${p.name}</div>
+                    <div class="item-meta" style="font-size:10px; text-transform:uppercase; color:var(--ink-muted); letter-spacing:1px;">${p.category}</div>
+                </div>
+                <div class="item-qty-controls" style="display:flex; align-items:center; gap:8px;">
+                    <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity - 1})">-</button>
+                    <span class="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
+                    <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
+                </div>
+                <div class="item-price-box">
+                    <div class="item-subtotal" style="font-weight:600; color:var(--ink);">${fmt(subtotal)}</div>
+                    <div class="item-unit-price" style="font-size:10px; color:var(--ink-muted);">(${fmt(p.price)} c/u)</div>
+                </div>
+                <button class="item-remove" style="background:none; border:none; color:var(--ink-muted); cursor:pointer; font-size:16px;" onclick="eliminarItem('${item.cartItemId}')">✕</button>
+            `;
+            container.appendChild(row);
+        });
+
+        const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+        actualizarTotales(totalGeneral, totalQuantity);
 
     } catch (error) {
-      console.error("Error cargando el carrito:", error);
-      container.innerHTML = '<div class="empty-msg">Error al conectar con la tienda.</div>';
+        console.error("Error cargando el carrito:", error);
+        container.innerHTML = '<div style="padding:48px; text-align:center; font-style:italic; color:red;">Error al conectar con la base de datos.</div>';
     }
-  }
+}
 
-  // Funciones globales para los botones (window. porque es un módulo)
-  window.updateQty = async (itemId, newQty) => {
+function actualizarTotales(total, count) {
+    const itemCountEl = document.getElementById('item-count');
+    const subtotalEl = document.getElementById('resumen-subtotal');
+    const totalEl = document.getElementById('resumen-total');
+
+    if (itemCountEl) itemCountEl.textContent = count;
+    if (subtotalEl) subtotalEl.textContent = fmt(total);
+    if (totalEl) totalEl.textContent = fmt(total);
+}
+
+// Funciones globales (window. porque es un módulo)
+window.updateQty = async (itemId, newQty) => {
     if (newQty < 1) return;
     try {
-      // Aquí podrías usar un método updateQuantity en tu repo, 
-      // por ahora usamos la lógica de refrescar tras el cambio
-      await supabase.from('cart_items').update({ quantity: newQty }).eq('id', itemId);
-      cargarCarrito();
-    } catch (e) { console.error(e); }
-  };
+        const { error } = await supabase.from('cart_items').update({ quantity: newQty }).eq('id', itemId);
+        if (error) throw error;
+        cargarCarrito();
+    } catch (e) { 
+        console.error("Error al actualizar cantidad:", e); 
+        mostrarToast("Error al actualizar");
+    }
+};
 
-  window.eliminarItem = async (itemId) => {
-    if (!confirm("¿Eliminar este artículo?")) return;
+window.eliminarItem = async (itemId) => {
+    if (!confirm("¿Eliminar este artículo del carrito?")) return;
     try {
-      await cartRepo.removeItem(itemId);
-      cargarCarrito();
-    } catch (e) { console.error(e); }
-  };
+        await cartRepo.removeItem(itemId);
+        mostrarToast("Artículo eliminado");
+        cargarCarrito();
+    } catch (e) { 
+        console.error("Error al eliminar item:", e); 
+        mostrarToast("Error al eliminar");
+    }
+};
 
-  window.vaciarCarrito = async () => {
-    if (!confirm("¿Vaciar todo el carrito?")) return;
+window.vaciarCarrito = async () => {
+    if (!confirm("¿Seguro que quieres vaciar todo el carrito?")) return;
     try {
-      await cartRepo.clearCart(userId);
-      cargarCarrito();
-    } catch (e) { console.error(e); }
-  };
+        await cartRepo.clearCart(userId);
+        mostrarToast("Carrito vaciado");
+        cargarCarrito();
+    } catch (e) { 
+        console.error("Error al vaciar carrito:", e); 
+        mostrarToast("Error al vaciar");
+    }
+};
 
-  function actualizarTotales(total) {
-    const count = document.querySelectorAll('.cart-item-row').length;
-    document.getElementById('item-count').textContent = count;
-    document.getElementById('resumen-subtotal').textContent = fmt(total);
-    document.getElementById('resumen-total').textContent = fmt(total);
-  }
+function mostrarToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg; 
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+}
 
-  // Carga inicial
-  document.addEventListener('DOMContentLoaded', cargarCarrito);
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    cargarCarrito();
+    
+    // Configurar botones fijos
+    const vaciarBtn = document.getElementById('vaciar-carrito-btn');
+    if (vaciarBtn) {
+        vaciarBtn.addEventListener('click', window.vaciarCarrito);
+    }
+    
+    const checkoutBtn = document.getElementById('go-checkout-btn');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            window.location.href = 'checkout.html';
+        });
+    }
+});

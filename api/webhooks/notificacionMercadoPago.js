@@ -1,9 +1,9 @@
-// api/webhooks/mercadopago.js
+// api/webhooks/notificacionMercadoPago.js
 import { createClient } from '@supabase/supabase-js';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { ENV } from '../../env.js';
 
-// Configuración de clientes usando ENV para consistencia
+// Configuración de clientes usando ENV
 const supabase = createClient(ENV.SUPABASE_URL, ENV.SUPABASE_KEY);
 const mpClient = new MercadoPagoConfig({ accessToken: ENV.MP_ACCESS_TOKEN });
 
@@ -16,7 +16,7 @@ export default async function handler(request, response) {
   const topic = query.topic || body.type;
   const id = query.id || (body.data && body.data.id);
 
-  console.log('Webhook recibido:', { topic, id });
+  console.log('Notificación Mercado Pago recibida:', { topic, id });
 
   if (topic === 'payment' && id) {
     try {
@@ -40,18 +40,14 @@ export default async function handler(request, response) {
         })
         .eq('id', orderId);
 
-      if (error) {
-          console.error('Error actualizando Supabase:', error);
-          throw error;
-      }
+      if (error) throw error;
 
       return response.status(200).send('OK');
     } catch (err) {
-      console.error('Error procesando webhook:', err);
+      console.error('Error procesando notificación:', err);
       return response.status(500).json({ error: err.message });
     }
   }
 
-  // Retornar 200 siempre para que MP no reintente infinitamente si no es un topic de interés
   response.status(200).send('Event received');
 }

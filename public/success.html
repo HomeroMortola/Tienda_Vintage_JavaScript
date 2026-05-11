@@ -1,60 +1,147 @@
 <!DOCTYPE html>
-<html lang="es">  
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pago Exitoso - Tienda Vintage</title>
-  <link rel="stylesheet" href="/styles/success.css">
-  <script src="/scripts/supabaseClient.js"></script>
-  <script defer src="/scripts/success.js"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>¡Pago Exitoso! - Retro Vibes Co.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Oswald:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+        }
+    }
+    </script>
 </head>
-<body>
-  <div id="status-message" class="status-message">Verificando tu pago...</div>
 
-<script>
-async function handleSuccess() {
-  // 1. Extraer los datos de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const orderId = urlParams.get('external_reference');
-  const paymentId = urlParams.get('payment_id');
+<body class="Checkout-page">
+    <div class="shell">
+        <header class="masthead">
+            <div class="ornament-line">✦ Confirmación de Compra ✦</div>
+            <h1 class="brand-name"><span>Retro</span> Vibes Co.</h1>
+            <div class="masthead-rule"></div>
+        </header>
 
-  if (!orderId) {
-    window.location.href = '/'; // Si no hay ID, algo salió mal, volvemos al inicio
-    return;
-  }
+        <main class="content">
+            <section class="checkout-layout" style="text-align: center; padding: 40px 20px;">
+                <div id="loading-state">
+                    <h2 class="section-title">Procesando tu pago...</h2>
+                    <p class="prod-cat">Estamos verificando los detalles de tu transacción.</p>
+                    <div class="loader" style="margin: 20px auto; border: 4px solid var(--paper-deep); border-top: 4px solid var(--ink); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+                </div>
 
-  // 2. Consultar a Supabase para verificar que el Webhook ya hizo su trabajo
-  // Hacemos un pequeño "polling" o simplemente mostramos la info si ya está
-  const { data: order, error } = await supabase
-    .from('orders')
-    .select('*')
-    .eq('id', orderId)
-    .single();
+                <div id="success-state" style="display: none;">
+                    <h2 class="section-title" style="color: green;">¡Gracias por tu compra! 🎉</h2>
+                    <p class="prod-cat">Tu pago ha sido procesado con éxito.</p>
+                    
+                    <div class="details-box" style="background: var(--paper); border: 1px solid var(--ink-muted); padding: 20px; border-radius: 8px; margin: 30px auto; max-width: 400px; text-align: left;">
+                        <p><strong>Nro. de Orden:</strong> <span id="order-id"></span></p>
+                        <p><strong>Estado:</strong> <span id="order-status" style="text-transform: capitalize;"></span></p>
+                        <p><strong>Total:</strong> <span id="order-total"></span></p>
+                    </div>
 
-  if (order && order.status === 'approved') {
-    renderSuccessUI(order, paymentId);
-    vaciarCarrito(); //
-  } else {
-    // Si el webhook aún no llega, mostramos un mensaje de "Procesando..."
-    document.getElementById('status-message').innerText = "Estamos confirmando tu pago...";
-    setTimeout(handleSuccess, 3000); // Reintentar en 3 segundos
-  }
-}
+                    <a href="index.html" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 24px;">
+                        Volver al inicio
+                    </a>
+                </div>
 
-function renderSuccessUI(order, paymentId) {
-  document.body.innerHTML = `
-    <main class="success-card">
-      <h1>¡Gracias por tu compra! 🎉</h1>
-      <p>Tu pago fue procesado con éxito.</p>
-      <div class="details">
-        <p><strong>Nro. de Orden:</strong> ${order.id}</p>
-        <p><strong>ID de Pago:</strong> ${paymentId}</p>
-        <p><strong>Total:</strong> $${order.total_price}</p>
-      </div>
-      <a href="/" class="btn">Seguir comprando</a>
-    </main>
-  `;
-}
-</script>
+                <div id="error-state" style="display: none;">
+                    <h2 class="section-title" style="color: red;">Algo no salió como esperábamos</h2>
+                    <p class="prod-cat">No pudimos verificar el estado de tu orden automáticamente.</p>
+                    <p style="margin-bottom: 20px;">Pero no te preocupes, si tu pago fue aprobado recibirás un correo en breve.</p>
+                    
+                    <a href="index.html" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 12px 24px;">
+                        Volver al inicio
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script type="module">
+        import { createClient } from '@supabase/supabase-js';
+
+        // NOTA: En un entorno real, estos deberían ser cargados de forma segura o ser las llaves PÚBLICAS de Supabase.
+        // Asumimos que están disponibles globalmente o las recuperamos de algún lugar seguro.
+        // Para este ejemplo, intentaremos cargarlas de localStorage si se guardaron ahí, o usaremos placeholders.
+        const SUPABASE_URL = localStorage.getItem('supabaseUrl') || 'https://zjxhoedilvqnfxbonyjh.supabase.co';
+        const SUPABASE_KEY = localStorage.getItem('supabaseKey'); // Esto debería ser la anon key
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function verifyPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('external_reference');
+            
+            if (!orderId) {
+                showState('error');
+                return;
+            }
+
+            document.getElementById('order-id').innerText = orderId;
+
+            try {
+                // Polling para esperar a que el webhook actualice el estado
+                let attempts = 0;
+                const maxAttempts = 5;
+                
+                const checkStatus = async () => {
+                    const { data: order, error } = await supabase
+                        .from('orders')
+                        .select('*')
+                        .eq('id', orderId)
+                        .single();
+
+                    if (error) throw error;
+
+                    if (order.status === 'approved') {
+                        document.getElementById('order-status').innerText = order.status;
+                        document.getElementById('order-total').innerText = '$' + order.total_price;
+                        showState('success');
+                        
+                        // Limpiar el carrito localmente tras el éxito
+                        localStorage.removeItem('cart');
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(checkStatus, 3000); // Reintentar cada 3 segundos
+                    } else {
+                        showState('error');
+                    }
+                };
+
+                await checkStatus();
+            } catch (error) {
+                console.error('Error verificando pago:', error);
+                showState('error');
+            }
+        }
+
+        function showState(state) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('success-state').style.display = state === 'success' ? 'block' : 'none';
+            document.getElementById('error-state').style.display = state === 'error' ? 'block' : 'none';
+        }
+
+        if (SUPABASE_KEY) {
+            verifyPayment();
+        } else {
+            console.error('No se encontró la configuración de Supabase');
+            showState('error');
+        }
+    </script>
 </body>
 </html>

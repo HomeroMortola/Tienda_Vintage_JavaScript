@@ -1,17 +1,48 @@
-// En /failure.js
-function handleFailure() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const status = urlParams.get('status'); // Puede ser 'rejected' o 'null'
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pago Cancelado - Retro Vibes Co.</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Oswald:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-  document.body.innerHTML = `
-    <main class="error-card">
-      <h1>El pago no pudo procesarse</h1>
-      <p>Parece que hubo un problema con tu tarjeta o el medio de pago seleccionado.</p>
-      
-      <div class="actions">
-        <button onclick="window.history.back()" class="btn-retry">Intentar de nuevo con otra tarjeta</button>
-        <a href="/checkout" class="link">Volver al carrito</a>
-      </div>
-    </main>
-  `;
-}
+<body class="Checkout-page">
+    <div class="shell">
+        <header class="masthead">
+            <div class="ornament-line">✦ Pago no procesado ✦</div>
+            <h1 class="brand-name"><span>Retro</span> Vibes Co.</h1>
+            <div class="masthead-rule"></div>
+        </header>
+
+        <main class="content">
+            <section class="checkout-layout" style="text-align: center; padding: 40px 20px;">
+                <h2 class="section-title" style="color: var(--ink);">Hubo un problema con tu pago</h2>
+                <p class="prod-cat">Parece que el proceso de pago fue cancelado o rechazado por la entidad bancaria.</p>
+                
+                <div style="margin: 40px 0;">
+                    <p style="margin-bottom: 20px; color: var(--ink-muted);">No se ha realizado ningún cargo en tu cuenta. Puedes intentar de nuevo con otro medio de pago.</p>
+                    
+                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                        <a href="checkout.html" class="btn-primary" style="text-decoration: none; padding: 12px 24px;">
+                            Reintentar pago
+                        </a>
+                        <a href="index.html" class="nav-item" style="text-decoration: none; padding: 12px 24px; border: 1px solid var(--ink-muted);">
+                            Volver al catálogo
+                        </a>
+                    </div>
+                </div>
+
+                <footer style="margin-top: 40px; font-style: italic; color: var(--ink-muted);">
+                    Si crees que esto es un error, por favor contáctanos.
+                </footer>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

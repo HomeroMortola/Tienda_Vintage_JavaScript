@@ -58,8 +58,8 @@ export const executePurchase = async (items, userId) => {
     .from('orders')
     .insert({
       total_price: serverSideTotal,
-      status: 'pending', // Nota: el esquema dice double precision, pero un string es más lógico.
-      client_id: userId,
+      status: 0, // Nota: el esquema dice double precision, pero un string es más lógico.
+      user_id: userId,
       items: items
     })
     .select('id')

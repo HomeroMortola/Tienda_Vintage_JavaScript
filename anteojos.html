@@ -1,159 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script type="importmap">{"imports": {"@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"}}</script>
+  <script type="importmap">
+  {
+    "imports": {
+      "@supabase/supabase-js": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+    }
+  }
+  </script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anteojos - Retro Vibes Co.</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="anteojos-page">
 <div class="shell">
 
-      <!-- HEADER -->
-      <header class="masthead">
-        <div class="ornament-line">✦ &nbsp; Tienda de artículos vintage &nbsp; ✦</div>
-        <div class="brand-name"><span>Retro</span> Vibes Co.</div>
-        <div class="brand-tagline">Vinilos · Bandanas · Anteojos · Remeras · Est. 1974</div>
-        <div class="masthead-rule"></div>
-      </header>
+  <!-- ══ MASTHEAD ══ -->
+  <header class="masthead">
+    <div class="ornament-line">✦ &nbsp; Tienda de artículos vintage &nbsp; ✦</div>
+    <div class="brand-name"><span>Retro</span> Vibes Co.</div>
+    <div class="brand-tagline">Vinilos · Bandanas · Anteojos · Remeras · Est. 1974</div>
+    <div class="masthead-rule"></div>
+  </header>
 
-      <!-- Banda navegación  -->
-  <div class="header-row">
-
-      <div class="nav-band">   
-        <a href="index.html" class="nav-item">Catalogo</a>
-        <a href="vinilos.html" class="nav-item">Vinilos</a>
-        <a href="bandanna.html" class="nav-item">Bandanas</a>
-        <a href="anteojos.html" class="nav-item active">Anteojos</a>
-        <a href="T_Shirts.html" class="nav-item">Remeras</a>
-        <a href="carrito.html" class="nav-item">Carrito</a>
-      </div>
-
-        <!-- ── boton register ── -->
-  <a href="login.html" class="user-btn" title="Registro" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-  </a>
-</div>
-
-
-  <!-- barra de busqueda -->
-      <div class="search-container">
-         <input
-            type="text"
-            id="product-search"
-            class="search-input"
-            placeholder="Buscar producto..."
-          />
-        </div>
-
-    <section class="section active">
-        <div class="section-head">
-          <h1 class="section-title">Anteojos</h1>
-          <p class="section-sub">Estilo vintage para tu mirada</p>
-        </div>
-
-        <div class="products-grid"></div> <!--linea por debajo del titulo-->
-
-          <div class="grid-product"></div>
-    </section>
-  </div>
-    <script  type="module" src="script.js"></script>
-  </body>
-</html>
-
-
-
-<!--
-      <div class="product-card">
-        <div class="prod-visual"><img src="ante1.jpg" alt="Ray-Ban Classic"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Ray-Ban Classic</div>
-          <div class="prod-desc">Aviador · Lentes oscuros</div>
-          <div class="prod-footer">
-            <div class="prod-price">$12000</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="prod-visual"><img src="ante2.jpg" alt="Retro Round"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Retro Round</div>
-          <div class="prod-desc">Estilo John Lennon · Cristal claro</div>
-          <div class="prod-footer">
-            <div class="prod-price">$9800</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="prod-visual"><img src="antemen.jpg" alt="Black Frame"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Black Frame</div>
-          <div class="prod-desc">Marco grueso · Vintage urbano</div>
-          <div class="prod-footer">
-            <div class="prod-price">$11000</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="prod-visual"><img src="antewoman+.jpg" alt="Cat Eye"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Cat Eye</div>
-          <div class="prod-desc">Estilo femenino clásico · 60s</div>
-          <div class="prod-footer">
-            <div class="prod-price">$10500</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="prod-visual"><img src="antewoman2.jpg" alt="Clear Retro"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Clear Retro</div>
-          <div class="prod-desc">Marco transparente · moderno vintage</div>
-          <div class="prod-footer">
-            <div class="prod-price">$9900</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card">
-        <div class="prod-visual"><img src="antewoman3.jpg" alt="Golden Vintage"></div>
-        <div class="prod-body">
-          <div class="prod-cat">Anteojos</div>
-          <div class="prod-name">Golden Vintage</div>
-          <div class="prod-desc">Metal dorado · estilo clásico elegante</div>
-          <div class="prod-footer">
-            <div class="prod-price">$13500</div>
-            <button class="prod-btn">Elegir</button>
-          </div>
-        </div>
-      </div>
-
+  <!-- ── Banda navegación ── -->
+  <nav class="header-row" aria-label="Navegación principal">
+    <div class="nav-band">    
+      <a href="index.html" class="nav-item">Catalogo</a>
+      <a href="vinilos.html" class="nav-item">Vinilos</a>
+      <a href="bandanna.html" class="nav-item">Bandanas</a>
+      <a href="anteojos.html" class="nav-item active">Anteojos</a>
+      <a href="T_Shirts.html" class="nav-item">Remeras</a>
+      <a href="carrito.html" class="nav-item">Carrito</a>
     </div>
 
-  </section>
+    <!-- ── boton register ── -->
+    <a href="login.html" class="user-btn" title="Registro/Login" style="padding: 5px; display: flex; align-items: center; color: var(--ink-soft); transition: color 0.2s;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </a>
+  </nav>
+
+  <main>
+    <!-- barra de busqueda -->
+    <section class="search-container" aria-label="Buscador de anteojos">
+      <input
+        type="text"
+        id="product-search"
+        class="search-input"
+        placeholder="Buscar anteojos..."
+      />
+    </section>
+
+    <header class="section-head">
+      <h1 class="section-title">Anteojos</h1>
+      <p class="section-sub">Estilo vintage para tu mirada</p>
+    </header>
+
+    <section class="grid-product">
+      <!-- Los productos se cargan dinámicamente aquí -->
+    </section>
+  </main>
+
+  <footer style="text-align:center; margin-top:60px; padding-top:20px; border-top:1px solid var(--paper-deep);">
+    <span class="prod-cat" style="font-size:8px; color:var(--paper-deep); letter-spacing:2px;">
+      © 1974 Retro Vibes Co. &nbsp;·&nbsp;
+      <a href="admin.html" style="color:var(--paper-deep); text-decoration:none;">Admin</a>
+    </span>
+  </footer>
 
 </div>
+
+<script type="module" src="script.js"></script>
+
 </body>
 </html>
--->

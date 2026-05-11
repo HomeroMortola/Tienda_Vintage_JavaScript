@@ -1,3 +1,5 @@
+//src/controllers/CheckoutController.js
+
 import { executePurchase } from "../services/CheckoutServices.js";
 
 /** Checkout con cuerpo extendido (email, token Mercado Pago, etc.). Mismo Command que POST /carrito/comprar */
@@ -20,8 +22,13 @@ export const processCheckout = async (request, response) => {
             initPoint: result.initPoint,
             orderId: result.orderId,
         });
-    } catch (error) {
-        console.error("processCheckout:", error);
-        response.status(500).json({ error: "Error al procesar el checkout" });
-    }
-};
+   } catch (error) {
+    console.error("processCheckout:", error);
+    // Cambia el mensaje genérico por el error real para debuguear
+    response.status(500).json({ 
+        error: "Error interno del servidor", 
+        detalles: error.message,
+        stack: error.stock 
+        });
+   }
+}
