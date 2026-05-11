@@ -124,9 +124,10 @@ body {
 
 /* categorías*/
 
-.section-title {
+/*.section-title {
   font-family: var(--f-gothic);
-}
+}*/
+
 .nav-band {
   font-family: var(--f-gothic);
   display: flex;
@@ -224,8 +225,8 @@ body {
 
 .login-link {
   font-family: var(--f-gothic);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.80rem;
+  font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -339,11 +340,12 @@ body {
   display: block;
   margin-bottom: 4px;
 }
+
 .section-title {
   font-family: var(--f-display);
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 900;
-  font-style: italic;
+  font-size: clamp(4.5rem, 6vw, 1rem);
+  font-weight: 800;
+  font-style: normal;
   line-height: 1;
   color: var(--ink);
   margin-bottom: 6px;
@@ -1046,8 +1048,8 @@ select option {
 
 .section-title {
   font-family: var(--f-display);
-  font-weight: normal !important;
-  font-style: normal !important;
+  font-weight: 800;
+  font-style: italic;
 }
 
 .producto {
