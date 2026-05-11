@@ -1,6 +1,6 @@
 // api/checkout.js
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-import { ENV } from '../env.js';
+
 
 const mpClient = new MercadoPagoConfig({ accessToken: ENV.MP_ACCESS_TOKEN });
 
