@@ -1131,10 +1131,9 @@ select option {
 
 .grid-product {
   display: grid;
-  /* Crea columnas de mínimo 280px que se ajustan solas al ancho de la pantalla */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
-  padding: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -1160,8 +1159,8 @@ select option {
 /*  el contenedor de la imagen: ACÁ ACHICAMOS LA IMAGEN */
 .prod-img-container {
   width: 100%;
-  height: 200px; /* Altura fija para que todas sean iguales */
-  background-color: #e0e0e0;
+  height: 240px;      
+  background-color: #f0ebe0;
   border-radius: 8px;
   margin-bottom: 15px;
   display: flex;
