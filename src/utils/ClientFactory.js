@@ -8,6 +8,5 @@ export const CLIENT_CONFIG = {
         { id: 'location', setter: 'setLocation' },
         { id: 'name', setter: 'setName'},
         { id: 'surname', setter: 'setSurname'},
-        { id: 'password', setter: 'setPassword'},
     ]
 };

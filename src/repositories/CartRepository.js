@@ -4,8 +4,6 @@ import { CART_CONFIG } from '../utils/CartFactory.js';
 
 
 
-
-
 export class CartRepository {
     constructor() {
         this.productRepo = new ProductRepository();
