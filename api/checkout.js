@@ -28,7 +28,8 @@ export default async function handler(req, res) {
                     id: item.id,
                     title: item.name || 'Producto Retro Vibes', 
                     quantity: parseInt(item.quantity) || 1,
-                    unit_price: parseFloat(item.price) || 1000 
+                    total_price: parseFloat(item.price) * (parseInt(item.quantity) || 1) || 1000,
+                    currency_id: 'ARS',
                 })),
                 payer: {
                     name: buyer.name,
