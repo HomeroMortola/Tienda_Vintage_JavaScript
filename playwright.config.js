@@ -21,5 +21,21 @@ export default defineConfig({
         command: 'node app.js',
         port: 3000,
         reuseExistingServer: true,
-    }
+    },
+    projects: [
+        {
+            name: 'endpoints',
+            testMatch: ['**/productos.spec.js', '**/carrito.spec.js', '**/createProduct.spec.js'],
+            use: {
+                baseURL: 'http://localhost:3000',
+            }
+        },
+        {
+            name: 'frontend',
+            testMatch: '**/frontend.spec.js',
+            use: {
+                baseURL: 'https://tienda-vintage-java-script.vercel.app',
+            }
+        }
+    ]
 });
