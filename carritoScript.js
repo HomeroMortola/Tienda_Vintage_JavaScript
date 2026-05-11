@@ -95,12 +95,12 @@ function actualizarTotales(total, count) {
 window.updateQty = async (itemId, newQty) => {
     let finalQty = parseInt(newQty);
     const errorMsgEl = document.getElementById('error-msg-' + itemId);
-    
+
     if (finalQty > 6) {
         if (errorMsgEl) {
             errorMsgEl.textContent = "Máximo 6 unidades por compra.";
             errorMsgEl.style.display = 'block';
-            setTimeout(() => errorMsgEl.style.display = 'none', 3000);
+            setTimeout(() => errorMsgEl.style.display = 'none', 5000);
         }
         
         finalQty = 6;
