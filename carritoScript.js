@@ -60,7 +60,7 @@ async function cargarCarrito() {
                 </div>
                 <div class="item-qty-controls" style="display:flex; align-items:center; gap:8px;">
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity - 1})">-</button>
-                    <span class="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
+                    <span id="qty-val" style="width:20px; text-align:center;">${item.quantity}</span>
                     <button class="qty-btn" style="background:var(--paper-deep); border:none; width:24px; height:24px; cursor:pointer;" onclick="updateQty('${item.cartItemId}', ${item.quantity + 1})">+</button>
                 </div>
                 <div class="item-price-box">
@@ -82,18 +82,18 @@ async function cargarCarrito() {
 }
 
 function actualizarTotales(total, count) {
-  const itemCountEl = document.getElementById("item-count");
-  const subtotalEl = document.getElementById("resumen-subtotal");
-  const totalEl = document.getElementById("resumen-total");
-
-  if (itemCountEl) itemCountEl.textContent = count;
-  if (subtotalEl) subtotalEl.textContent = fmt(total);
-  if (totalEl) totalEl.textContent = fmt(total);
+    const itemCountEl = document.getElementById('item-count');
+    const subtotalEl = document.getElementById('resumen-subtotal');
+    const totalEl = document.getElementById('resumen-total');
+    if (itemCountEl) itemCountEl.textContent = count;
+    if (subtotalEl) subtotalEl.textContent = fmt(total);
+    if (totalEl) totalEl.textContent = fmt(total);
 }
 
 // Funciones globales (window. porque es un módulo)
 window.updateQty = async (itemId, newQty) => {
-  if (newQty < 1) return;
+  if (newQty < 1)
+    return;
   // máximo 6
   if (newQty > 6) {
     mostrarToast("Máximo 6 unidades por producto");
