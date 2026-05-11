@@ -1,3 +1,5 @@
+//src/config/supabase.js
+
 import { createClient } from '@supabase/supabase-js';
 
 let SUPABASE_URL, SUPABASE_KEY;

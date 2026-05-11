@@ -1,9 +1,7 @@
 import { PaymentCommand } from "./PaymentCommand.js";
-import { clearCartSession } from "../services/CartController.js";
+import { clearCartSession } from "../controllers/CartController.js";
 
-/**
- * Último paso: vacía el carrito en memoria. Sin undo (la orden ya quedó persistida).
- */
+
 export class ClearCartCommand extends PaymentCommand {
     constructor(ctx) {
         super();
@@ -11,6 +9,6 @@ export class ClearCartCommand extends PaymentCommand {
     }
 
     async execute() {
-        clearCartSession(this.ctx.sessionId);
+        clearCartSession(this.ctx.userId);
     }
 }

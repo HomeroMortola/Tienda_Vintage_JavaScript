@@ -44,9 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .setLocation(inputs.location.value)
                 .setEmail(email)
 
-                
-                
-
 
             const newClient = builder.build();
             
