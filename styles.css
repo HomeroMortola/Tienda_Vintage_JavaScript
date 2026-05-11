@@ -223,20 +223,17 @@ body {
 }
 
 .login-link {
-  font-family: var(--f-gothic);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 11px;
-  color: var(--ink);
+  letter-spacing: 1px;
+  font-size: 12px;
+  font-weight: 700;
+  /*color: var(--ink-muted);*/
   text-decoration: none;
-  border-bottom: 1px solid var(--ink);
-  padding-bottom: 2px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .login-link:hover {
-  color: var(--red);
-  border-color: var(--red);
+  color: var(--ink);
 }
 
 .stepper {
@@ -489,6 +486,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
 .prod-cat {
   font-family: var(--f-gothic);
   font-size: 9px;
@@ -498,6 +496,7 @@ body {
   color: var(--ink-muted);
   margin-bottom: 5px;
 }
+
 .prod-name {
   font-family: var(--f-display);
   font-weight: 700;
@@ -1178,7 +1177,7 @@ select option {
 /* 4. Tipografía y Textos */
 .prod-cat {
   font-size: 0.75rem;
-  color: #666;
+  color: #666666;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 5px;

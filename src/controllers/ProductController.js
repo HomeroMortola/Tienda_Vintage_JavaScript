@@ -16,9 +16,27 @@ export const getProducts = async (request, response) => {
 
 export const createProduct = async (request, response) => {
     try {
+        const { name, price, stock, image_url, description, category } = request.body;
+        // Validaciones
+        if (!name || name.trim() === "") {
+            return response.status(400).json({ error: "el nombre es obligatorio" });
+        }
+        if (!price || typeof price !== "number" || price <= 0) {
+            return response.status(400).json({ error: "el precio debe ser un numero mayor a cero" });
+        }
+        if (stock === undefined || typeof stock !== "number" || stock < 0) {
+            return response.status(400).json({ error: "el stock no puede ser negativo" });
+        }
+        if (!image_url || image_url.trim() === "") {
+            return response.status(400).json({ error: "la imagen es obligatoria" });
+        }
+        if (!description || description.trim() === "") {
+            return response.status(400).json({ error: "la descripcion es obligatoria" });
+        }
+        if (!category || category.trim() === "") {
+            return response.status(400).json({ error: "la categoria es obligatoria" });
+        }
         const newProduct = await productRepository.saveProduct(request.body);
-        
-        // Acá podrías validarlo o hacer algo extra antes de responder
         console.log("Nuevo producto recibido:", newProduct);
         response.status(201).json({
             message: "Producto recibido por el servidor local",
