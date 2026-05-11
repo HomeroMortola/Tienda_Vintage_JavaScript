@@ -49,7 +49,7 @@ export const executePurchase = async (items, userId) => {
       id: dbProduct.id,
       title: dbProduct.name,
       unit_price: dbProduct.price,
-      total_price: dbProduct.price * (item.quantity || 1),
+      total_price: serverSideTotal,
       quantity: item.quantity || 1,
       currency_id: 'ARS'
     };
